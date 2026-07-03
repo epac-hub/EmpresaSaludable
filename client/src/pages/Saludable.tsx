@@ -11,7 +11,7 @@ import MusicPlayer from "@/components/saludable/MusicPlayer";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const FloatingOrb = lazy(() => import("@/components/saludable/FloatingOrb"));
+// FloatingOrb removed
 const PharmacyMap = lazy(() => import("@/components/saludable/PharmacyMap"));
 
 // ─── Data ───────────────────────────────────────────────────────────────────
@@ -360,12 +360,7 @@ export default function Saludable() {
         {/* Gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#1a2418]/60 via-[#1a2418]/40 to-[#1a2418]" />
 
-        {/* 3D Orb */}
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[500px] h-[500px] opacity-70 hidden lg:block">
-          <Suspense fallback={null}>
-            <FloatingOrb />
-          </Suspense>
-        </div>
+
 
         {/* Hero Content */}
         <div className="relative z-10 max-w-4xl mx-auto px-6 text-center lg:text-left lg:ml-[10%]">
