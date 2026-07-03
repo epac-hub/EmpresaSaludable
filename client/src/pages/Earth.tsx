@@ -33,7 +33,7 @@ const EARTH_SITES: EarthSite[] = [
     technique: "Editorial Minimalism",
     url: "https://www.aesop.com",
     award: "Ecommerce Design Award",
-    thumbnail: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=800&q=80",
+    thumbnail: "/manus-storage/aesop_cd4ffa48.jpg",
     category: "organic",
     techStack: ["React", "Next.js", "Contentful CMS", "Styled Components", "Framer Motion", "Shopify"],
     highlights: [
@@ -50,7 +50,7 @@ const EARTH_SITES: EarthSite[] = [
     technique: "Scroll Storytelling",
     url: "https://www.patagonia.com/stories/",
     award: "Webby Award",
-    thumbnail: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&q=80",
+    thumbnail: "/manus-storage/patagonia_b0e0077f.png",
     category: "sustainable",
     techStack: ["React", "GSAP ScrollTrigger", "Contentful", "Cloudinary", "Tailwind CSS", "Vercel"],
     highlights: [
@@ -67,7 +67,7 @@ const EARTH_SITES: EarthSite[] = [
     technique: "3D Wellness Journey",
     url: "https://www.vibrantwellness.com",
     award: "Awwwards SOTD",
-    thumbnail: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&q=80",
+    thumbnail: "/manus-storage/vibrant-wellness_774dfb7f.jpg",
     category: "wellness",
     techStack: ["Three.js", "React Three Fiber", "GSAP", "Lenis", "WebGL Shaders", "Tailwind CSS"],
     highlights: [
@@ -84,7 +84,7 @@ const EARTH_SITES: EarthSite[] = [
     technique: "Botanical Micro-interactions",
     url: "https://www.bloomandwild.com",
     award: "CSS Design Award",
-    thumbnail: "https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=800&q=80",
+    thumbnail: "/manus-storage/bloom-wild_c5c204e9.png",
     category: "botanical",
     techStack: ["Vue.js", "Nuxt", "GSAP", "Shopify Storefront API", "Tailwind CSS", "Cloudinary"],
     highlights: [
@@ -100,7 +100,7 @@ const EARTH_SITES: EarthSite[] = [
     description: "Zero-waste marketplace with raw kraft paper textures, hand-drawn illustrations, and earthy browns. The design philosophy mirrors the product ethos — nothing wasted, everything intentional.",
     technique: "Textured Minimalism",
     url: "https://packagefreeshop.com",
-    thumbnail: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=800&q=80",
+    thumbnail: "/manus-storage/package-free_d35f84ea.png",
     category: "sustainable",
     techStack: ["Shopify", "Liquid", "Custom CSS", "SVG Illustrations", "Vanilla JS"],
     highlights: [
@@ -117,7 +117,7 @@ const EARTH_SITES: EarthSite[] = [
     technique: "Apothecary Aesthetic",
     url: "https://www.lelabofragrances.com",
     award: "FWA Award",
-    thumbnail: "https://images.unsplash.com/photo-1547887538-e3a2f32cb1cc?w=800&q=80",
+    thumbnail: "/manus-storage/le-labo_a0d873c3.png",
     category: "organic",
     techStack: ["React", "Next.js", "Sanity CMS", "Framer Motion", "Styled Components", "Shopify Plus"],
     highlights: [
@@ -133,7 +133,7 @@ const EARTH_SITES: EarthSite[] = [
     description: "A botanical garden website with parallax leaf layers, organic scroll animations, and a deep forest green palette. Each section unfolds like walking deeper into a greenhouse.",
     technique: "Parallax Botanical Layers",
     url: "https://maitriverde.com",
-    thumbnail: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800&q=80",
+    thumbnail: "/manus-storage/maitri-verde_aeafc41c.png",
     category: "botanical",
     techStack: ["GSAP ScrollTrigger", "CSS Parallax", "SVG Animations", "Webflow", "Custom JS"],
     highlights: [
@@ -150,7 +150,7 @@ const EARTH_SITES: EarthSite[] = [
     technique: "Breathing Animations",
     url: "https://www.headspace.com",
     award: "Apple Design Award",
-    thumbnail: "https://images.unsplash.com/photo-1508672019048-805c876b67e2?w=800&q=80",
+    thumbnail: "/manus-storage/headspace-new_a08aed08.png",
     category: "wellness",
     techStack: ["React", "Lottie Animations", "GSAP", "Custom Illustration System", "Tailwind CSS", "Vercel"],
     highlights: [
@@ -167,7 +167,7 @@ const EARTH_SITES: EarthSite[] = [
     technique: "Cinematic Immersion",
     url: "https://www.aman.com",
     award: "Webby Award",
-    thumbnail: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&q=80",
+    thumbnail: "/manus-storage/aman_be3a6587.jpg",
     category: "wellness",
     techStack: ["Drupal CMS", "GSAP", "Cloudinary", "Custom Video Player", "Lazy Loading", "Responsive Images"],
     highlights: [
@@ -184,7 +184,7 @@ const EARTH_SITES: EarthSite[] = [
     technique: "Transparent Science Design",
     url: "https://ritual.com",
     award: "Webby Award",
-    thumbnail: "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=800&q=80",
+    thumbnail: "/manus-storage/ritual_703f9825.png",
     category: "organic",
     techStack: ["React", "Next.js", "Shopify Plus", "Three.js", "Framer Motion", "Sanity CMS"],
     highlights: [
@@ -201,7 +201,7 @@ const EARTH_SITES: EarthSite[] = [
     technique: "Sustainable Editorial",
     url: "https://www.stellamccartney.com",
     award: "FWA Award",
-    thumbnail: "https://images.unsplash.com/photo-1445205170230-053b83016050?w=800&q=80",
+    thumbnail: "/manus-storage/stella-mccartney_ed6424e3.jpg",
     category: "sustainable",
     techStack: ["React", "Next.js", "Contentful", "GSAP", "Cloudinary", "Shopify Plus"],
     highlights: [
@@ -218,7 +218,7 @@ const EARTH_SITES: EarthSite[] = [
     technique: "Wabi-Sabi Minimalism",
     url: "https://kinto.co.jp/en/",
     award: "CSS Design Award",
-    thumbnail: "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=800&q=80",
+    thumbnail: "/manus-storage/kinto_ac45cca1.jpg",
     category: "organic",
     techStack: ["Nuxt.js", "Vue.js", "GSAP", "Prismic CMS", "Custom Easing", "Intersection Observer"],
     highlights: [
@@ -234,7 +234,7 @@ const EARTH_SITES: EarthSite[] = [
     description: "Phone case brand with hand-painted botanical patterns, watercolor textures, and a garden-party aesthetic. The site blooms with color — floral illustrations animate on scroll, product cards tilt like pressed flowers in a book.",
     technique: "Watercolor Botanical",
     url: "https://www.wildflowercases.com",
-    thumbnail: "https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=800&q=80&fit=crop",
+    thumbnail: "/manus-storage/wildflower-cases_8a9d8792.png",
     category: "botanical",
     techStack: ["Shopify", "GSAP", "Custom Illustrations", "SVG Animations", "Tailwind CSS", "Liquid"],
     highlights: [
@@ -251,7 +251,7 @@ const EARTH_SITES: EarthSite[] = [
     technique: "Eco-Chic Grid",
     url: "https://www.thereformation.com",
     award: "Webby Award",
-    thumbnail: "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=800&q=80",
+    thumbnail: "/manus-storage/reformation_93af3ca3.png",
     category: "sustainable",
     techStack: ["React", "Next.js", "Shopify Plus", "Custom Impact Calculator", "Contentful", "Vercel"],
     highlights: [
@@ -268,7 +268,7 @@ const EARTH_SITES: EarthSite[] = [
     technique: "Apothecary Luxury",
     url: "https://www.olverum.com",
     award: "Awwwards Honorable Mention",
-    thumbnail: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=800&q=80",
+    thumbnail: "/manus-storage/olverum_db3abace.png",
     category: "botanical",
     techStack: ["Shopify", "GSAP", "Custom Illustrations", "Lottie", "Tailwind CSS", "Cloudinary"],
     highlights: [
@@ -285,7 +285,7 @@ const EARTH_SITES: EarthSite[] = [
     technique: "Contemplative Editorial",
     url: "https://www.readcereal.com",
     award: "Awwwards SOTD",
-    thumbnail: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
+    thumbnail: "/manus-storage/cereal-magazine_3a63dd71.jpg",
     category: "organic",
     techStack: ["Custom CMS", "Vanilla JS", "CSS Grid", "Lazy Loading", "WebP", "Minimal Framework"],
     highlights: [
