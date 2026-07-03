@@ -3,6 +3,7 @@
  * Design: Neo-Cinematic, dark canvas, electric violet accent, Space Grotesk display
  * Animations: GSAP ScrollTrigger for reveals, Lenis for smooth scroll
  * Filter bar: Sticky category filter at top of gallery
+ * Modal: Detailed view with tech stack on card click
  */
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
@@ -11,6 +12,7 @@ import Lenis from "lenis";
 import CustomCursor from "@/components/CustomCursor";
 import ScrollProgress from "@/components/ScrollProgress";
 import SiteCard from "@/components/SiteCard";
+import SiteModal from "@/components/SiteModal";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -32,6 +34,9 @@ interface SiteData {
   award?: string;
   thumbnail?: string;
   category: Category;
+  techStack: string[];
+  highlights: string[];
+  year: string;
 }
 
 const ALL_SITES: SiteData[] = [
@@ -45,6 +50,14 @@ const ALL_SITES: SiteData[] = [
     award: "SOTM Apr 2026",
     thumbnail: "/manus-storage/j5hMb6X3rOBe_171c84fd.jpeg",
     category: "3d",
+    techStack: ["Three.js", "WebGL", "GSAP", "Custom Shaders", "Lenis", "Vite"],
+    highlights: [
+      "Single product rendered with cinematic-grade material fidelity",
+      "Inertial physics respond to scroll velocity, not just position",
+      "Z-axis depth scroll creates parallax within the 3D scene itself",
+      "Extreme restraint — one object, infinite polish",
+    ],
+    year: "2026",
   },
   {
     name: "Cartier Watches & Wonders",
@@ -55,6 +68,14 @@ const ALL_SITES: SiteData[] = [
     award: "Awwwards SOTD",
     thumbnail: "/manus-storage/53FQBzoDXh8R_3d627155.jpg",
     category: "3d",
+    techStack: ["Three.js", "GLSL Shaders", "GSAP", "ScrollTrigger", "Lenis", "Web Audio API", "React"],
+    highlights: [
+      "Six isolated 3D rooms — each a self-contained scene with unique lighting",
+      "GLSL shaders create bespoke material reflections per timepiece",
+      "Web Audio API syncs ambient sound to scroll position",
+      "Museum-like pacing: one product per viewport, no distraction",
+    ],
+    year: "2025",
   },
   {
     name: "Explore Primland",
@@ -65,6 +86,14 @@ const ALL_SITES: SiteData[] = [
     award: "Awwwards SOTD",
     thumbnail: "/manus-storage/W8EySgU5A9cT_abc1bda9.jpg",
     category: "3d",
+    techStack: ["Three.js", "React Three Fiber", "GSAP", "ScrollTrigger", "Heightmap Terrain", "Fog Shaders"],
+    highlights: [
+      "Heightmap-generated terrain from real topographic data",
+      "Atmospheric volumetric fog creates depth and mood",
+      "Camera follows a spline path synced to scroll progress",
+      "Transitions between aerial and ground-level perspectives",
+    ],
+    year: "2025",
   },
   {
     name: "IVRESS",
@@ -75,6 +104,14 @@ const ALL_SITES: SiteData[] = [
     award: "FWA SOTM May 2026",
     thumbnail: "/manus-storage/ggYLBVvoPHh2_7e9beb37.jpg",
     category: "3d",
+    techStack: ["Three.js", "WebGPU", "TSL (Three Shading Language)", "WebGL Fallback", "GSAP", "Lenis"],
+    highlights: [
+      "First major brand site shipping WebGPU with graceful WebGL fallback",
+      "TSL shaders compile to both WGSL and GLSL from one source",
+      "Cinematic post-processing: bloom, chromatic aberration, film grain",
+      "Proves WebGPU is production-ready for brand experiences",
+    ],
+    year: "2026",
   },
   // Scroll Storytelling
   {
@@ -86,6 +123,14 @@ const ALL_SITES: SiteData[] = [
     award: "Awwwards Nominee",
     thumbnail: "/manus-storage/2U4H9B637Byf_da8b7389.jpg",
     category: "scroll",
+    techStack: ["React", "Next.js", "GSAP", "ScrollTrigger", "Canvas 2D", "Framer Motion", "Tailwind CSS"],
+    highlights: [
+      "Transforms a dense product changelog into a cinematic narrative",
+      "Particle-dispersing typography dissolves headings between sections",
+      "Depth-layered panels create z-axis parallax without WebGL",
+      "Each section uses a unique transition choreography",
+    ],
+    year: "2026",
   },
   {
     name: "Sleep Well Creative",
@@ -96,6 +141,14 @@ const ALL_SITES: SiteData[] = [
     award: "Awwwards SOTD",
     thumbnail: "/manus-storage/7xmrDfVokpss_470517af.jpeg",
     category: "scroll",
+    techStack: ["Three.js", "React Three Fiber", "GSAP", "ScrollTrigger", "Blender", "Custom Illustrations"],
+    highlights: [
+      "Hand-illustrated assets rendered in a 3D environment",
+      "Scroll drives both camera movement and narrative progression",
+      "Dreamlike color palette shifts as the user progresses",
+      "Editorial content seamlessly embedded within the 3D scene",
+    ],
+    year: "2025",
   },
   {
     name: "The Monolith Project",
@@ -106,6 +159,14 @@ const ALL_SITES: SiteData[] = [
     award: "Featured on Codrops",
     thumbnail: "/manus-storage/GZKNwQHOWOa4_f374d41c.webp",
     category: "scroll",
+    techStack: ["React Three Fiber", "Custom Shader Framework", "GPU Particles", "GSAP", "ScrollTrigger", "Blender", "Figma"],
+    highlights: [
+      "Thirteen distinct scenes with unique visual styles",
+      "Transitions from 2D hand-drawn sketches to fully lit 3D worlds",
+      "Custom shader framework for per-scene material systems",
+      "GPU-accelerated particle systems for atmospheric effects",
+    ],
+    year: "2025",
   },
   // Interactions & Gamification
   {
@@ -117,6 +178,14 @@ const ALL_SITES: SiteData[] = [
     award: "Awwwards SOTD",
     thumbnail: "/manus-storage/QWxEywA0l3OE_e8162a84.jpeg",
     category: "interactions",
+    techStack: ["Three.js", "Custom Shaders", "GSAP", "Raycasting", "Post-Processing", "Lenis"],
+    highlights: [
+      "Cursor position drives a point light in 3D space via raycasting",
+      "Reflective ground plane reacts to light position in real-time",
+      "Monolith geometry reveals hidden detail as light sweeps across it",
+      "Proves interactive 3D can elevate B2B brand perception",
+    ],
+    year: "2025",
   },
   {
     name: "Basement Studio",
@@ -127,6 +196,14 @@ const ALL_SITES: SiteData[] = [
     award: "Awwwards SOTD",
     thumbnail: "/manus-storage/YQQiTb1fofyX_13df324a.jpg",
     category: "interactions",
+    techStack: ["React", "Next.js", "Three.js", "Framer Motion", "Tailwind CSS", "Custom Cursor Engine", "GSAP"],
+    highlights: [
+      "Magnetic buttons pull toward cursor within a proximity radius",
+      "Custom cursor morphs shape based on hovered element type",
+      "Page transitions use Framer Motion layout animations",
+      "Dark-mode-first design with aggressive typographic scale",
+    ],
+    year: "2025",
   },
   {
     name: "Bruno Simon Portfolio",
@@ -137,6 +214,14 @@ const ALL_SITES: SiteData[] = [
     award: "Legendary Portfolio",
     thumbnail: "/manus-storage/HjJfQKHMksQB_e1bac139.png",
     category: "interactions",
+    techStack: ["Three.js", "Cannon.js (Physics)", "WebGL", "Custom Engine", "WebSocket (Multiplayer)", "Blender"],
+    highlights: [
+      "Full physics simulation — vehicle responds to terrain, collisions, gravity",
+      "Explorable 3D world with hidden collectibles and easter eggs",
+      "Real-time multiplayer via WebSocket — see other visitors driving",
+      "Set the standard for creative developer portfolios worldwide",
+    ],
+    year: "2019–Present",
   },
   {
     name: "Lacoste Ace Breaker",
@@ -147,6 +232,14 @@ const ALL_SITES: SiteData[] = [
     award: "Awwwards Nominee",
     thumbnail: "/manus-storage/XSkDXKuqYeby_d07b75ac.jpg",
     category: "interactions",
+    techStack: ["Three.js", "WebGL", "GSAP", "Custom Physics", "Leaderboard API", "Sound Design"],
+    highlights: [
+      "Branded brick-breaker mechanic tied to Roland-Garros tennis theme",
+      "Tight gameplay loop with progressive difficulty",
+      "Real-world prize incentives drive engagement and replay",
+      "Leaderboard creates competitive social sharing",
+    ],
+    year: "2025",
   },
 ];
 
@@ -164,6 +257,7 @@ export default function Home() {
   const sectionsRef = useRef<HTMLDivElement>(null);
   const [activeFilter, setActiveFilter] = useState<Category>("all");
   const [isFilterSticky, setIsFilterSticky] = useState(false);
+  const [selectedSite, setSelectedSite] = useState<SiteData | null>(null);
   const filterRef = useRef<HTMLDivElement>(null);
 
   const filteredSites = activeFilter === "all"
@@ -295,6 +389,9 @@ export default function Home() {
       <CustomCursor />
       <ScrollProgress />
 
+      {/* ===== SITE DETAIL MODAL ===== */}
+      <SiteModal site={selectedSite} onClose={() => setSelectedSite(null)} />
+
       {/* ===== HERO SECTION ===== */}
       <section
         ref={heroRef}
@@ -411,7 +508,7 @@ export default function Home() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredSites.map((site) => (
                   <div key={site.name} data-filtered-card>
-                    <SiteCard {...site} />
+                    <SiteCard {...site} onClick={() => setSelectedSite(site)} />
                   </div>
                 ))}
               </div>
@@ -445,7 +542,7 @@ export default function Home() {
                 <div data-card-group className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {ALL_SITES.filter(s => s.category === "3d").map((site) => (
                     <div key={site.name} data-card>
-                      <SiteCard {...site} />
+                      <SiteCard {...site} onClick={() => setSelectedSite(site)} />
                     </div>
                   ))}
                 </div>
@@ -477,7 +574,7 @@ export default function Home() {
                 <div data-card-group className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {ALL_SITES.filter(s => s.category === "scroll").map((site) => (
                     <div key={site.name} data-card>
-                      <SiteCard {...site} />
+                      <SiteCard {...site} onClick={() => setSelectedSite(site)} />
                     </div>
                   ))}
                 </div>
@@ -509,7 +606,7 @@ export default function Home() {
                 <div data-card-group className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {ALL_SITES.filter(s => s.category === "interactions").map((site) => (
                     <div key={site.name} data-card>
-                      <SiteCard {...site} />
+                      <SiteCard {...site} onClick={() => setSelectedSite(site)} />
                     </div>
                   ))}
                 </div>
