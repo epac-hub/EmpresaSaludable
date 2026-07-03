@@ -459,6 +459,9 @@ export default function Home() {
             <p className="text-white/30 text-sm max-w-md mx-auto">
               Built with the techniques it showcases — GSAP, Lenis, and the principles of the <span className="text-[#8b5cf6]/60">wow-website-creator</span> skill.
             </p>
+            <a href="/earth" className="inline-flex items-center gap-2 mt-8 px-5 py-2.5 border border-[#7a9e7e]/30 rounded-full text-[#7a9e7e] text-sm hover:bg-[#7a9e7e]/10 hover:border-[#7a9e7e]/50 transition-all duration-300">
+              <span>🌿</span> Explore the Earth Collection
+            </a>
             <p className="text-white/15 text-xs mt-6">
               Curated by Manus AI — 2026
             </p>
