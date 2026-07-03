@@ -1,13 +1,14 @@
 /**
  * Earth Page — Nature & Organic WOW Showcase
  * Design: Warm terracotta, forest greens, sandy tones, organic textures
- * Sections: Hero, Nature Gallery, Philosophy, Earthy Tech Stack
+ * Sections: Hero, Nature Gallery (with modal), Philosophy, Earthy Palette
  */
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
+import EarthModal from "@/components/EarthModal";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -20,6 +21,8 @@ interface EarthSite {
   award?: string;
   thumbnail: string;
   category: "organic" | "botanical" | "wellness" | "sustainable";
+  techStack: string[];
+  highlights: string[];
 }
 
 const EARTH_SITES: EarthSite[] = [
@@ -32,6 +35,13 @@ const EARTH_SITES: EarthSite[] = [
     award: "Ecommerce Design Award",
     thumbnail: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=800&q=80",
     category: "organic",
+    techStack: ["React", "Next.js", "Contentful CMS", "Styled Components", "Framer Motion", "Shopify"],
+    highlights: [
+      "Generous whitespace creates breathing room between every element",
+      "Sepia-toned product photography with consistent warm color grading",
+      "Typography-driven hierarchy using serif/sans-serif pairing",
+      "Subtle page transitions that feel like turning pages in a book",
+    ],
   },
   {
     name: "Patagonia Stories",
@@ -42,6 +52,13 @@ const EARTH_SITES: EarthSite[] = [
     award: "Webby Award",
     thumbnail: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&q=80",
     category: "sustainable",
+    techStack: ["React", "GSAP ScrollTrigger", "Contentful", "Cloudinary", "Tailwind CSS", "Vercel"],
+    highlights: [
+      "Full-bleed photography with scroll-driven parallax layers",
+      "Long-form editorial layout that rewards slow reading",
+      "Earthy color grading applied consistently across all imagery",
+      "Activism-first content strategy woven into the design language",
+    ],
   },
   {
     name: "Vibrant Wellness",
@@ -52,6 +69,13 @@ const EARTH_SITES: EarthSite[] = [
     award: "Awwwards SOTD",
     thumbnail: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&q=80",
     category: "wellness",
+    techStack: ["Three.js", "React Three Fiber", "GSAP", "Lenis", "WebGL Shaders", "Tailwind CSS"],
+    highlights: [
+      "Organic 3D shapes that morph and flow with scroll position",
+      "Calming color transitions from sage to warm amber",
+      "Particle systems that simulate natural phenomena (pollen, light)",
+      "Breathing-pace animations that slow the user down intentionally",
+    ],
   },
   {
     name: "Bloom & Wild",
@@ -62,6 +86,13 @@ const EARTH_SITES: EarthSite[] = [
     award: "CSS Design Award",
     thumbnail: "https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=800&q=80",
     category: "botanical",
+    techStack: ["Vue.js", "Nuxt", "GSAP", "Shopify Storefront API", "Tailwind CSS", "Cloudinary"],
+    highlights: [
+      "Hover states that unfurl like petals opening — scale + opacity + color shift",
+      "Warm cream (#FDF8F0) background that feels like linen paper",
+      "Product cards with botanical illustration overlays on hover",
+      "Seasonal color palette that shifts with the time of year",
+    ],
   },
   {
     name: "Package Free Shop",
@@ -71,6 +102,13 @@ const EARTH_SITES: EarthSite[] = [
     url: "https://packagefreeshop.com",
     thumbnail: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=800&q=80",
     category: "sustainable",
+    techStack: ["Shopify", "Liquid", "Custom CSS", "SVG Illustrations", "Vanilla JS"],
+    highlights: [
+      "Kraft paper texture overlays that give a handmade feel",
+      "Hand-drawn SVG illustrations instead of stock photography",
+      "Intentionally limited color palette: browns, creams, forest green",
+      "Zero visual waste — every pixel serves a purpose",
+    ],
   },
   {
     name: "Le Labo",
@@ -81,6 +119,13 @@ const EARTH_SITES: EarthSite[] = [
     award: "FWA Award",
     thumbnail: "https://images.unsplash.com/photo-1547887538-e3a2f32cb1cc?w=800&q=80",
     category: "organic",
+    techStack: ["React", "Next.js", "Sanity CMS", "Framer Motion", "Styled Components", "Shopify Plus"],
+    highlights: [
+      "Monospace typewriter typography for an apothecary laboratory feel",
+      "Sepia-toned photography with high contrast and grain",
+      "Ingredient-first storytelling — raw materials before finished product",
+      "Minimal navigation that forces linear exploration like walking through a shop",
+    ],
   },
   {
     name: "Maitri Verde",
@@ -90,6 +135,13 @@ const EARTH_SITES: EarthSite[] = [
     url: "https://maitriverde.com",
     thumbnail: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800&q=80",
     category: "botanical",
+    techStack: ["GSAP ScrollTrigger", "CSS Parallax", "SVG Animations", "Webflow", "Custom JS"],
+    highlights: [
+      "Multi-layer parallax with leaf silhouettes at different depths",
+      "Deep forest green (#2D5016) as the dominant brand color",
+      "Scroll-triggered growth animations — vines extending, leaves unfurling",
+      "Immersive greenhouse atmosphere that deepens as you scroll",
+    ],
   },
   {
     name: "Headspace",
@@ -100,6 +152,13 @@ const EARTH_SITES: EarthSite[] = [
     award: "Apple Design Award",
     thumbnail: "https://images.unsplash.com/photo-1508672019048-805c876b67e2?w=800&q=80",
     category: "wellness",
+    techStack: ["React", "Lottie Animations", "GSAP", "Custom Illustration System", "Tailwind CSS", "Vercel"],
+    highlights: [
+      "Breathing-pace animations (4s in, 4s out) synced to UI transitions",
+      "Custom organic illustrations with rounded, soft geometry",
+      "Calming micro-interactions that reward slow, deliberate interaction",
+      "Sound design integration — ambient audio on hover and scroll",
+    ],
   },
 ];
 
@@ -115,6 +174,7 @@ export default function Earth() {
   const heroRef = useRef<HTMLElement>(null);
   const galleryRef = useRef<HTMLElement>(null);
   const philosophyRef = useRef<HTMLElement>(null);
+  const [selectedSite, setSelectedSite] = useState<EarthSite | null>(null);
 
   // Lenis smooth scroll
   useEffect(() => {
@@ -249,12 +309,10 @@ export default function Earth() {
           {/* Cards grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
             {EARTH_SITES.map((site) => (
-              <a
+              <div
                 key={site.name}
-                href={site.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="earth-card group block"
+                className="earth-card group block cursor-pointer"
+                onClick={() => setSelectedSite(site)}
               >
                 <div className="relative rounded-2xl border border-[#3d3228]/50 bg-[#231e18]/60 backdrop-blur-sm overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] hover:border-[#c4956a]/30 hover:shadow-[0_0_50px_-15px_rgba(196,149,106,0.15)]">
                   {/* Thumbnail */}
@@ -299,15 +357,15 @@ export default function Earth() {
                         {site.technique}
                       </span>
                       <span className="text-xs text-[#c4956a] group-hover:text-[#d4a87a] transition-all duration-300 flex items-center gap-1">
-                        Visit
-                        <svg className="w-3 h-3 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 17L17 7M17 7H7M17 7v10" />
+                        Details
+                        <svg className="w-3 h-3 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                         </svg>
                       </span>
                     </div>
                   </div>
                 </div>
-              </a>
+              </div>
             ))}
           </div>
         </div>
@@ -409,6 +467,14 @@ export default function Earth() {
           </div>
         </div>
       </footer>
+
+      {/* ===== MODAL ===== */}
+      <EarthModal
+        site={selectedSite}
+        allSites={EARTH_SITES}
+        onClose={() => setSelectedSite(null)}
+        onSelectSite={(site) => setSelectedSite(site as EarthSite)}
+      />
     </div>
   );
 }
