@@ -1,24 +1,28 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 
-interface SiteModalProps {
-  site: {
-    name: string;
-    studio: string;
-    description: string;
-    technique: string;
-    url: string;
-    award?: string;
-    thumbnail?: string;
-    category: string;
-    techStack?: string[];
-    highlights?: string[];
-    year?: string;
-  } | null;
-  onClose: () => void;
+interface SiteInfo {
+  name: string;
+  studio: string;
+  description: string;
+  technique: string;
+  url: string;
+  award?: string;
+  thumbnail?: string;
+  category: string;
+  techStack?: string[];
+  highlights?: string[];
+  year?: string;
 }
 
-export default function SiteModal({ site, onClose }: SiteModalProps) {
+interface SiteModalProps {
+  site: SiteInfo | null;
+  allSites?: SiteInfo[];
+  onClose: () => void;
+  onSelectSite?: (site: SiteInfo) => void;
+}
+
+export default function SiteModal({ site, allSites = [], onClose, onSelectSite }: SiteModalProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -41,6 +45,11 @@ export default function SiteModal({ site, onClose }: SiteModalProps) {
     };
     window.addEventListener("keydown", handleKey);
 
+    // Scroll modal content to top when site changes
+    if (contentRef.current) {
+      contentRef.current.scrollTop = 0;
+    }
+
     return () => {
       document.body.style.overflow = "";
       window.removeEventListener("keydown", handleKey);
@@ -60,6 +69,11 @@ export default function SiteModal({ site, onClose }: SiteModalProps) {
   const categoryLabel = site.category === "3d" ? "3D & WebGL"
     : site.category === "scroll" ? "Scroll Storytelling"
     : "Interactions & Gamification";
+
+  // Get related sites (same category, excluding current)
+  const relatedSites = allSites
+    .filter((s) => s.category === site.category && s.name !== site.name)
+    .slice(0, 3);
 
   return (
     <div
@@ -185,6 +199,57 @@ export default function SiteModal({ site, onClose }: SiteModalProps) {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
             </svg>
           </a>
+
+          {/* Related Sites Section */}
+          {relatedSites.length > 0 && (
+            <div className="mt-10 pt-8 border-t border-white/[0.06]">
+              <h3 className="text-xs uppercase tracking-[0.2em] text-[#8b5cf6]/70 mb-5 font-semibold">
+                Related in {categoryLabel}
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {relatedSites.map((related) => (
+                  <div
+                    key={related.name}
+                    className="group rounded-xl border border-white/[0.06] bg-white/[0.02] overflow-hidden hover:border-[#8b5cf6]/30 hover:bg-white/[0.04] transition-all duration-300 cursor-pointer"
+                    onClick={() => onSelectSite?.(related)}
+                  >
+                    {/* Related thumbnail */}
+                    {related.thumbnail && (
+                      <div className="relative w-full aspect-[16/9] overflow-hidden">
+                        <img
+                          src={related.thumbnail}
+                          alt={`${related.name} preview`}
+                          className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                          loading="lazy"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#0c0c0c] via-transparent to-transparent" />
+                      </div>
+                    )}
+                    {/* Related info */}
+                    <div className="p-3">
+                      <h4 className="text-sm font-semibold text-white/90 mb-0.5" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                        {related.name}
+                      </h4>
+                      <p className="text-[11px] text-white/40 mb-2">{related.studio}</p>
+                      {/* Visit link */}
+                      <a
+                        href={related.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="inline-flex items-center gap-1 text-[11px] text-[#8b5cf6] hover:text-[#a78bfa] transition-colors duration-200"
+                      >
+                        Visit site
+                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                      </a>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

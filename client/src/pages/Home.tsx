@@ -390,7 +390,7 @@ export default function Home() {
       <ScrollProgress />
 
       {/* ===== SITE DETAIL MODAL ===== */}
-      <SiteModal site={selectedSite} onClose={() => setSelectedSite(null)} />
+      <SiteModal site={selectedSite} allSites={ALL_SITES} onClose={() => setSelectedSite(null)} onSelectSite={(s) => setSelectedSite(s as SiteData)} />
 
       {/* ===== HERO SECTION ===== */}
       <section
