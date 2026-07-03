@@ -2,8 +2,9 @@
  * WOW Website Showcase — Cinematic Scroll Film
  * Design: Neo-Cinematic, dark canvas, electric violet accent, Space Grotesk display
  * Animations: GSAP ScrollTrigger for reveals, Lenis for smooth scroll
+ * Filter bar: Sticky category filter at top of gallery
  */
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
@@ -13,7 +14,28 @@ import SiteCard from "@/components/SiteCard";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const SITES_3D = [
+type Category = "all" | "3d" | "scroll" | "interactions";
+
+const CATEGORIES: { id: Category; label: string; count: number }[] = [
+  { id: "all", label: "All Sites", count: 11 },
+  { id: "3d", label: "3D & WebGL", count: 4 },
+  { id: "scroll", label: "Scroll Storytelling", count: 3 },
+  { id: "interactions", label: "Interactions", count: 4 },
+];
+
+interface SiteData {
+  name: string;
+  studio: string;
+  description: string;
+  technique: string;
+  url: string;
+  award?: string;
+  thumbnail?: string;
+  category: Category;
+}
+
+const ALL_SITES: SiteData[] = [
+  // 3D & WebGL
   {
     name: "Oryzo",
     studio: "Lusion",
@@ -22,6 +44,7 @@ const SITES_3D = [
     url: "https://oryzo.ai/",
     award: "SOTM Apr 2026",
     thumbnail: "/manus-storage/j5hMb6X3rOBe_171c84fd.jpeg",
+    category: "3d",
   },
   {
     name: "Cartier Watches & Wonders",
@@ -31,6 +54,7 @@ const SITES_3D = [
     url: "https://www.cartier.com/",
     award: "Awwwards SOTD",
     thumbnail: "/manus-storage/53FQBzoDXh8R_3d627155.jpg",
+    category: "3d",
   },
   {
     name: "Explore Primland",
@@ -40,6 +64,7 @@ const SITES_3D = [
     url: "https://explore.ownprimland.com/",
     award: "Awwwards SOTD",
     thumbnail: "/manus-storage/W8EySgU5A9cT_abc1bda9.jpg",
+    category: "3d",
   },
   {
     name: "IVRESS",
@@ -49,10 +74,9 @@ const SITES_3D = [
     url: "https://brand.ivress.co.jp/",
     award: "FWA SOTM May 2026",
     thumbnail: "/manus-storage/ggYLBVvoPHh2_7e9beb37.jpg",
+    category: "3d",
   },
-];
-
-const SITES_SCROLL = [
+  // Scroll Storytelling
   {
     name: "Shopify Editions",
     studio: "Shopify",
@@ -61,6 +85,7 @@ const SITES_SCROLL = [
     url: "https://www.shopify.com/editions/spring2026",
     award: "Awwwards Nominee",
     thumbnail: "/manus-storage/2U4H9B637Byf_da8b7389.jpg",
+    category: "scroll",
   },
   {
     name: "Sleep Well Creative",
@@ -70,6 +95,7 @@ const SITES_SCROLL = [
     url: "https://sleep-well-creatives.com/",
     award: "Awwwards SOTD",
     thumbnail: "/manus-storage/7xmrDfVokpss_470517af.jpeg",
+    category: "scroll",
   },
   {
     name: "The Monolith Project",
@@ -79,10 +105,9 @@ const SITES_SCROLL = [
     url: "https://themonolithproject.net/",
     award: "Featured on Codrops",
     thumbnail: "/manus-storage/GZKNwQHOWOa4_f374d41c.webp",
+    category: "scroll",
   },
-];
-
-const SITES_INTERACTIONS = [
+  // Interactions & Gamification
   {
     name: "Hubtown",
     studio: "Unseen Studio",
@@ -91,6 +116,7 @@ const SITES_INTERACTIONS = [
     url: "https://hubtown.co.in/",
     award: "Awwwards SOTD",
     thumbnail: "/manus-storage/QWxEywA0l3OE_e8162a84.jpeg",
+    category: "interactions",
   },
   {
     name: "Basement Studio",
@@ -100,6 +126,7 @@ const SITES_INTERACTIONS = [
     url: "https://basement.studio/",
     award: "Awwwards SOTD",
     thumbnail: "/manus-storage/YQQiTb1fofyX_13df324a.jpg",
+    category: "interactions",
   },
   {
     name: "Bruno Simon Portfolio",
@@ -109,6 +136,7 @@ const SITES_INTERACTIONS = [
     url: "https://bruno-simon.com/",
     award: "Legendary Portfolio",
     thumbnail: "/manus-storage/HjJfQKHMksQB_e1bac139.png",
+    category: "interactions",
   },
   {
     name: "Lacoste Ace Breaker",
@@ -118,6 +146,7 @@ const SITES_INTERACTIONS = [
     url: "https://members-play.lacoste.com/ace-breaker-rg/gb/en/",
     award: "Awwwards Nominee",
     thumbnail: "/manus-storage/XSkDXKuqYeby_d07b75ac.jpg",
+    category: "interactions",
   },
 ];
 
@@ -133,6 +162,13 @@ const TECH_STACK = [
 export default function Home() {
   const heroRef = useRef<HTMLDivElement>(null);
   const sectionsRef = useRef<HTMLDivElement>(null);
+  const [activeFilter, setActiveFilter] = useState<Category>("all");
+  const [isFilterSticky, setIsFilterSticky] = useState(false);
+  const filterRef = useRef<HTMLDivElement>(null);
+
+  const filteredSites = activeFilter === "all"
+    ? ALL_SITES
+    : ALL_SITES.filter((site) => site.category === activeFilter);
 
   useEffect(() => {
     // Initialize Lenis smooth scroll
@@ -178,6 +214,17 @@ export default function Home() {
         ease: "power2.out",
       }, "-=0.3");
 
+    // Intersection observer for sticky filter
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsFilterSticky(!entry.isIntersecting);
+      },
+      { threshold: 0, rootMargin: "-1px 0px 0px 0px" }
+    );
+    if (filterRef.current) {
+      observer.observe(filterRef.current);
+    }
+
     // Section header animations
     gsap.utils.toArray<HTMLElement>("[data-section-header]").forEach((el) => {
       gsap.from(el, {
@@ -189,23 +236,6 @@ export default function Home() {
         y: 60,
         opacity: 0,
         duration: 0.9,
-        ease: "power2.out",
-      });
-    });
-
-    // Card stagger animations
-    gsap.utils.toArray<HTMLElement>("[data-card-group]").forEach((group) => {
-      const cards = group.querySelectorAll("[data-card]");
-      gsap.from(cards, {
-        scrollTrigger: {
-          trigger: group,
-          start: "top 75%",
-          toggleActions: "play none none none",
-        },
-        y: 80,
-        opacity: 0,
-        stagger: 0.12,
-        duration: 0.8,
         ease: "power2.out",
       });
     });
@@ -240,9 +270,25 @@ export default function Home() {
 
     return () => {
       lenis.destroy();
+      observer.disconnect();
       ScrollTrigger.getAll().forEach((t) => t.kill());
     };
   }, []);
+
+  // Animate cards when filter changes
+  useEffect(() => {
+    const cards = document.querySelectorAll("[data-filtered-card]");
+    gsap.fromTo(cards, {
+      y: 40,
+      opacity: 0,
+    }, {
+      y: 0,
+      opacity: 1,
+      stagger: 0.06,
+      duration: 0.5,
+      ease: "power2.out",
+    });
+  }, [activeFilter]);
 
   return (
     <div className="relative" style={{ cursor: "none" }}>
@@ -319,102 +365,158 @@ export default function Home() {
       {/* ===== MAIN CONTENT ===== */}
       <div ref={sectionsRef} id="gallery">
 
-        {/* --- SECTION: 3D & WebGL --- */}
-        <section className="relative py-32 md:py-40 overflow-hidden">
-          {/* Section background */}
-          <div className="absolute top-0 right-0 w-1/2 h-full opacity-20 pointer-events-none" data-parallax>
-            <img
-              src="/manus-storage/section-3d_4656044a.png"
-              alt=""
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#050505]" />
-          </div>
+        {/* --- FILTER BAR SENTINEL (for intersection observer) --- */}
+        <div ref={filterRef} className="h-0" />
 
-          <div className="container relative z-10">
-            <div data-section-header className="mb-16 md:mb-20">
-              <span className="text-xs uppercase tracking-[0.3em] text-[#8b5cf6]/70 mb-4 block">01 — Technique</span>
-              <h2 className="text-[clamp(2rem,5vw,4rem)] font-bold text-white leading-tight" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                3D & WebGL Experiences
-              </h2>
-              <p className="mt-4 text-white/40 max-w-xl text-lg">
-                Three.js and WebGPU have become the medium for flagship brand storytelling — not just developer portfolios.
-              </p>
-            </div>
-
-            <div data-card-group className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {SITES_3D.map((site) => (
-                <div key={site.name} data-card>
-                  <SiteCard {...site} />
-                </div>
+        {/* --- STICKY FILTER BAR --- */}
+        <div
+          className={`sticky top-0 z-50 transition-all duration-300 ${
+            isFilterSticky
+              ? "bg-[#050505]/90 backdrop-blur-xl border-b border-white/[0.06] shadow-[0_4px_30px_rgba(0,0,0,0.5)]"
+              : "bg-transparent"
+          }`}
+        >
+          <div className="container py-5">
+            <div className="flex items-center gap-2 md:gap-3 overflow-x-auto scrollbar-hide">
+              {CATEGORIES.map((cat) => (
+                <button
+                  key={cat.id}
+                  onClick={() => setActiveFilter(cat.id)}
+                  data-cursor-hover
+                  className={`relative flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-300 ${
+                    activeFilter === cat.id
+                      ? "bg-[#8b5cf6] text-white shadow-[0_0_20px_rgba(139,92,246,0.3)]"
+                      : "bg-white/[0.04] text-white/50 hover:bg-white/[0.08] hover:text-white/80 border border-white/[0.06]"
+                  }`}
+                  style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                >
+                  {cat.label}
+                  <span className={`text-[11px] px-1.5 py-0.5 rounded-full ${
+                    activeFilter === cat.id
+                      ? "bg-white/20 text-white"
+                      : "bg-white/[0.06] text-white/30"
+                  }`}>
+                    {cat.count}
+                  </span>
+                </button>
               ))}
             </div>
           </div>
-        </section>
+        </div>
 
-        {/* --- SECTION: Scroll Storytelling --- */}
-        <section className="relative py-32 md:py-40 overflow-hidden">
-          <div className="absolute top-0 left-0 w-1/2 h-full opacity-15 pointer-events-none" data-parallax>
-            <img
-              src="/manus-storage/section-scroll_c9743b5e.png"
-              alt=""
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#050505]" />
-          </div>
-
-          <div className="container relative z-10">
-            <div data-section-header className="mb-16 md:mb-20 md:text-right">
-              <span className="text-xs uppercase tracking-[0.3em] text-[#8b5cf6]/70 mb-4 block">02 — Technique</span>
-              <h2 className="text-[clamp(2rem,5vw,4rem)] font-bold text-white leading-tight" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                Scroll Storytelling
-              </h2>
-              <p className="mt-4 text-white/40 max-w-xl text-lg md:ml-auto">
-                GSAP ScrollTrigger turns the scroll bar into a narrative device — each section a beat in a cinematic sequence.
-              </p>
+        {/* --- FILTERED GALLERY VIEW --- */}
+        {activeFilter !== "all" ? (
+          <section className="relative py-20 md:py-28">
+            <div className="container">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredSites.map((site) => (
+                  <div key={site.name} data-filtered-card>
+                    <SiteCard {...site} />
+                  </div>
+                ))}
+              </div>
             </div>
+          </section>
+        ) : (
+          <>
+            {/* --- SECTION: 3D & WebGL --- */}
+            <section className="relative py-32 md:py-40 overflow-hidden">
+              {/* Section background */}
+              <div className="absolute top-0 right-0 w-1/2 h-full opacity-20 pointer-events-none" data-parallax>
+                <img
+                  src="/manus-storage/section-3d_4656044a.png"
+                  alt=""
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#050505]" />
+              </div>
 
-            <div data-card-group className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {SITES_SCROLL.map((site) => (
-                <div key={site.name} data-card>
-                  <SiteCard {...site} />
+              <div className="container relative z-10">
+                <div data-section-header className="mb-16 md:mb-20">
+                  <span className="text-xs uppercase tracking-[0.3em] text-[#8b5cf6]/70 mb-4 block">01 — Technique</span>
+                  <h2 className="text-[clamp(2rem,5vw,4rem)] font-bold text-white leading-tight" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                    3D & WebGL Experiences
+                  </h2>
+                  <p className="mt-4 text-white/40 max-w-xl text-lg">
+                    Three.js and WebGPU have become the medium for flagship brand storytelling — not just developer portfolios.
+                  </p>
                 </div>
-              ))}
-            </div>
-          </div>
-        </section>
 
-        {/* --- SECTION: Interactions & Gamification --- */}
-        <section className="relative py-32 md:py-40 overflow-hidden">
-          <div className="absolute bottom-0 right-0 w-2/3 h-full opacity-15 pointer-events-none" data-parallax>
-            <img
-              src="/manus-storage/section-interactions_f7d6f7be.png"
-              alt=""
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-l from-transparent via-[#050505]/50 to-[#050505]" />
-          </div>
-
-          <div className="container relative z-10">
-            <div data-section-header className="mb-16 md:mb-20">
-              <span className="text-xs uppercase tracking-[0.3em] text-[#8b5cf6]/70 mb-4 block">03 — Technique</span>
-              <h2 className="text-[clamp(2rem,5vw,4rem)] font-bold text-white leading-tight" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                Interactions & Gamification
-              </h2>
-              <p className="mt-4 text-white/40 max-w-xl text-lg">
-                Custom cursors, magnetic buttons, mouse-reveal effects, and branded micro-games that make users stay and play.
-              </p>
-            </div>
-
-            <div data-card-group className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {SITES_INTERACTIONS.map((site) => (
-                <div key={site.name} data-card>
-                  <SiteCard {...site} />
+                <div data-card-group className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {ALL_SITES.filter(s => s.category === "3d").map((site) => (
+                    <div key={site.name} data-card>
+                      <SiteCard {...site} />
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
-        </section>
+              </div>
+            </section>
+
+            {/* --- SECTION: Scroll Storytelling --- */}
+            <section className="relative py-32 md:py-40 overflow-hidden">
+              <div className="absolute top-0 left-0 w-1/2 h-full opacity-15 pointer-events-none" data-parallax>
+                <img
+                  src="/manus-storage/section-scroll_c9743b5e.png"
+                  alt=""
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#050505]" />
+              </div>
+
+              <div className="container relative z-10">
+                <div data-section-header className="mb-16 md:mb-20 md:text-right">
+                  <span className="text-xs uppercase tracking-[0.3em] text-[#8b5cf6]/70 mb-4 block">02 — Technique</span>
+                  <h2 className="text-[clamp(2rem,5vw,4rem)] font-bold text-white leading-tight" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                    Scroll Storytelling
+                  </h2>
+                  <p className="mt-4 text-white/40 max-w-xl text-lg md:ml-auto">
+                    GSAP ScrollTrigger turns the scroll bar into a narrative device — each section a beat in a cinematic sequence.
+                  </p>
+                </div>
+
+                <div data-card-group className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {ALL_SITES.filter(s => s.category === "scroll").map((site) => (
+                    <div key={site.name} data-card>
+                      <SiteCard {...site} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            {/* --- SECTION: Interactions & Gamification --- */}
+            <section className="relative py-32 md:py-40 overflow-hidden">
+              <div className="absolute bottom-0 right-0 w-2/3 h-full opacity-15 pointer-events-none" data-parallax>
+                <img
+                  src="/manus-storage/section-interactions_f7d6f7be.png"
+                  alt=""
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-l from-transparent via-[#050505]/50 to-[#050505]" />
+              </div>
+
+              <div className="container relative z-10">
+                <div data-section-header className="mb-16 md:mb-20">
+                  <span className="text-xs uppercase tracking-[0.3em] text-[#8b5cf6]/70 mb-4 block">03 — Technique</span>
+                  <h2 className="text-[clamp(2rem,5vw,4rem)] font-bold text-white leading-tight" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                    Interactions & Gamification
+                  </h2>
+                  <p className="mt-4 text-white/40 max-w-xl text-lg">
+                    Custom cursors, magnetic buttons, mouse-reveal effects, and branded micro-games that make users stay and play.
+                  </p>
+                </div>
+
+                <div data-card-group className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {ALL_SITES.filter(s => s.category === "interactions").map((site) => (
+                    <div key={site.name} data-card>
+                      <SiteCard {...site} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+          </>
+        )}
 
         {/* --- SECTION: Tech Stack --- */}
         <section className="relative py-32 md:py-40">
