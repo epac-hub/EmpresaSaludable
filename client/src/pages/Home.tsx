@@ -21,6 +21,7 @@ const SITES_3D = [
     technique: "Inertial 3D Product Render",
     url: "https://oryzo.ai/",
     award: "SOTM Apr 2026",
+    thumbnail: "/manus-storage/j5hMb6X3rOBe_171c84fd.jpeg",
   },
   {
     name: "Cartier Watches & Wonders",
@@ -29,6 +30,7 @@ const SITES_3D = [
     technique: "Scene-Per-Product Architecture",
     url: "https://www.cartier.com/",
     award: "Awwwards SOTD",
+    thumbnail: "/manus-storage/53FQBzoDXh8R_3d627155.jpg",
   },
   {
     name: "Explore Primland",
@@ -37,6 +39,7 @@ const SITES_3D = [
     technique: "3D Landscape Flythrough",
     url: "https://explore.ownprimland.com/",
     award: "Awwwards SOTD",
+    thumbnail: "/manus-storage/W8EySgU5A9cT_abc1bda9.jpg",
   },
   {
     name: "IVRESS",
@@ -45,6 +48,7 @@ const SITES_3D = [
     technique: "WebGPU + TSL Shaders",
     url: "https://brand.ivress.co.jp/",
     award: "FWA SOTM May 2026",
+    thumbnail: "/manus-storage/ggYLBVvoPHh2_7e9beb37.jpg",
   },
 ];
 
@@ -56,6 +60,7 @@ const SITES_SCROLL = [
     technique: "Scroll-Sequenced Reveal",
     url: "https://www.shopify.com/editions/spring2026",
     award: "Awwwards Nominee",
+    thumbnail: "/manus-storage/2U4H9B637Byf_da8b7389.jpg",
   },
   {
     name: "Sleep Well Creative",
@@ -64,6 +69,7 @@ const SITES_SCROLL = [
     technique: "Illustrated Scroll Narrative",
     url: "https://sleep-well-creatives.com/",
     award: "Awwwards SOTD",
+    thumbnail: "/manus-storage/7xmrDfVokpss_470517af.jpeg",
   },
   {
     name: "The Monolith Project",
@@ -72,6 +78,7 @@ const SITES_SCROLL = [
     technique: "Multi-Scene Scroll Film",
     url: "https://themonolithproject.net/",
     award: "Featured on Codrops",
+    thumbnail: "/manus-storage/GZKNwQHOWOa4_f374d41c.webp",
   },
 ];
 
@@ -83,6 +90,7 @@ const SITES_INTERACTIONS = [
     technique: "Mouse-Reveal Interaction",
     url: "https://hubtown.co.in/",
     award: "Awwwards SOTD",
+    thumbnail: "/manus-storage/QWxEywA0l3OE_e8162a84.jpeg",
   },
   {
     name: "Basement Studio",
@@ -91,6 +99,7 @@ const SITES_INTERACTIONS = [
     technique: "Magnetic Buttons & Custom Cursor",
     url: "https://basement.studio/",
     award: "Awwwards SOTD",
+    thumbnail: "/manus-storage/YQQiTb1fofyX_13df324a.jpg",
   },
   {
     name: "Bruno Simon Portfolio",
@@ -99,6 +108,7 @@ const SITES_INTERACTIONS = [
     technique: "Physics-Driven 3D World",
     url: "https://bruno-simon.com/",
     award: "Legendary Portfolio",
+    thumbnail: "/manus-storage/HjJfQKHMksQB_e1bac139.png",
   },
   {
     name: "Lacoste Ace Breaker",
@@ -107,6 +117,7 @@ const SITES_INTERACTIONS = [
     technique: "Branded WebGL Game",
     url: "https://members-play.lacoste.com/ace-breaker-rg/gb/en/",
     award: "Awwwards Nominee",
+    thumbnail: "/manus-storage/XSkDXKuqYeby_d07b75ac.jpg",
   },
 ];
 
