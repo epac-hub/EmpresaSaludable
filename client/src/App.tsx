@@ -11,9 +11,9 @@ import Saludable from "./pages/Saludable";
 function Router() {
   return (
     <Switch>
-      <Route path={"/"} component={Home} />
+      <Route path={"/"} component={Saludable} />
+      <Route path={"/showcase"} component={Home} />
       <Route path={"/earth"} component={Earth} />
-      <Route path={"/saludable"} component={Saludable} />
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />
     </Switch>
