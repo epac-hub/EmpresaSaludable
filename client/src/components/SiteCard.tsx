@@ -8,10 +8,9 @@ interface SiteCardProps {
   url: string;
   award?: string;
   thumbnail?: string;
-  onClick?: () => void;
 }
 
-export default function SiteCard({ name, studio, description, technique, award, thumbnail, onClick }: SiteCardProps) {
+export default function SiteCard({ name, studio, description, technique, url, award, thumbnail }: SiteCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
 
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -28,8 +27,10 @@ export default function SiteCard({ name, studio, description, technique, award, 
   };
 
   return (
-    <div
-      onClick={onClick}
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
       className="block"
       data-cursor-hover
     >
@@ -37,7 +38,7 @@ export default function SiteCard({ name, studio, description, technique, award, 
         ref={cardRef}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        className="group relative rounded-2xl border border-white/[0.06] bg-white/[0.02] backdrop-blur-sm transition-all duration-500 ease-out hover:border-[#8b5cf6]/30 hover:bg-white/[0.04] hover:shadow-[0_0_60px_-15px_rgba(139,92,246,0.15)] overflow-hidden cursor-pointer"
+        className="group relative rounded-2xl border border-white/[0.06] bg-white/[0.02] backdrop-blur-sm transition-all duration-500 ease-out hover:border-[#8b5cf6]/30 hover:bg-white/[0.04] hover:shadow-[0_0_60px_-15px_rgba(139,92,246,0.15)] overflow-hidden"
       >
         {/* Gradient border glow on hover */}
         <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[#8b5cf6]/5 via-transparent to-[#6d28d9]/5 pointer-events-none z-10" />
@@ -82,14 +83,14 @@ export default function SiteCard({ name, studio, description, technique, award, 
           <div className="flex items-center justify-between">
             <span className="text-[11px] text-white/30 uppercase tracking-wider">{technique}</span>
             <span className="text-xs text-[#8b5cf6] group-hover:text-[#a78bfa] transition-colors duration-200 flex items-center gap-1">
-              View Details
-              <svg className="w-3 h-3 transition-transform duration-200 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              Visit
+              <svg className="w-3 h-3 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 17L17 7M17 7H7M17 7v10" />
               </svg>
             </span>
           </div>
         </div>
       </div>
-    </div>
+    </a>
   );
 }

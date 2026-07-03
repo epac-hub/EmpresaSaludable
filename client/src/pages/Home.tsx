@@ -2,45 +2,18 @@
  * WOW Website Showcase — Cinematic Scroll Film
  * Design: Neo-Cinematic, dark canvas, electric violet accent, Space Grotesk display
  * Animations: GSAP ScrollTrigger for reveals, Lenis for smooth scroll
- * Filter bar: Sticky category filter at top of gallery
- * Modal: Detailed view with tech stack on card click
  */
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
 import CustomCursor from "@/components/CustomCursor";
 import ScrollProgress from "@/components/ScrollProgress";
 import SiteCard from "@/components/SiteCard";
-import SiteModal from "@/components/SiteModal";
 
 gsap.registerPlugin(ScrollTrigger);
 
-type Category = "all" | "3d" | "scroll" | "interactions";
-
-const CATEGORIES: { id: Category; label: string; count: number }[] = [
-  { id: "all", label: "All Sites", count: 11 },
-  { id: "3d", label: "3D & WebGL", count: 4 },
-  { id: "scroll", label: "Scroll Storytelling", count: 3 },
-  { id: "interactions", label: "Interactions", count: 4 },
-];
-
-interface SiteData {
-  name: string;
-  studio: string;
-  description: string;
-  technique: string;
-  url: string;
-  award?: string;
-  thumbnail?: string;
-  category: Category;
-  techStack: string[];
-  highlights: string[];
-  year: string;
-}
-
-const ALL_SITES: SiteData[] = [
-  // 3D & WebGL
+const SITES_3D = [
   {
     name: "Oryzo",
     studio: "Lusion",
@@ -49,15 +22,6 @@ const ALL_SITES: SiteData[] = [
     url: "https://oryzo.ai/",
     award: "SOTM Apr 2026",
     thumbnail: "/manus-storage/j5hMb6X3rOBe_171c84fd.jpeg",
-    category: "3d",
-    techStack: ["Three.js", "WebGL", "GSAP", "Custom Shaders", "Lenis", "Vite"],
-    highlights: [
-      "Single product rendered with cinematic-grade material fidelity",
-      "Inertial physics respond to scroll velocity, not just position",
-      "Z-axis depth scroll creates parallax within the 3D scene itself",
-      "Extreme restraint — one object, infinite polish",
-    ],
-    year: "2026",
   },
   {
     name: "Cartier Watches & Wonders",
@@ -67,15 +31,6 @@ const ALL_SITES: SiteData[] = [
     url: "https://www.cartier.com/",
     award: "Awwwards SOTD",
     thumbnail: "/manus-storage/53FQBzoDXh8R_3d627155.jpg",
-    category: "3d",
-    techStack: ["Three.js", "GLSL Shaders", "GSAP", "ScrollTrigger", "Lenis", "Web Audio API", "React"],
-    highlights: [
-      "Six isolated 3D rooms — each a self-contained scene with unique lighting",
-      "GLSL shaders create bespoke material reflections per timepiece",
-      "Web Audio API syncs ambient sound to scroll position",
-      "Museum-like pacing: one product per viewport, no distraction",
-    ],
-    year: "2025",
   },
   {
     name: "Explore Primland",
@@ -85,15 +40,6 @@ const ALL_SITES: SiteData[] = [
     url: "https://explore.ownprimland.com/",
     award: "Awwwards SOTD",
     thumbnail: "/manus-storage/W8EySgU5A9cT_abc1bda9.jpg",
-    category: "3d",
-    techStack: ["Three.js", "React Three Fiber", "GSAP", "ScrollTrigger", "Heightmap Terrain", "Fog Shaders"],
-    highlights: [
-      "Heightmap-generated terrain from real topographic data",
-      "Atmospheric volumetric fog creates depth and mood",
-      "Camera follows a spline path synced to scroll progress",
-      "Transitions between aerial and ground-level perspectives",
-    ],
-    year: "2025",
   },
   {
     name: "IVRESS",
@@ -103,17 +49,10 @@ const ALL_SITES: SiteData[] = [
     url: "https://brand.ivress.co.jp/",
     award: "FWA SOTM May 2026",
     thumbnail: "/manus-storage/ggYLBVvoPHh2_7e9beb37.jpg",
-    category: "3d",
-    techStack: ["Three.js", "WebGPU", "TSL (Three Shading Language)", "WebGL Fallback", "GSAP", "Lenis"],
-    highlights: [
-      "First major brand site shipping WebGPU with graceful WebGL fallback",
-      "TSL shaders compile to both WGSL and GLSL from one source",
-      "Cinematic post-processing: bloom, chromatic aberration, film grain",
-      "Proves WebGPU is production-ready for brand experiences",
-    ],
-    year: "2026",
   },
-  // Scroll Storytelling
+];
+
+const SITES_SCROLL = [
   {
     name: "Shopify Editions",
     studio: "Shopify",
@@ -122,15 +61,6 @@ const ALL_SITES: SiteData[] = [
     url: "https://www.shopify.com/editions/spring2026",
     award: "Awwwards Nominee",
     thumbnail: "/manus-storage/2U4H9B637Byf_da8b7389.jpg",
-    category: "scroll",
-    techStack: ["React", "Next.js", "GSAP", "ScrollTrigger", "Canvas 2D", "Framer Motion", "Tailwind CSS"],
-    highlights: [
-      "Transforms a dense product changelog into a cinematic narrative",
-      "Particle-dispersing typography dissolves headings between sections",
-      "Depth-layered panels create z-axis parallax without WebGL",
-      "Each section uses a unique transition choreography",
-    ],
-    year: "2026",
   },
   {
     name: "Sleep Well Creative",
@@ -140,15 +70,6 @@ const ALL_SITES: SiteData[] = [
     url: "https://sleep-well-creatives.com/",
     award: "Awwwards SOTD",
     thumbnail: "/manus-storage/7xmrDfVokpss_470517af.jpeg",
-    category: "scroll",
-    techStack: ["Three.js", "React Three Fiber", "GSAP", "ScrollTrigger", "Blender", "Custom Illustrations"],
-    highlights: [
-      "Hand-illustrated assets rendered in a 3D environment",
-      "Scroll drives both camera movement and narrative progression",
-      "Dreamlike color palette shifts as the user progresses",
-      "Editorial content seamlessly embedded within the 3D scene",
-    ],
-    year: "2025",
   },
   {
     name: "The Monolith Project",
@@ -158,17 +79,10 @@ const ALL_SITES: SiteData[] = [
     url: "https://themonolithproject.net/",
     award: "Featured on Codrops",
     thumbnail: "/manus-storage/GZKNwQHOWOa4_f374d41c.webp",
-    category: "scroll",
-    techStack: ["React Three Fiber", "Custom Shader Framework", "GPU Particles", "GSAP", "ScrollTrigger", "Blender", "Figma"],
-    highlights: [
-      "Thirteen distinct scenes with unique visual styles",
-      "Transitions from 2D hand-drawn sketches to fully lit 3D worlds",
-      "Custom shader framework for per-scene material systems",
-      "GPU-accelerated particle systems for atmospheric effects",
-    ],
-    year: "2025",
   },
-  // Interactions & Gamification
+];
+
+const SITES_INTERACTIONS = [
   {
     name: "Hubtown",
     studio: "Unseen Studio",
@@ -177,15 +91,6 @@ const ALL_SITES: SiteData[] = [
     url: "https://hubtown.co.in/",
     award: "Awwwards SOTD",
     thumbnail: "/manus-storage/QWxEywA0l3OE_e8162a84.jpeg",
-    category: "interactions",
-    techStack: ["Three.js", "Custom Shaders", "GSAP", "Raycasting", "Post-Processing", "Lenis"],
-    highlights: [
-      "Cursor position drives a point light in 3D space via raycasting",
-      "Reflective ground plane reacts to light position in real-time",
-      "Monolith geometry reveals hidden detail as light sweeps across it",
-      "Proves interactive 3D can elevate B2B brand perception",
-    ],
-    year: "2025",
   },
   {
     name: "Basement Studio",
@@ -195,15 +100,6 @@ const ALL_SITES: SiteData[] = [
     url: "https://basement.studio/",
     award: "Awwwards SOTD",
     thumbnail: "/manus-storage/YQQiTb1fofyX_13df324a.jpg",
-    category: "interactions",
-    techStack: ["React", "Next.js", "Three.js", "Framer Motion", "Tailwind CSS", "Custom Cursor Engine", "GSAP"],
-    highlights: [
-      "Magnetic buttons pull toward cursor within a proximity radius",
-      "Custom cursor morphs shape based on hovered element type",
-      "Page transitions use Framer Motion layout animations",
-      "Dark-mode-first design with aggressive typographic scale",
-    ],
-    year: "2025",
   },
   {
     name: "Bruno Simon Portfolio",
@@ -213,15 +109,6 @@ const ALL_SITES: SiteData[] = [
     url: "https://bruno-simon.com/",
     award: "Legendary Portfolio",
     thumbnail: "/manus-storage/HjJfQKHMksQB_e1bac139.png",
-    category: "interactions",
-    techStack: ["Three.js", "Cannon.js (Physics)", "WebGL", "Custom Engine", "WebSocket (Multiplayer)", "Blender"],
-    highlights: [
-      "Full physics simulation — vehicle responds to terrain, collisions, gravity",
-      "Explorable 3D world with hidden collectibles and easter eggs",
-      "Real-time multiplayer via WebSocket — see other visitors driving",
-      "Set the standard for creative developer portfolios worldwide",
-    ],
-    year: "2019–Present",
   },
   {
     name: "Lacoste Ace Breaker",
@@ -231,15 +118,6 @@ const ALL_SITES: SiteData[] = [
     url: "https://members-play.lacoste.com/ace-breaker-rg/gb/en/",
     award: "Awwwards Nominee",
     thumbnail: "/manus-storage/XSkDXKuqYeby_d07b75ac.jpg",
-    category: "interactions",
-    techStack: ["Three.js", "WebGL", "GSAP", "Custom Physics", "Leaderboard API", "Sound Design"],
-    highlights: [
-      "Branded brick-breaker mechanic tied to Roland-Garros tennis theme",
-      "Tight gameplay loop with progressive difficulty",
-      "Real-world prize incentives drive engagement and replay",
-      "Leaderboard creates competitive social sharing",
-    ],
-    year: "2025",
   },
 ];
 
@@ -255,14 +133,6 @@ const TECH_STACK = [
 export default function Home() {
   const heroRef = useRef<HTMLDivElement>(null);
   const sectionsRef = useRef<HTMLDivElement>(null);
-  const [activeFilter, setActiveFilter] = useState<Category>("all");
-  const [isFilterSticky, setIsFilterSticky] = useState(false);
-  const [selectedSite, setSelectedSite] = useState<SiteData | null>(null);
-  const filterRef = useRef<HTMLDivElement>(null);
-
-  const filteredSites = activeFilter === "all"
-    ? ALL_SITES
-    : ALL_SITES.filter((site) => site.category === activeFilter);
 
   useEffect(() => {
     // Initialize Lenis smooth scroll
@@ -308,17 +178,6 @@ export default function Home() {
         ease: "power2.out",
       }, "-=0.3");
 
-    // Intersection observer for sticky filter
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsFilterSticky(!entry.isIntersecting);
-      },
-      { threshold: 0, rootMargin: "-1px 0px 0px 0px" }
-    );
-    if (filterRef.current) {
-      observer.observe(filterRef.current);
-    }
-
     // Section header animations
     gsap.utils.toArray<HTMLElement>("[data-section-header]").forEach((el) => {
       gsap.from(el, {
@@ -330,6 +189,23 @@ export default function Home() {
         y: 60,
         opacity: 0,
         duration: 0.9,
+        ease: "power2.out",
+      });
+    });
+
+    // Card stagger animations
+    gsap.utils.toArray<HTMLElement>("[data-card-group]").forEach((group) => {
+      const cards = group.querySelectorAll("[data-card]");
+      gsap.from(cards, {
+        scrollTrigger: {
+          trigger: group,
+          start: "top 75%",
+          toggleActions: "play none none none",
+        },
+        y: 80,
+        opacity: 0,
+        stagger: 0.12,
+        duration: 0.8,
         ease: "power2.out",
       });
     });
@@ -364,33 +240,14 @@ export default function Home() {
 
     return () => {
       lenis.destroy();
-      observer.disconnect();
       ScrollTrigger.getAll().forEach((t) => t.kill());
     };
   }, []);
-
-  // Animate cards when filter changes
-  useEffect(() => {
-    const cards = document.querySelectorAll("[data-filtered-card]");
-    gsap.fromTo(cards, {
-      y: 40,
-      opacity: 0,
-    }, {
-      y: 0,
-      opacity: 1,
-      stagger: 0.06,
-      duration: 0.5,
-      ease: "power2.out",
-    });
-  }, [activeFilter]);
 
   return (
     <div className="relative" style={{ cursor: "none" }}>
       <CustomCursor />
       <ScrollProgress />
-
-      {/* ===== SITE DETAIL MODAL ===== */}
-      <SiteModal site={selectedSite} allSites={ALL_SITES} onClose={() => setSelectedSite(null)} onSelectSite={(s) => setSelectedSite(s as SiteData)} />
 
       {/* ===== HERO SECTION ===== */}
       <section
@@ -462,158 +319,102 @@ export default function Home() {
       {/* ===== MAIN CONTENT ===== */}
       <div ref={sectionsRef} id="gallery">
 
-        {/* --- FILTER BAR SENTINEL (for intersection observer) --- */}
-        <div ref={filterRef} className="h-0" />
+        {/* --- SECTION: 3D & WebGL --- */}
+        <section className="relative py-32 md:py-40 overflow-hidden">
+          {/* Section background */}
+          <div className="absolute top-0 right-0 w-1/2 h-full opacity-20 pointer-events-none" data-parallax>
+            <img
+              src="/manus-storage/section-3d_4656044a.png"
+              alt=""
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#050505]" />
+          </div>
 
-        {/* --- STICKY FILTER BAR --- */}
-        <div
-          className={`sticky top-0 z-50 transition-all duration-300 ${
-            isFilterSticky
-              ? "bg-[#050505]/90 backdrop-blur-xl border-b border-white/[0.06] shadow-[0_4px_30px_rgba(0,0,0,0.5)]"
-              : "bg-transparent"
-          }`}
-        >
-          <div className="container py-5">
-            <div className="flex items-center gap-2 md:gap-3 overflow-x-auto scrollbar-hide">
-              {CATEGORIES.map((cat) => (
-                <button
-                  key={cat.id}
-                  onClick={() => setActiveFilter(cat.id)}
-                  data-cursor-hover
-                  className={`relative flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-300 ${
-                    activeFilter === cat.id
-                      ? "bg-[#8b5cf6] text-white shadow-[0_0_20px_rgba(139,92,246,0.3)]"
-                      : "bg-white/[0.04] text-white/50 hover:bg-white/[0.08] hover:text-white/80 border border-white/[0.06]"
-                  }`}
-                  style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-                >
-                  {cat.label}
-                  <span className={`text-[11px] px-1.5 py-0.5 rounded-full ${
-                    activeFilter === cat.id
-                      ? "bg-white/20 text-white"
-                      : "bg-white/[0.06] text-white/30"
-                  }`}>
-                    {cat.count}
-                  </span>
-                </button>
+          <div className="container relative z-10">
+            <div data-section-header className="mb-16 md:mb-20">
+              <span className="text-xs uppercase tracking-[0.3em] text-[#8b5cf6]/70 mb-4 block">01 — Technique</span>
+              <h2 className="text-[clamp(2rem,5vw,4rem)] font-bold text-white leading-tight" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                3D & WebGL Experiences
+              </h2>
+              <p className="mt-4 text-white/40 max-w-xl text-lg">
+                Three.js and WebGPU have become the medium for flagship brand storytelling — not just developer portfolios.
+              </p>
+            </div>
+
+            <div data-card-group className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {SITES_3D.map((site) => (
+                <div key={site.name} data-card>
+                  <SiteCard {...site} />
+                </div>
               ))}
             </div>
           </div>
-        </div>
+        </section>
 
-        {/* --- FILTERED GALLERY VIEW --- */}
-        {activeFilter !== "all" ? (
-          <section className="relative py-20 md:py-28">
-            <div className="container">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredSites.map((site) => (
-                  <div key={site.name} data-filtered-card>
-                    <SiteCard {...site} onClick={() => setSelectedSite(site)} />
-                  </div>
-                ))}
-              </div>
+        {/* --- SECTION: Scroll Storytelling --- */}
+        <section className="relative py-32 md:py-40 overflow-hidden">
+          <div className="absolute top-0 left-0 w-1/2 h-full opacity-15 pointer-events-none" data-parallax>
+            <img
+              src="/manus-storage/section-scroll_c9743b5e.png"
+              alt=""
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#050505]" />
+          </div>
+
+          <div className="container relative z-10">
+            <div data-section-header className="mb-16 md:mb-20 md:text-right">
+              <span className="text-xs uppercase tracking-[0.3em] text-[#8b5cf6]/70 mb-4 block">02 — Technique</span>
+              <h2 className="text-[clamp(2rem,5vw,4rem)] font-bold text-white leading-tight" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                Scroll Storytelling
+              </h2>
+              <p className="mt-4 text-white/40 max-w-xl text-lg md:ml-auto">
+                GSAP ScrollTrigger turns the scroll bar into a narrative device — each section a beat in a cinematic sequence.
+              </p>
             </div>
-          </section>
-        ) : (
-          <>
-            {/* --- SECTION: 3D & WebGL --- */}
-            <section className="relative py-32 md:py-40 overflow-hidden">
-              {/* Section background */}
-              <div className="absolute top-0 right-0 w-1/2 h-full opacity-20 pointer-events-none" data-parallax>
-                <img
-                  src="/manus-storage/section-3d_4656044a.png"
-                  alt=""
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#050505]" />
-              </div>
 
-              <div className="container relative z-10">
-                <div data-section-header className="mb-16 md:mb-20">
-                  <span className="text-xs uppercase tracking-[0.3em] text-[#8b5cf6]/70 mb-4 block">01 — Technique</span>
-                  <h2 className="text-[clamp(2rem,5vw,4rem)] font-bold text-white leading-tight" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                    3D & WebGL Experiences
-                  </h2>
-                  <p className="mt-4 text-white/40 max-w-xl text-lg">
-                    Three.js and WebGPU have become the medium for flagship brand storytelling — not just developer portfolios.
-                  </p>
+            <div data-card-group className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {SITES_SCROLL.map((site) => (
+                <div key={site.name} data-card>
+                  <SiteCard {...site} />
                 </div>
+              ))}
+            </div>
+          </div>
+        </section>
 
-                <div data-card-group className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {ALL_SITES.filter(s => s.category === "3d").map((site) => (
-                    <div key={site.name} data-card>
-                      <SiteCard {...site} onClick={() => setSelectedSite(site)} />
-                    </div>
-                  ))}
+        {/* --- SECTION: Interactions & Gamification --- */}
+        <section className="relative py-32 md:py-40 overflow-hidden">
+          <div className="absolute bottom-0 right-0 w-2/3 h-full opacity-15 pointer-events-none" data-parallax>
+            <img
+              src="/manus-storage/section-interactions_f7d6f7be.png"
+              alt=""
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-l from-transparent via-[#050505]/50 to-[#050505]" />
+          </div>
+
+          <div className="container relative z-10">
+            <div data-section-header className="mb-16 md:mb-20">
+              <span className="text-xs uppercase tracking-[0.3em] text-[#8b5cf6]/70 mb-4 block">03 — Technique</span>
+              <h2 className="text-[clamp(2rem,5vw,4rem)] font-bold text-white leading-tight" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                Interactions & Gamification
+              </h2>
+              <p className="mt-4 text-white/40 max-w-xl text-lg">
+                Custom cursors, magnetic buttons, mouse-reveal effects, and branded micro-games that make users stay and play.
+              </p>
+            </div>
+
+            <div data-card-group className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {SITES_INTERACTIONS.map((site) => (
+                <div key={site.name} data-card>
+                  <SiteCard {...site} />
                 </div>
-              </div>
-            </section>
-
-            {/* --- SECTION: Scroll Storytelling --- */}
-            <section className="relative py-32 md:py-40 overflow-hidden">
-              <div className="absolute top-0 left-0 w-1/2 h-full opacity-15 pointer-events-none" data-parallax>
-                <img
-                  src="/manus-storage/section-scroll_c9743b5e.png"
-                  alt=""
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#050505]" />
-              </div>
-
-              <div className="container relative z-10">
-                <div data-section-header className="mb-16 md:mb-20 md:text-right">
-                  <span className="text-xs uppercase tracking-[0.3em] text-[#8b5cf6]/70 mb-4 block">02 — Technique</span>
-                  <h2 className="text-[clamp(2rem,5vw,4rem)] font-bold text-white leading-tight" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                    Scroll Storytelling
-                  </h2>
-                  <p className="mt-4 text-white/40 max-w-xl text-lg md:ml-auto">
-                    GSAP ScrollTrigger turns the scroll bar into a narrative device — each section a beat in a cinematic sequence.
-                  </p>
-                </div>
-
-                <div data-card-group className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {ALL_SITES.filter(s => s.category === "scroll").map((site) => (
-                    <div key={site.name} data-card>
-                      <SiteCard {...site} onClick={() => setSelectedSite(site)} />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </section>
-
-            {/* --- SECTION: Interactions & Gamification --- */}
-            <section className="relative py-32 md:py-40 overflow-hidden">
-              <div className="absolute bottom-0 right-0 w-2/3 h-full opacity-15 pointer-events-none" data-parallax>
-                <img
-                  src="/manus-storage/section-interactions_f7d6f7be.png"
-                  alt=""
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-l from-transparent via-[#050505]/50 to-[#050505]" />
-              </div>
-
-              <div className="container relative z-10">
-                <div data-section-header className="mb-16 md:mb-20">
-                  <span className="text-xs uppercase tracking-[0.3em] text-[#8b5cf6]/70 mb-4 block">03 — Technique</span>
-                  <h2 className="text-[clamp(2rem,5vw,4rem)] font-bold text-white leading-tight" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                    Interactions & Gamification
-                  </h2>
-                  <p className="mt-4 text-white/40 max-w-xl text-lg">
-                    Custom cursors, magnetic buttons, mouse-reveal effects, and branded micro-games that make users stay and play.
-                  </p>
-                </div>
-
-                <div data-card-group className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {ALL_SITES.filter(s => s.category === "interactions").map((site) => (
-                    <div key={site.name} data-card>
-                      <SiteCard {...site} onClick={() => setSelectedSite(site)} />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </section>
-          </>
-        )}
+              ))}
+            </div>
+          </div>
+        </section>
 
         {/* --- SECTION: Tech Stack --- */}
         <section className="relative py-32 md:py-40">
