@@ -174,7 +174,53 @@ export default function Earth() {
   const heroRef = useRef<HTMLElement>(null);
   const galleryRef = useRef<HTMLElement>(null);
   const philosophyRef = useRef<HTMLElement>(null);
+  const cardsGridRef = useRef<HTMLDivElement>(null);
   const [selectedSite, setSelectedSite] = useState<EarthSite | null>(null);
+  const [activeFilter, setActiveFilter] = useState<string>("all");
+
+  const filteredSites = activeFilter === "all"
+    ? EARTH_SITES
+    : EARTH_SITES.filter(s => s.category === activeFilter);
+
+  // Animate cards when filter changes
+  const handleFilterChange = (key: string) => {
+    if (key === activeFilter) return;
+
+    // Fade out current cards
+    const cards = cardsGridRef.current?.querySelectorAll(".earth-card");
+    if (cards && cards.length > 0) {
+      gsap.to(cards, {
+        opacity: 0,
+        y: 20,
+        scale: 0.96,
+        duration: 0.25,
+        ease: "power2.in",
+        stagger: 0.03,
+        onComplete: () => {
+          setActiveFilter(key);
+          // Fade in new cards after state update (next frame)
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              const newCards = cardsGridRef.current?.querySelectorAll(".earth-card");
+              if (newCards && newCards.length > 0) {
+                gsap.fromTo(newCards,
+                  { opacity: 0, y: 30, scale: 0.96 },
+                  {
+                    opacity: 1, y: 0, scale: 1,
+                    duration: 0.45,
+                    ease: "power2.out",
+                    stagger: 0.06,
+                  }
+                );
+              }
+            });
+          });
+        },
+      });
+    } else {
+      setActiveFilter(key);
+    }
+  };
 
   // Lenis smooth scroll
   useEffect(() => {
@@ -298,17 +344,22 @@ export default function Earth() {
             {CATEGORIES.map((cat) => (
               <button
                 key={cat.key}
-                className="px-4 py-2 text-xs uppercase tracking-wider rounded-full border border-[#3d3228] text-[#b8a898]/70 hover:border-[#c4956a]/50 hover:text-[#c4956a] transition-all duration-300 bg-[#1a1612]/50 backdrop-blur-sm"
+                onClick={() => handleFilterChange(cat.key)}
+                className={`px-4 py-2 text-xs uppercase tracking-wider rounded-full border transition-all duration-300 backdrop-blur-sm ${
+                  activeFilter === cat.key
+                    ? "border-[#c4956a] text-[#c4956a] bg-[#c4956a]/10 shadow-[0_0_20px_-5px_rgba(196,149,106,0.3)]"
+                    : "border-[#3d3228] text-[#b8a898]/70 hover:border-[#c4956a]/50 hover:text-[#c4956a] bg-[#1a1612]/50"
+                }`}
               >
                 {cat.label}
-                <span className="ml-2 text-[10px] text-[#7a9e7e]">{cat.count}</span>
+                <span className={`ml-2 text-[10px] ${activeFilter === cat.key ? "text-[#c4956a]" : "text-[#7a9e7e]"}`}>{cat.count}</span>
               </button>
             ))}
           </div>
 
           {/* Cards grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-            {EARTH_SITES.map((site) => (
+          <div ref={cardsGridRef} className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+            {filteredSites.map((site) => (
               <div
                 key={site.name}
                 className="earth-card group block cursor-pointer"
