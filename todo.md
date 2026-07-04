@@ -74,3 +74,6 @@
 - [x] SEO meta tags: Open Graph (og:title, og:description, og:image), Twitter Card (summary_large_image), meta description, keywords, robots, locale es_PR
 - [x] Fix Dra. Valeria Santiago info: Updated to "Dra. Valeria Santiago, PharmD, CPT, CES" with correct role (Bienestar Corporativo) and full bio (farmacéutica + NASM certified, entrenamiento funcional, movilidad, prevención de lesiones, programas dentro del ambiente laboral)
 - [x] Specialists section: Enhanced with cinematic rotateY entrance (back.out easing), 3D tilt on mousemove, role badge glow, staggered expertise tag transitions, and elastic snap-back on mouse leave
+- [x] Specialist cards: Add "Agendar Cita" button (green gradient, calendar icon, scrolls to #contacto)
+- [x] Specialist cards: Popup modal with full bio, certifications, quote, and CTA on photo click ("Ver Perfil Completo" overlay hint)
+- [x] New section: "Lo Que Dicen Nuestros Clientes" testimonios with 3 cards (stars, quotes, company names) below specialists

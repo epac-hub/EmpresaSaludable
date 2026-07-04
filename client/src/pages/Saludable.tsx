@@ -277,6 +277,9 @@ export default function Saludable() {
   const [formTouched, setFormTouched] = useState<Record<string, boolean>>({});
   const [formSubmitted, setFormSubmitted] = useState(false);
 
+  // Specialist bio modal state
+  const [selectedSpecialist, setSelectedSpecialist] = useState<typeof AMBASSADORS[number] | null>(null);
+
   // Scroll-proximity lazy loading: mount heavy components only when near viewport
   const [showParticles3D, setShowParticles3D] = useState(false);
   const [showTestimonialVideo, setShowTestimonialVideo] = useState(false);
@@ -891,14 +894,21 @@ export default function Saludable() {
                   card.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
                 }}
               >
-                {/* Photo */}
-                <div className="w-full md:w-[220px] h-[280px] md:h-auto flex-shrink-0 overflow-hidden relative">
+                {/* Photo — click to open bio modal */}
+                <div
+                  className="w-full md:w-[220px] h-[280px] md:h-auto flex-shrink-0 overflow-hidden relative cursor-pointer"
+                  onClick={() => setSelectedSpecialist(amb)}
+                >
                   <img
                     src={amb.image}
                     alt={amb.name}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 group-hover:brightness-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent to-white/10 md:bg-gradient-to-b md:from-transparent md:to-[#2D3B2D]/20" />
+                  {/* Click hint overlay */}
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20">
+                    <span className="px-3 py-1.5 rounded-full bg-white/90 text-[#2D3B2D] text-xs font-semibold shadow-lg">Ver Perfil Completo</span>
+                  </div>
                 </div>
 
                 {/* Content */}
@@ -926,10 +936,156 @@ export default function Saludable() {
 
                   {/* Quote */}
                   <div className="pt-4 border-t border-[#A8C5A0]/20">
-                    <p className="text-[#2D3B2D]/70 text-sm italic leading-relaxed">
-                      “{amb.quote}”
+                    <p className="text-[#2D3B2D]/70 text-sm italic leading-relaxed mb-4">
+                      "{amb.quote}"
                     </p>
+                    {/* Agendar Cita button */}
+                    <a
+                      href="#contacto"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' });
+                      }}
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#6BAF8D] to-[#4A9B6F] text-white text-sm font-semibold shadow-md hover:shadow-lg hover:shadow-[#6BAF8D]/30 hover:scale-105 active:scale-95 transition-all duration-300"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                      Agendar Cita
+                    </a>
                   </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ SPECIALIST BIO MODAL ═══ */}
+      {selectedSpecialist && (
+        <div
+          className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
+          onClick={() => setSelectedSpecialist(null)}
+        >
+          {/* Backdrop */}
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm animate-[fadeIn_0.2s_ease-out]" />
+          {/* Modal */}
+          <div
+            className="relative bg-white rounded-3xl max-w-lg w-full max-h-[85vh] overflow-y-auto shadow-2xl animate-[scaleIn_0.3s_cubic-bezier(0.23,1,0.32,1)]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close button */}
+            <button
+              onClick={() => setSelectedSpecialist(null)}
+              className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-[#2D3B2D]/10 flex items-center justify-center hover:bg-[#2D3B2D]/20 transition-colors"
+            >
+              <svg className="w-4 h-4 text-[#2D3B2D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+
+            {/* Photo */}
+            <div className="w-full h-[300px] overflow-hidden rounded-t-3xl">
+              <img src={selectedSpecialist.image} alt={selectedSpecialist.name} className="w-full h-full object-cover" />
+            </div>
+
+            {/* Content */}
+            <div className="p-8">
+              <span className="inline-block px-3 py-1 text-xs font-semibold rounded-full bg-[#6BAF8D]/10 text-[#6BAF8D] border border-[#6BAF8D]/20 mb-3">
+                {selectedSpecialist.role}
+              </span>
+              <h3 className="text-2xl font-bold text-[#2D3B2D] mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>
+                {selectedSpecialist.name}
+              </h3>
+
+              {/* Full biography */}
+              <div className="mb-6">
+                <h4 className="text-sm font-bold text-[#2D3B2D] uppercase tracking-wider mb-2">Biografía</h4>
+                <p className="text-[#2D3B2D]/70 text-sm leading-relaxed">{selectedSpecialist.specialty}</p>
+              </div>
+
+              {/* Certifications */}
+              <div className="mb-6">
+                <h4 className="text-sm font-bold text-[#2D3B2D] uppercase tracking-wider mb-3">Certificaciones y Especialidades</h4>
+                <div className="flex flex-wrap gap-2">
+                  {selectedSpecialist.expertise.map((cert, j) => (
+                    <span key={j} className="px-3 py-1.5 text-xs font-medium rounded-lg bg-[#6BAF8D]/10 text-[#6BAF8D] border border-[#6BAF8D]/20">
+                      ✓ {cert}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Quote */}
+              <div className="p-4 rounded-xl bg-[#F4F9F2] border border-[#A8C5A0]/20 mb-6">
+                <p className="text-[#2D3B2D]/70 text-sm italic">"​{selectedSpecialist.quote}​"</p>
+              </div>
+
+              {/* CTA */}
+              <a
+                href="#contacto"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setSelectedSpecialist(null);
+                  setTimeout(() => document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' }), 300);
+                }}
+                className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-[#6BAF8D] to-[#4A9B6F] text-white font-semibold shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all duration-300"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                Agendar Cita con {selectedSpecialist.name.split(',')[0]}
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ═══ TESTIMONIOS DE CLIENTES ═══ */}
+      <section className="py-24 px-6" style={{ background: 'linear-gradient(180deg, #FDFCFB 0%, #F0F7F4 100%)' }}>
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-16">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-[#6BAF8D]/10 text-[#6BAF8D] text-xs font-bold uppercase tracking-[0.2em] mb-4 border border-[#6BAF8D]/20">
+              Experiencias Reales
+            </span>
+            <h2 className="text-4xl md:text-5xl font-bold text-[#2D3B2D] mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>
+              Lo Que Dicen Nuestros <span className="text-[#6BAF8D]">Clientes</span>
+            </h2>
+            <p className="text-[#2D3B2D]/60 max-w-2xl mx-auto">
+              Empresas de toda la isla confían en nuestro equipo para transformar la salud y productividad de sus empleados.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8" data-reveal>
+            {[
+              {
+                quote: "Desde que implementamos el programa, el ausentismo bajó un 40%. El equipo está más motivado y productivo que nunca.",
+                name: "Carmen L. Torres",
+                role: "VP Recursos Humanos",
+                company: "Grupo Farmacéutico del Caribe",
+              },
+              {
+                quote: "La Dra. Santiago diseñó un programa de movilidad que eliminó las quejas de dolor de espalda en nuestra oficina. Increíble resultado.",
+                name: "Roberto A. Velázquez",
+                role: "Gerente de Operaciones",
+                company: "TechPR Solutions",
+              },
+              {
+                quote: "Los talleres de nutrición cambiaron la cultura de nuestra empresa. Ahora todos almuerzan mejor y la energía de la tarde es otra.",
+                name: "Marta I. Figueroa",
+                role: "Directora Ejecutiva",
+                company: "Cooperativa de Salud Integral",
+              },
+            ].map((testimonial, i) => (
+              <div
+                key={i}
+                className="p-6 rounded-2xl bg-white border border-[#A8C5A0]/20 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-400"
+              >
+                {/* Stars */}
+                <div className="flex gap-1 mb-4">
+                  {[...Array(5)].map((_, s) => (
+                    <svg key={s} className="w-4 h-4 text-[#F59E0B]" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  ))}
+                </div>
+                <p className="text-[#2D3B2D]/70 text-sm leading-relaxed mb-6 italic">"​{testimonial.quote}​"</p>
+                <div className="border-t border-[#A8C5A0]/15 pt-4">
+                  <p className="text-[#2D3B2D] font-semibold text-sm">{testimonial.name}</p>
+                  <p className="text-[#2D3B2D]/50 text-xs">{testimonial.role}</p>
+                  <p className="text-[#6BAF8D] text-xs font-medium">{testimonial.company}</p>
                 </div>
               </div>
             ))}
