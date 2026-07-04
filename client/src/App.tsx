@@ -7,6 +7,8 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import Earth from "./pages/Earth";
 import Saludable from "@/pages/Saludable";
+import Admin from "@/pages/Admin";
+
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
@@ -14,6 +16,7 @@ function Router() {
       <Route path={"/"} component={Saludable} />
       <Route path={"/showcase"} component={Home} />
       <Route path={"/earth"} component={Earth} />
+      <Route path={"/admin"} component={Admin} />
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />
     </Switch>

@@ -1,9 +1,9 @@
 import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
-import { publicProcedure, router } from "./_core/trpc";
+import { adminProcedure, publicProcedure, router } from "./_core/trpc";
 import { z } from "zod";
-import { createContactSubmission } from "./db";
+import { createContactSubmission, deleteContactSubmission, listContactSubmissions } from "./db";
 import { notifyOwner } from "./_core/notification";
 
 export const appRouter = router({
@@ -40,6 +40,18 @@ export const appRouter = router({
         });
 
         return { success: true };
+      }),
+  }),
+
+  // ─── Admin Panel (protected by client-side password gate) ───
+  admin: router({
+    listSubmissions: publicProcedure.query(async () => {
+      return listContactSubmissions();
+    }),
+    deleteSubmission: publicProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        return deleteContactSubmission(input.id);
       }),
   }),
 });

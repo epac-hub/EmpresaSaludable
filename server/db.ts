@@ -109,3 +109,19 @@ export async function createContactSubmission(data: {
   });
   return { success: true };
 }
+
+export async function listContactSubmissions() {
+  const db = await getDb();
+  if (!db) return [];
+  const { contactSubmissions } = await import("../drizzle/schema");
+  const { desc } = await import("drizzle-orm");
+  return db.select().from(contactSubmissions).orderBy(desc(contactSubmissions.createdAt)).limit(100);
+}
+
+export async function deleteContactSubmission(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const { contactSubmissions } = await import("../drizzle/schema");
+  await db.delete(contactSubmissions).where(eq(contactSubmissions.id, id));
+  return { success: true };
+}
