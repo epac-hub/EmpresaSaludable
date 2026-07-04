@@ -545,14 +545,14 @@ export default function Saludable() {
           className="hero-video absolute inset-0 w-full h-full object-cover"
           style={{ filter: 'brightness(1.05) saturate(1.2)' }}
         >
-          <source src="/manus-storage/hero-boricua-wellness_f950a080.mp4" type="video/mp4" />
+          <source src="/manus-storage/hero-puerto-rico_396f36fe.mp4" type="video/mp4" />
         </video>
         {/* Very light overlay — let the people show clearly */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/30" />
 
         {/* Kinetic Typography — Empresa Saludable */}
         <div className="relative z-10 text-center px-6">
-          <span className="hero-title block text-sm md:text-lg tracking-[0.4em] uppercase text-white/80 font-medium mb-6" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+          <span className="hero-title block text-3xl md:text-5xl lg:text-6xl tracking-[0.3em] uppercase text-white font-bold mb-8" style={{ fontFamily: "'Space Grotesk', sans-serif", textShadow: '0 4px 20px rgba(0,0,0,0.5)' }}>
             Bienvenido a
           </span>
           <h1 className="hero-title overflow-hidden">
@@ -648,33 +648,17 @@ export default function Saludable() {
       </section>
 
       {/* ═══ LOS 5 PILARES DEL BIENESTAR — SUMMER GREEN PARALLAX ═══ */}
-      <section ref={pillarsRef} id="pilares" className="py-32 px-6 relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #E8F5E0 0%, #C8E6C9 30%, #A5D6A7 60%, #C8E6C9 100%)' }}>
-        {/* Soft animated orbs */}
-        <div className="absolute top-20 left-10 w-[400px] h-[400px] rounded-full bg-[#66BB6A]/20 blur-[120px] animate-pulse" />
-        <div className="absolute bottom-20 right-10 w-[350px] h-[350px] rounded-full bg-[#81C784]/25 blur-[100px] animate-pulse" style={{ animationDelay: '1.5s' }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-[#4CAF50]/10 blur-[150px] animate-pulse" style={{ animationDelay: '3s' }} />
 
-        {/* 3D Interactive Particles */}
-        {/* Subtle floating dots — lightweight CSS */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {[...Array(12)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-1.5 h-1.5 rounded-full bg-[#81C784]/30 animate-[float_8s_ease-in-out_infinite]"
-              style={{
-                left: `${8 + i * 8}%`,
-                top: `${15 + (i % 4) * 20}%`,
-                animationDelay: `${i * 0.6}s`,
-                animationDuration: `${6 + (i % 3) * 2}s`,
-              }}
-            />
-          ))}
-        </div>
+      {/* ═══ LOS 5 PILARES DEL BIENESTAR — CIRCULAR HOLISTIC ═══ */}
+      <section ref={pillarsRef} id="pilares" className="relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #E8F5E9 0%, #C8E6C9 50%, #E8F5E9 100%)' }}>
+        {/* Soft background orbs */}
+        <div className="absolute top-20 left-10 w-[400px] h-[400px] rounded-full bg-[#66BB6A]/15 blur-[120px] animate-pulse" />
+        <div className="absolute bottom-20 right-10 w-[350px] h-[350px] rounded-full bg-[#81C784]/20 blur-[100px] animate-pulse" style={{ animationDelay: '1.5s' }} />
 
-        <div className="max-w-7xl mx-auto relative z-10">
+        <div className="max-w-7xl mx-auto relative z-10 py-32 px-6">
           <div className="text-center mb-8">
             <span className="inline-block px-5 py-2 rounded-full bg-white/60 text-[#2E7D32] text-xs font-bold uppercase tracking-[0.25em] mb-6 border border-[#66BB6A]/40 backdrop-blur-sm shadow-sm">
-              Nuestro Enfoque Integral
+              Enfoque Holístico Circular
             </span>
           </div>
           <h2
@@ -683,137 +667,133 @@ export default function Saludable() {
           >
             Los 5 Pilares del <span className="text-[#43A047] drop-shadow-[0_0_20px_rgba(67,160,71,0.4)]">Bienestar</span>
           </h2>
-          <p className="text-center text-[#2E7D32]/70 mb-24 max-w-3xl mx-auto text-lg leading-relaxed">
-            Un enfoque holístico que integra todas las dimensiones de la salud — mental, física, nutricional, financiera y corporativa — para resultados sostenibles y medibles en tu organización.
+          <p className="text-center text-[#2E7D32]/70 mb-20 max-w-3xl mx-auto text-lg leading-relaxed">
+            Cada pilar apoya al siguiente en un ciclo continuo de bienestar integral — un sistema donde la salud mental fortalece la física, la física potencia la nutrición, y así sucesivamente.
           </p>
 
-          {/* Top row: 3 pillars */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8" style={{ perspective: '1200px' }}>
-            {PILLARS.slice(0, 3).map((pillar) => (
-              <div
-                key={pillar.id}
-                className="pillar-card group relative p-8 rounded-3xl border bg-white/70 backdrop-blur-md transition-all duration-700 hover:-translate-y-5 hover:scale-[1.04] shadow-lg hover:shadow-2xl"
-                style={{
-                  borderColor: `${pillar.color}30`,
-                  transformStyle: 'preserve-3d',
-                }}
-                data-cursor-hover
-                onMouseEnter={(e) => {
-                  const el = e.currentTarget as HTMLElement;
-                  el.style.borderColor = `${pillar.color}80`;
-                  el.style.boxShadow = `0 25px 60px ${pillar.color}25, 0 0 40px ${pillar.color}10`;
-                }}
-                onMouseLeave={(e) => {
-                  const el = e.currentTarget as HTMLElement;
-                  el.style.borderColor = `${pillar.color}30`;
-                  el.style.boxShadow = '';
-                }}
-              >
-                {/* Soft glow */}
-                <div
-                  className="absolute -top-8 -right-8 w-36 h-36 rounded-full opacity-15 blur-[50px] group-hover:opacity-40 group-hover:scale-150 transition-all duration-1000"
-                  style={{ background: `radial-gradient(circle, ${pillar.color}, transparent)` }}
-                />
+          {/* CIRCULAR HOLISTIC LAYOUT */}
+          <div className="relative w-full max-w-3xl mx-auto aspect-square flex items-center justify-center">
+            {/* Rotating dashed circle */}
+            <div className="absolute inset-[12%] rounded-full border-2 border-dashed border-[#66BB6A]/30 animate-[spin_60s_linear_infinite]" />
+            <div className="absolute inset-[18%] rounded-full border border-[#81C784]/15" />
+            
+            {/* Center hub */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
+              <div className="text-center">
+                <div className="w-28 h-28 md:w-36 md:h-36 rounded-full bg-white/90 backdrop-blur-xl shadow-2xl flex items-center justify-center border-2 border-[#66BB6A]/30 mx-auto">
+                  <span className="text-4xl md:text-5xl">🌿</span>
+                </div>
+                <p className="mt-4 text-sm font-bold text-[#2E7D32] tracking-wider uppercase">Bienestar<br/>Integral</p>
+              </div>
+            </div>
 
-                {/* Floating Icon */}
+            {/* SVG connecting arcs */}
+            <svg className="absolute inset-0 w-full h-full pointer-events-none z-0" viewBox="0 0 100 100">
+              {PILLARS.map((_, index) => {
+                const angle1 = (index * 72 - 90) * (Math.PI / 180);
+                const angle2 = (((index + 1) % 5) * 72 - 90) * (Math.PI / 180);
+                const r = 36;
+                const x1 = 50 + r * Math.cos(angle1);
+                const y1 = 50 + r * Math.sin(angle1);
+                const x2 = 50 + r * Math.cos(angle2);
+                const y2 = 50 + r * Math.sin(angle2);
+                const midAngle = ((index * 72 + 36) - 90) * (Math.PI / 180);
+                const cx = 50 + (r + 4) * Math.cos(midAngle);
+                const cy = 50 + (r + 4) * Math.sin(midAngle);
+                return (
+                  <path
+                    key={index}
+                    d={`M ${x1} ${y1} Q ${cx} ${cy} ${x2} ${y2}`}
+                    fill="none"
+                    stroke="rgba(102,187,106,0.3)"
+                    strokeWidth="0.4"
+                    strokeDasharray="1.5 1"
+                  />
+                );
+              })}
+            </svg>
+
+            {/* Pillar nodes positioned in a circle */}
+            {PILLARS.map((pillar, index) => {
+              const angle = (index * 72 - 90) * (Math.PI / 180);
+              const radius = 36;
+              const x = 50 + radius * Math.cos(angle);
+              const y = 50 + radius * Math.sin(angle);
+              
+              return (
                 <div
-                  className="pillar-icon-float relative z-10 w-20 h-20 rounded-2xl flex items-center justify-center text-4xl mb-6 shadow-xl group-hover:scale-125 group-hover:rotate-6 transition-all duration-700"
+                  key={pillar.id}
+                  className="pillar-node absolute group z-10"
                   style={{
-                    background: `linear-gradient(135deg, ${pillar.color}, ${pillar.color}DD)`,
-                    boxShadow: `0 10px 30px ${pillar.color}40`,
+                    left: `${x}%`,
+                    top: `${y}%`,
+                    transform: 'translate(-50%, -50%)',
                   }}
                 >
-                  <span className="drop-shadow-lg">{pillar.icon}</span>
-                </div>
-
-                {/* Content */}
-                <div className="relative z-10">
-                  <h3
-                    className="text-2xl font-bold text-[#1B5E20] mb-3 group-hover:text-[#2E7D32] transition-colors duration-500"
-                    style={{ fontFamily: "'Playfair Display', serif" }}
+                  {/* The node circle */}
+                  <div
+                    className="relative w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center cursor-pointer transition-all duration-500 group-hover:scale-[1.6] group-hover:z-50 shadow-xl group-hover:shadow-2xl"
+                    style={{
+                      background: `linear-gradient(135deg, ${pillar.color}, ${pillar.color}CC)`,
+                      boxShadow: `0 8px 30px ${pillar.color}40`,
+                    }}
+                    data-cursor-hover
                   >
-                    {pillar.title}
-                  </h3>
-                  <p className="text-[#2D3B2D]/60 leading-relaxed mb-6 text-sm group-hover:text-[#2D3B2D]/80 transition-colors duration-500">{pillar.description}</p>
-
-                  {/* Stats */}
-                  <div className="pt-5 border-t border-[#66BB6A]/20 space-y-3">
-                    {pillar.stats.map((stat, i) => (
-                      <div key={i} className="flex items-center gap-3 text-xs text-[#2D3B2D]/60 group-hover:text-[#2D3B2D]/80 transition-all duration-500" style={{ transitionDelay: `${i * 50}ms` }}>
-                        <div
-                          className="w-2.5 h-2.5 rounded-full flex-shrink-0 group-hover:scale-150 transition-transform duration-500"
-                          style={{ background: pillar.color, boxShadow: `0 0 8px ${pillar.color}80` }}
-                        />
-                        <span className="font-medium">{stat}</span>
-                      </div>
-                    ))}
+                    <span className="text-2xl md:text-3xl drop-shadow-lg group-hover:scale-110 transition-transform duration-300">{pillar.icon}</span>
                   </div>
+
+                  {/* Expanded info panel — appears on hover, expands outward LARGE */}
+                  <div
+                    className="absolute opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-all duration-500 ease-out z-[100]"
+                    style={{
+                      width: '340px',
+                      left: x > 55 ? '110%' : x < 45 ? 'auto' : '50%',
+                      right: x < 45 ? '110%' : 'auto',
+                      top: y > 55 ? '-20%' : y < 45 ? 'auto' : '50%',
+                      bottom: y < 45 ? '-20%' : 'auto',
+                      transform: `translate(${x > 55 ? '0' : x < 45 ? '0' : '-50%'}, ${y > 55 ? '0' : y < 45 ? '0' : '-50%'})`,
+                    }}
+                  >
+                    <div
+                      className="bg-white/95 backdrop-blur-xl rounded-2xl p-6 shadow-2xl border scale-90 group-hover:scale-100 transition-transform duration-500 ease-out"
+                      style={{ borderColor: `${pillar.color}40` }}
+                    >
+                      <div className="flex items-center gap-3 mb-4">
+                        <div
+                          className="w-10 h-10 rounded-xl flex items-center justify-center text-xl"
+                          style={{ background: `${pillar.color}20` }}
+                        >
+                          {pillar.icon}
+                        </div>
+                        <h3 className="text-lg font-bold text-[#1B5E20]" style={{ fontFamily: "'Playfair Display', serif" }}>
+                          {pillar.title}
+                        </h3>
+                      </div>
+                      <p className="text-sm text-[#2D3B2D]/70 leading-relaxed mb-4">{pillar.description}</p>
+                      <div className="space-y-2 pt-3 border-t border-[#66BB6A]/20">
+                        {pillar.stats.map((stat, i) => (
+                          <div key={i} className="flex items-center gap-2 text-xs text-[#2D3B2D]/70">
+                            <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: pillar.color }} />
+                            <span>{stat}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Title label below node */}
+                  <p className="text-center mt-2 text-[10px] md:text-xs font-bold text-[#1B5E20] whitespace-nowrap group-hover:opacity-0 transition-opacity duration-300">
+                    {pillar.title}
+                  </p>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
-          {/* Bottom row: 2 pillars centered */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto" style={{ perspective: '1200px' }}>
-            {PILLARS.slice(3).map((pillar) => (
-              <div
-                key={pillar.id}
-                className="pillar-card group relative p-8 rounded-3xl border bg-white/70 backdrop-blur-md transition-all duration-700 hover:-translate-y-5 hover:scale-[1.04] shadow-lg hover:shadow-2xl"
-                style={{
-                  borderColor: `${pillar.color}30`,
-                  transformStyle: 'preserve-3d',
-                }}
-                data-cursor-hover
-                onMouseEnter={(e) => {
-                  const el = e.currentTarget as HTMLElement;
-                  el.style.borderColor = `${pillar.color}80`;
-                  el.style.boxShadow = `0 25px 60px ${pillar.color}25, 0 0 40px ${pillar.color}10`;
-                }}
-                onMouseLeave={(e) => {
-                  const el = e.currentTarget as HTMLElement;
-                  el.style.borderColor = `${pillar.color}30`;
-                  el.style.boxShadow = '';
-                }}
-              >
-                <div
-                  className="absolute -top-8 -right-8 w-36 h-36 rounded-full opacity-15 blur-[50px] group-hover:opacity-40 group-hover:scale-150 transition-all duration-1000"
-                  style={{ background: `radial-gradient(circle, ${pillar.color}, transparent)` }}
-                />
-
-                <div
-                  className="pillar-icon-float relative z-10 w-20 h-20 rounded-2xl flex items-center justify-center text-4xl mb-6 shadow-xl group-hover:scale-125 group-hover:rotate-6 transition-all duration-700"
-                  style={{
-                    background: `linear-gradient(135deg, ${pillar.color}, ${pillar.color}DD)`,
-                    boxShadow: `0 10px 30px ${pillar.color}40`,
-                  }}
-                >
-                  <span className="drop-shadow-lg">{pillar.icon}</span>
-                </div>
-
-                <div className="relative z-10">
-                  <h3
-                    className="text-2xl font-bold text-[#1B5E20] mb-3 group-hover:text-[#2E7D32] transition-colors duration-500"
-                    style={{ fontFamily: "'Playfair Display', serif" }}
-                  >
-                    {pillar.title}
-                  </h3>
-                  <p className="text-[#2D3B2D]/60 leading-relaxed mb-6 text-sm group-hover:text-[#2D3B2D]/80 transition-colors duration-500">{pillar.description}</p>
-
-                  <div className="pt-5 border-t border-[#66BB6A]/20 space-y-3">
-                    {pillar.stats.map((stat, i) => (
-                      <div key={i} className="flex items-center gap-3 text-xs text-[#2D3B2D]/60 group-hover:text-[#2D3B2D]/80 transition-all duration-500" style={{ transitionDelay: `${i * 50}ms` }}>
-                        <div
-                          className="w-2.5 h-2.5 rounded-full flex-shrink-0 group-hover:scale-150 transition-transform duration-500"
-                          style={{ background: pillar.color, boxShadow: `0 0 8px ${pillar.color}80` }}
-                        />
-                        <span className="font-medium">{stat}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          {/* Holistic instruction */}
+          <p className="text-center text-[#2E7D32]/60 mt-12 text-sm italic max-w-2xl mx-auto">
+            Pasa el cursor sobre cada pilar para explorar cómo se integran en un ciclo continuo de bienestar.
+          </p>
         </div>
       </section>
 
@@ -896,7 +876,9 @@ export default function Saludable() {
           <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'linear-gradient(rgba(46,125,50,1) 1px, transparent 1px), linear-gradient(90deg, rgba(46,125,50,1) 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
         </div>
 
-        {/* 3D Interactive Particles */}
+        {/* NOISE GRAIN animated overlay — cinematic texture */}
+        <div className="absolute inset-0 pointer-events-none z-[1] opacity-[0.08] mix-blend-overlay" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`, animation: 'grain 0.5s steps(8) infinite' }} />
+
         {/* Subtle floating dots — lightweight CSS */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           {[...Array(10)].map((_, i) => (

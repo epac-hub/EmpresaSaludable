@@ -38,3 +38,9 @@
 - [x] Hero: Generate new video with boricua-style fit people (Ricky Martin/Chayanne vibe)
 - [x] Pilares: Remove/replace heavy 3D particles with subtle lightweight effect (CSS floating dots)
 - [x] Planificación: Remove/replace heavy 3D particles with subtle lightweight effect (CSS floating dots)
+- [x] Hero: Generate new video that is CLEARLY Puerto Rico (beach, Old San Juan, El Yunque, boricua people)
+- [x] Hero: Make "Bienvenido" text much larger
+- [x] Pilares: Redesign as circular holistic layout (each pilar supports the others in a cycle)
+- [x] Pilares: Circular layout with SVG connecting arcs between nodes
+- [x] Pilares: Mouse hover expands info outward (large popup on hover)
+- [x] Planificación: Add noise grain animated overlay for cinematic texture
