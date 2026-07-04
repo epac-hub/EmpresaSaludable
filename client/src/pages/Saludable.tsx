@@ -1043,8 +1043,21 @@ export default function Saludable() {
       {/* Futuristic Custom Cursor */}
       <FuturisticCursor />
 
-      {/* Music Player */}
-      <MusicPlayer />
+      {/* Music Player + Únete Ahora CTA — fixed bottom-left together */}
+      <div className="fixed bottom-6 left-6 z-50 flex items-center gap-3">
+        <MusicPlayer />
+        <a
+          href="#planes"
+          className="hero-cta inline-flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-[#43A047] to-[#66BB6A] text-white font-bold text-sm rounded-full shadow-[0_8px_32px_rgba(67,160,71,0.4)] hover:shadow-[0_12px_48px_rgba(67,160,71,0.6)] hover:scale-105 active:scale-95 transition-all duration-300 relative overflow-hidden group"
+          style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+        >
+          <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+          <span className="relative z-10">Únete Ahora</span>
+          <svg className="relative z-10 w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+      </div>
 
       {/* ═══ SCROLL TO TOP BUTTON ═══ */}
       <button
@@ -1120,23 +1133,7 @@ export default function Saludable() {
         {/* Dark overlay for text readability — people still visible through it */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/25 to-black/50" />
 
-        {/* Hero CTA only — no title text */}
-        <div className="relative z-10 text-center px-6">
 
-          {/* Animated CTA button — scrolls to services */}
-          <a
-            href="#planes"
-            className="hero-cta inline-flex items-center gap-3 mt-12 px-8 py-4 bg-gradient-to-r from-[#43A047] to-[#66BB6A] text-white font-bold text-lg rounded-full shadow-[0_8px_32px_rgba(67,160,71,0.4)] hover:shadow-[0_12px_48px_rgba(67,160,71,0.6)] hover:scale-105 active:scale-95 transition-all duration-300 relative overflow-hidden group"
-            style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-          >
-            {/* Shimmer effect */}
-            <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
-            <span className="relative z-10">Únete Ahora</span>
-            <svg className="relative z-10 w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </a>
-        </div>
 
         {/* Scroll indicator */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">

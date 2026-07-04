@@ -65,7 +65,7 @@ export default function MusicPlayer() {
 
   return (
     <div
-      className="fixed bottom-6 left-6 z-50 flex items-center gap-3"
+      className="flex items-center gap-3"
       onMouseEnter={() => setShowControls(true)}
       onMouseLeave={() => setShowControls(false)}
     >
