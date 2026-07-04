@@ -16,30 +16,34 @@ const PharmacyMap = lazy(() => import("@/components/saludable/PharmacyMap"));
 
 // ─── Data ───────────────────────────────────────────────────────────────────
 
-const CELEBRITIES = [
+const AMBASSADORS = [
   {
-    name: "Chayanne",
-    role: "Entrenamiento de Fuerza",
-    image: "/manus-storage/fitness-chayanne_62488a49.png",
-    quote: "La disciplina física transforma la mente.",
+    name: "Lcda. Mariana Colón, RDN",
+    role: "Nutrición Clínica",
+    image: "/manus-storage/ambassador-nutricionista_d8fb06a9.png",
+    quote: "Una alimentación consciente es la base de toda transformación.",
+    specialty: "Especialista en nutrición clínica y planes alimentarios personalizados para empresas.",
   },
   {
-    name: "Ricky Martin",
-    role: "Yoga & Meditación",
-    image: "/manus-storage/fitness-ricky_0737be02.png",
-    quote: "El bienestar comienza con la calma interior.",
+    name: "Dr. Rafael Méndez, MD",
+    role: "Medicina Preventiva",
+    image: "/manus-storage/ambassador-medico_6a669c97.png",
+    quote: "Prevenir es la inversión más inteligente en salud corporativa.",
+    specialty: "Médico internista con enfoque en prevención y salud ocupacional.",
   },
   {
-    name: "Zuleyka Rivera",
-    role: "Fitness & Nutrición",
-    image: "/manus-storage/fitness-zuleyka_6b53e95a.png",
-    quote: "Cuerpo fuerte, mente poderosa.",
+    name: "Valeria Santiago, CPT",
+    role: "Fitness Corporativo",
+    image: "/manus-storage/ambassador-fitness_53f8e8ba.png",
+    quote: "El movimiento diario transforma equipos completos.",
+    specialty: "Entrenadora certificada en programas de actividad física para el entorno laboral.",
   },
   {
-    name: "Dayanara Torres",
-    role: "Nutrición & Bienestar",
-    image: "/manus-storage/fitness-dayanara_4d0aa017.png",
-    quote: "Alimentar el cuerpo es alimentar el alma.",
+    name: "Lcdo. Carlos Rivera, MBA",
+    role: "Bienestar Corporativo",
+    image: "/manus-storage/ambassador-corporativo_3eaa3d4d.png",
+    quote: "Una empresa saludable es una empresa rentable.",
+    specialty: "Consultor en cultura organizacional saludable y cumplimiento regulatorio.",
   },
 ];
 
@@ -614,7 +618,7 @@ export default function Saludable() {
         delay: 1.2,
       });
 
-      // Celebrity cards — WOW 3D entrance
+      // Ambassador cards — WOW 3D entrance
       if (celebsRef.current) {
         gsap.from(".celeb-card", {
           scrollTrigger: { trigger: celebsRef.current, start: "top 80%" },
@@ -835,24 +839,24 @@ export default function Saludable() {
         </div>
       </section>
 
-      {/* ═══ CELEBRITY FITNESS SECTION — WOW 3D TILT + GSAP ═══ */}
+      {/* ═══ PROFESSIONAL AMBASSADORS — WOW 3D TILT + GSAP ═══ */}
       <section ref={celebsRef} className="py-32 px-6 bg-white overflow-hidden">
         <div className="max-w-6xl mx-auto">
           <h2
             className="text-4xl md:text-5xl font-bold text-center mb-4 text-[#2D3B2D]"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            Inspirados por los <span className="text-[#6BAF8D]">Mejores</span>
+            Nuestros <span className="text-[#6BAF8D]">Embajadores</span>
           </h2>
           <p className="text-center text-[#2D3B2D]/60 mb-6 max-w-2xl mx-auto">
-            Nuestros programas están inspirados en el compromiso con la salud de los más grandes de Puerto Rico.
+            Profesionales puertorriqueños de excelencia que lideran cada dimensión del bienestar en Empresa Saludable.
           </p>
           <p className="text-center text-[#2D3B2D]/50 mb-16 max-w-3xl mx-auto text-sm leading-relaxed">
-            Desde el entrenamiento disciplinado de Chayanne hasta la práctica de yoga de Ricky Martin, pasando por los regímenes de nutrición de Zuleyka y Dayanara — cada pilar de Empresa Saludable refleja la excelencia que estos íconos representan para nuestra isla.
+            Cada embajador aporta experiencia clínica, académica y corporativa real. Desde la nutrición basada en evidencia hasta la medicina preventiva, el fitness funcional y la consultoría en cultura organizacional — nuestro equipo diseña programas que transforman empresas en toda la isla.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" style={{ perspective: '1200px' }}>
-            {CELEBRITIES.map((celeb, i) => (
+            {AMBASSADORS.map((amb, i) => (
               <div
                 key={i}
                 className="celeb-card group relative rounded-2xl overflow-hidden shadow-lg transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] cursor-pointer"
@@ -895,8 +899,8 @@ export default function Saludable() {
 
                 <div className="aspect-[3/4] overflow-hidden">
                   <img
-                    src={celeb.image}
-                    alt={celeb.name}
+                    src={amb.image}
+                    alt={amb.name}
                     className="celeb-img w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)]"
                   />
                 </div>
@@ -908,12 +912,13 @@ export default function Saludable() {
                 </div>
 
                 <div className="absolute bottom-0 left-0 right-0 p-6 text-white" style={{ transform: 'translateZ(30px)' }}>
-                  <h3 className="text-xl font-bold mb-1 group-hover:text-[#A8C5A0] transition-colors duration-300" style={{ fontFamily: "'Playfair Display', serif" }}>
-                    {celeb.name}
+                  <h3 className="text-lg font-bold mb-1 group-hover:text-[#A8C5A0] transition-colors duration-300" style={{ fontFamily: "'Playfair Display', serif" }}>
+                    {amb.name}
                   </h3>
-                  <p className="text-[#A8C5A0] text-sm font-medium mb-3 group-hover:tracking-wider transition-all duration-500">{celeb.role}</p>
+                  <p className="text-[#A8C5A0] text-sm font-medium mb-2 group-hover:tracking-wider transition-all duration-500">{amb.role}</p>
+                  <p className="text-white/60 text-xs mb-2 line-clamp-2">{amb.specialty}</p>
                   <p className="text-white/70 text-sm italic opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 delay-100">
-                    "{celeb.quote}"
+                    “{amb.quote}”
                   </p>
                   <div className="h-[2px] bg-gradient-to-r from-[#6BAF8D] to-[#A8C5A0] mt-3 w-0 group-hover:w-full transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)]" />
                 </div>

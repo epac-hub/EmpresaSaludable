@@ -1,5 +1,5 @@
 /**
- * MusicPlayer — Floating inspirational ambient music toggle
+ * MusicPlayer — Floating Bossa Nova Jazz music toggle
  * Design: Botanical Sanctuary — organic, breathing pulse animation
  */
 import { useState, useRef, useEffect } from "react";
@@ -9,7 +9,7 @@ export default function MusicPlayer() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    audioRef.current = new Audio("/manus-storage/inspirational-ambient_7e292ae3.mp3");
+    audioRef.current = new Audio("/manus-storage/bossa-nova-jazz_333cb19d.mp3");
     audioRef.current.loop = true;
     audioRef.current.volume = 0.25;
     return () => {
@@ -44,8 +44,8 @@ export default function MusicPlayer() {
           ? "0 0 20px rgba(139, 158, 124, 0.4), 0 4px 15px rgba(0,0,0,0.2)"
           : "0 4px 15px rgba(0,0,0,0.2)",
       }}
-      aria-label={isPlaying ? "Pausar música" : "Reproducir música ambiental"}
-      title={isPlaying ? "Pausar música" : "Música ambiental inspiracional"}
+      aria-label={isPlaying ? "Pausar música" : "Reproducir Bossa Nova"}
+      title={isPlaying ? "Pausar música" : "Bossa Nova Jazz"}
     >
       {/* Breathing pulse ring when playing */}
       {isPlaying && (
@@ -83,7 +83,7 @@ export default function MusicPlayer() {
       </svg>
       {/* Label */}
       <span className="absolute -top-8 left-1/2 -translate-x-1/2 text-xs text-[#FDF8F0]/70 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
-        Ambiental
+        Bossa Nova
       </span>
     </button>
   );
