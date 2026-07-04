@@ -642,6 +642,84 @@ export default function Saludable() {
         </div>
       </section>
 
+      {/* ═══ TESTIMONIALS CAROUSEL ═══ */}
+      <section className="py-24 px-6 bg-gradient-to-b from-[#F4F9F2] to-[#EDF5EA] overflow-hidden">
+        <div className="max-w-6xl mx-auto">
+          <h2
+            className="text-3xl md:text-4xl font-bold text-center mb-4 text-[#2D3B2D]"
+            style={{ fontFamily: "'Playfair Display', serif" }}
+          >
+            Lo Que Dicen Nuestros <span className="text-[#6BAF8D]">Beneficiarios</span>
+          </h2>
+          <p className="text-center text-[#2D3B2D]/60 mb-16 max-w-xl mx-auto">
+            Historias reales de transformación y bienestar en toda la isla.
+          </p>
+
+          {/* Carousel */}
+          <div className="relative">
+            <div className="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-6 scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+              {[
+                {
+                  quote: "Desde que mi empresa se unió a Empresa Saludable, la energía del equipo cambió por completo. Los talleres de salud mental nos dieron herramientas reales.",
+                  name: "María del Carmen Ortiz",
+                  role: "Directora de RRHH, Corporación del Caribe",
+                  municipality: "San Juan",
+                },
+                {
+                  quote: "La red de farmacias me permite acceder a mis medicamentos y consultas nutricionales cerca de casa. Es un servicio que realmente funciona.",
+                  name: "José Luis Rivera",
+                  role: "Beneficiario, Plan Profesional",
+                  municipality: "Carolina",
+                },
+                {
+                  quote: "El programa de salud financiera me ayudó a planificar mi retiro con confianza. Nunca pensé que un programa de bienestar incluyera eso.",
+                  name: "Ana Sofía Méndez",
+                  role: "Empleada, Sector Farmacéutico",
+                  municipality: "Caguas",
+                },
+                {
+                  quote: "Como farmacéutica aliada, veo el impacto directo en mis pacientes. Llegan más informados y comprometidos con su salud.",
+                  name: "Dra. Carmen Luisa Vega",
+                  role: "Farmacéutica, Super Farmacia Isla Verde",
+                  municipality: "Carolina",
+                },
+                {
+                  quote: "El cumplimiento regulatorio ya no es una carga. El equipo nos guía paso a paso y nos mantiene al día con cada requisito.",
+                  name: "Roberto Colón Torres",
+                  role: "CEO, Grupo Salud Integral",
+                  municipality: "Ponce",
+                },
+              ].map((testimonial, i) => (
+                <div
+                  key={i}
+                  className="flex-shrink-0 w-[340px] md:w-[400px] snap-center p-8 rounded-2xl bg-white border border-[#A8C5A0]/20 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-500 group"
+                >
+                  {/* Quote icon */}
+                  <svg className="w-8 h-8 text-[#6BAF8D]/30 mb-4 group-hover:text-[#6BAF8D]/60 transition-colors duration-500" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983z" />
+                  </svg>
+                  {/* Quote text */}
+                  <p className="text-[#2D3B2D]/80 text-sm leading-relaxed mb-6 italic">
+                    "{testimonial.quote}"
+                  </p>
+                  {/* Author */}
+                  <div className="border-t border-[#A8C5A0]/20 pt-4">
+                    <p className="font-semibold text-[#2D3B2D] text-sm">{testimonial.name}</p>
+                    <p className="text-xs text-[#6BAF8D] mt-0.5">{testimonial.role}</p>
+                    <p className="text-xs text-[#2D3B2D]/40 mt-0.5">{testimonial.municipality}, PR</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Scroll hint */}
+            <div className="flex justify-center mt-6 gap-2">
+              <span className="text-xs text-[#2D3B2D]/40">← Desliza para ver más →</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ═══ STATS DASHBOARD ═══ */}
       <section ref={statsRef} className="py-24 px-6 bg-[#2D3B2D]">
         <div className="max-w-5xl mx-auto">
