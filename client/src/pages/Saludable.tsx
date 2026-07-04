@@ -319,6 +319,13 @@ export default function Saludable() {
   const [apptSubmitting, setApptSubmitting] = useState(false);
   const [apptSuccess, setApptSuccess] = useState(false);
 
+  // Preloader state
+  const [preloaderDone, setPreloaderDone] = useState(false);
+  const preloaderRef = useRef<HTMLDivElement>(null);
+
+  // Scroll-to-top button
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
   // Scroll-proximity lazy loading: mount heavy components only when near viewport
   const [showParticles3D, setShowParticles3D] = useState(false);
   const [showTestimonialVideo, setShowTestimonialVideo] = useState(false);
@@ -418,12 +425,54 @@ export default function Saludable() {
     gsap.ticker.add(rafCallback);
     gsap.ticker.lagSmoothing(0);
 
+    // Scroll-to-top visibility
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 600);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
     return () => {
       gsap.ticker.remove(rafCallback);
       lenis.destroy();
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
+  // ─── Preloader Animation ──────────────────────────────────────────────────
+  useEffect(() => {
+    if (!preloaderRef.current) return;
+    const tl = gsap.timeline({
+      onComplete: () => setPreloaderDone(true),
+    });
+    tl.to(preloaderRef.current.querySelector('.preloader-logo'), {
+      scale: 1,
+      opacity: 1,
+      duration: 0.8,
+      ease: "back.out(1.7)",
+    })
+    .to(preloaderRef.current.querySelector('.preloader-text'), {
+      opacity: 1,
+      y: 0,
+      duration: 0.5,
+      ease: "power2.out",
+    }, "-=0.3")
+    .to(preloaderRef.current.querySelector('.preloader-bar-fill'), {
+      scaleX: 1,
+      duration: 1.2,
+      ease: "power2.inOut",
+    }, "-=0.2")
+    .to(preloaderRef.current, {
+      opacity: 0,
+      scale: 1.05,
+      duration: 0.6,
+      ease: "power3.inOut",
+      delay: 0.3,
+    });
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   // ─── GSAP Animations (FIXED: immediateRender:false on all from() calls) ──
   useEffect(() => {
@@ -881,12 +930,44 @@ export default function Saludable() {
   }
 
   return (
+    <>
+    {/* ═══ PRELOADER ═══ */}
+    {!preloaderDone && (
+      <div ref={preloaderRef} className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-gradient-to-br from-[#E8F5E9] via-[#F1F8E9] to-[#C8E6C9]">
+        <div className="preloader-logo opacity-0 scale-[0.6] mb-6">
+          <img src="/manus-storage/saludable-logo_630e22f3.png" alt="" className="w-24 h-24 drop-shadow-xl" />
+        </div>
+        <div className="preloader-text opacity-0 translate-y-4">
+          <h2 className="text-3xl font-bold text-[#1B5E20]" style={{ fontFamily: "'Playfair Display', serif" }}>
+            Empresa <span className="text-[#43A047]">Saludable</span>
+          </h2>
+          <p className="text-sm text-[#2E7D32]/60 mt-1 text-center tracking-wider uppercase">Bienestar Corporativo PR</p>
+        </div>
+        <div className="mt-8 w-48 h-1 bg-[#C8E6C9] rounded-full overflow-hidden">
+          <div className="preloader-bar-fill h-full bg-gradient-to-r from-[#43A047] to-[#66BB6A] rounded-full origin-left scale-x-0" />
+        </div>
+      </div>
+    )}
+
     <div ref={containerRef} className="relative bg-[#F4F9F2] text-[#2D3B2D] overflow-hidden">
       {/* Futuristic Custom Cursor */}
       <FuturisticCursor />
 
       {/* Music Player */}
       <MusicPlayer />
+
+      {/* ═══ SCROLL TO TOP BUTTON ═══ */}
+      <button
+        onClick={scrollToTop}
+        className={`fixed bottom-8 right-8 z-50 w-12 h-12 rounded-full bg-[#43A047] text-white shadow-lg shadow-[#43A047]/30 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-110 hover:shadow-xl hover:shadow-[#43A047]/40 active:scale-95 ${
+          showScrollTop ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
+        }`}
+        aria-label="Volver arriba"
+      >
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 15l7-7 7 7" />
+        </svg>
+      </button>
 
       {/* ═══ NAVIGATION — Frosted Glass + Animated Hover ═══ */}
       <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between backdrop-blur-2xl bg-white/60 border-b border-[#6BAF8D]/10 shadow-[0_4px_30px_rgba(107,175,141,0.08)] transition-all duration-500">
@@ -1410,24 +1491,23 @@ export default function Saludable() {
           </p>
 
           {/* Bienestar Integral Context Block */}
-          <div data-bienestar-block className="max-w-4xl mx-auto mb-20 p-8 rounded-2xl bg-white/50 backdrop-blur-sm border border-[#66BB6A]/30 shadow-lg relative overflow-hidden hover:shadow-2xl hover:shadow-[#43A047]/20 hover:border-[#66BB6A]/60 hover:scale-[1.04] hover:-translate-y-2 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] cursor-default">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#43A047] via-[#66BB6A] to-[#81C784]" />
-            <div className="flex flex-col md:flex-row items-center gap-6">
-              <div className="flex-shrink-0 w-20 h-20 rounded-full bg-gradient-to-br from-[#43A047] to-[#66BB6A] flex items-center justify-center shadow-lg shadow-[#43A047]/30">
+          <div data-bienestar-block className="max-w-4xl mx-auto mb-20 p-10 rounded-3xl bg-white/50 backdrop-blur-md border border-[#66BB6A]/30 shadow-xl relative overflow-hidden hover:shadow-2xl hover:shadow-[#43A047]/25 hover:border-[#66BB6A]/60 hover:scale-[1.04] hover:-translate-y-3 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] cursor-default group">
+            <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[#43A047] via-[#66BB6A] to-[#81C784]" />
+            {/* Centered layout */}
+            <div className="flex flex-col items-center text-center gap-5">
+              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#43A047] to-[#66BB6A] flex items-center justify-center shadow-lg shadow-[#43A047]/30 group-hover:scale-110 transition-transform duration-500">
                 <svg className="w-10 h-10 text-white sun-icon-rotate" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 3v1m0 16v1m-8-9H3m18 0h-1m-2.636-5.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707" />
                   <circle cx="12" cy="12" r="4" strokeWidth={1.5} />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8a4 4 0 0 1 4 4m-4-4a4 4 0 0 0-4 4m4 4a4 4 0 0 1-4-4m4 4a4 4 0 0 0 4-4" />
                 </svg>
               </div>
-              <div className="text-center md:text-left">
-                <h3 className="text-2xl font-bold text-[#1B5E20] mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
-                  ¿Qué es el Bienestar Integral?
-                </h3>
-                <p className="text-[#2E7D32]/80 leading-relaxed">
-                  El <strong>Bienestar Integral</strong> es la sinergia de los 5 pilares fundamentales — Salud Mental, Actividad Física, Nutrición, Bienestar Financiero y Salud Corporativa — funcionando como un sistema unificado. No se trata de atender cada dimensión por separado, sino de reconocer que están interconectadas: cuando un pilar se fortalece, los demás se elevan. Este enfoque holístico es lo que transforma un programa de bienestar convencional en una experiencia transformadora para el empleado y la organización.
-                </p>
-              </div>
+              <h3 className="text-3xl font-bold text-[#1B5E20]" style={{ fontFamily: "'Playfair Display', serif" }}>
+                Bienestar <span className="text-[#43A047]">Integral</span>
+              </h3>
+              <p className="text-[#2E7D32]/80 leading-relaxed max-w-2xl">
+                La sinergia de los 5 pilares fundamentales — Salud Mental, Actividad Física, Nutrición, Bienestar Financiero y Salud Corporativa — funcionando como un sistema unificado. No se trata de atender cada dimensión por separado, sino de reconocer que están interconectadas: cuando un pilar se fortalece, los demás se elevan. Este enfoque holístico transforma un programa de bienestar convencional en una experiencia transformadora para el empleado y la organización.
+              </p>
             </div>
           </div>
 
@@ -2144,14 +2224,14 @@ export default function Saludable() {
             onSubmit={handleFormSubmit}
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
+              <div className="relative">
                 <input
                   type="text"
                   placeholder="Nombre completo"
                   value={formData.name}
                   onChange={(e) => handleFieldChange("name", e.target.value)}
                   onBlur={() => handleFieldBlur("name")}
-                  className={`w-full px-5 py-4 rounded-xl bg-white border text-[#2D3B2D] placeholder-[#2D3B2D]/40 focus:outline-none transition-all duration-300 glow-field ${
+                  className={`w-full px-5 py-4 pr-12 rounded-xl bg-white border text-[#2D3B2D] placeholder-[#2D3B2D]/40 focus:outline-none transition-all duration-300 glow-field ${
                     formErrors.name && formTouched.name
                       ? "border-red-400 focus:border-red-400 focus:shadow-[0_0_15px_rgba(248,113,113,0.3)]"
                       : formTouched.name && !formErrors.name
@@ -2159,18 +2239,23 @@ export default function Saludable() {
                       : "border-[#A8C5A0]/30 focus:border-[#6BAF8D] focus:shadow-[0_0_20px_rgba(107,175,141,0.4)]"
                   }`}
                 />
+                {formTouched.name && !formErrors.name && formData.name && (
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#66BB6A] animate-[scaleIn_0.3s_ease-out]">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
+                  </span>
+                )}
                 {formErrors.name && formTouched.name && (
                   <p className="mt-1 text-xs text-red-500 animate-[fadeIn_0.2s_ease-out]">{formErrors.name}</p>
                 )}
               </div>
-              <div>
+              <div className="relative">
                 <input
                   type="email"
                   placeholder="Email"
                   value={formData.email}
                   onChange={(e) => handleFieldChange("email", e.target.value)}
                   onBlur={() => handleFieldBlur("email")}
-                  className={`w-full px-5 py-4 rounded-xl bg-white border text-[#2D3B2D] placeholder-[#2D3B2D]/40 focus:outline-none transition-all duration-300 glow-field ${
+                  className={`w-full px-5 py-4 pr-12 rounded-xl bg-white border text-[#2D3B2D] placeholder-[#2D3B2D]/40 focus:outline-none transition-all duration-300 glow-field ${
                     formErrors.email && formTouched.email
                       ? "border-red-400 focus:border-red-400 focus:shadow-[0_0_15px_rgba(248,113,113,0.3)]"
                       : formTouched.email && !formErrors.email
@@ -2178,6 +2263,11 @@ export default function Saludable() {
                       : "border-[#A8C5A0]/30 focus:border-[#6BAF8D] focus:shadow-[0_0_20px_rgba(107,175,141,0.4)]"
                   }`}
                 />
+                {formTouched.email && !formErrors.email && formData.email && (
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#66BB6A] animate-[scaleIn_0.3s_ease-out]">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
+                  </span>
+                )}
                 {formErrors.email && formTouched.email && (
                   <p className="mt-1 text-xs text-red-500 animate-[fadeIn_0.2s_ease-out]">{formErrors.email}</p>
                 )}
@@ -2190,14 +2280,14 @@ export default function Saludable() {
               onChange={(e) => handleFieldChange("company", e.target.value)}
               className="w-full px-5 py-4 rounded-xl bg-white border border-[#A8C5A0]/30 text-[#2D3B2D] placeholder-[#2D3B2D]/40 focus:outline-none focus:border-[#6BAF8D] focus:shadow-[0_0_20px_rgba(107,175,141,0.4)] transition-all duration-300 glow-field"
             />
-            <div>
+            <div className="relative">
               <textarea
                 placeholder="¿Cómo podemos ayudarte?"
                 value={formData.message}
                 onChange={(e) => handleFieldChange("message", e.target.value)}
                 onBlur={() => handleFieldBlur("message")}
                 rows={5}
-                className={`w-full px-5 py-4 rounded-xl bg-white border text-[#2D3B2D] placeholder-[#2D3B2D]/40 focus:outline-none transition-all duration-300 resize-none glow-field ${
+                className={`w-full px-5 py-4 pr-12 rounded-xl bg-white border text-[#2D3B2D] placeholder-[#2D3B2D]/40 focus:outline-none transition-all duration-300 resize-none glow-field ${
                   formErrors.message && formTouched.message
                     ? "border-red-400 focus:border-red-400 focus:shadow-[0_0_15px_rgba(248,113,113,0.3)]"
                     : formTouched.message && !formErrors.message
@@ -2205,6 +2295,11 @@ export default function Saludable() {
                     : "border-[#A8C5A0]/30 focus:border-[#6BAF8D] focus:shadow-[0_0_20px_rgba(107,175,141,0.4)]"
                 }`}
               />
+              {formTouched.message && !formErrors.message && formData.message && (
+                <span className="absolute right-4 top-6 text-[#66BB6A] animate-[scaleIn_0.3s_ease-out]">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
+                </span>
+              )}
               {formErrors.message && formTouched.message && (
                 <p className="mt-1 text-xs text-red-500 animate-[fadeIn_0.2s_ease-out]">{formErrors.message}</p>
               )}
@@ -2250,20 +2345,49 @@ export default function Saludable() {
       </div>
 
       {/* ═══ FOOTER ═══ */}
-      <footer className="py-12 px-6 border-t-0 bg-[#2D3B2D]">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-3">
-            <img src="/manus-storage/saludable-logo_630e22f3.png" alt="" className="w-8 h-8" />
-            <span className="text-sm text-white/60">Empresa Saludable — Puerto Rico</span>
+      <footer className="py-16 px-6 border-t-0 bg-[#2D3B2D]">
+        <div className="max-w-4xl mx-auto text-center">
+          {/* Logo + Brand */}
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <img src="/manus-storage/saludable-logo_630e22f3.png" alt="Empresa Saludable" className="w-10 h-10 rounded-lg" />
+            <span className="text-xl font-bold text-white" style={{ fontFamily: "'Playfair Display', serif" }}>
+              Empresa <span className="text-[#A8C5A0]">Saludable</span>
+            </span>
           </div>
-          <div className="flex items-center gap-6 text-sm text-white/40">
-            <a href="mailto:hola@empresasaludable.org" className="hover:text-[#A8C5A0] transition-colors">
-              hola@empresasaludable.org
-            </a>
+
+          {/* Tagline */}
+          <p className="text-white/50 text-sm mb-8 max-w-md mx-auto">
+            Transformando el bienestar corporativo en Puerto Rico, un pilar a la vez.
+          </p>
+
+          {/* Nav links */}
+          <div className="flex items-center justify-center gap-8 mb-8 text-sm text-white/60">
+            <a href="#pilares" className="hover:text-[#A8C5A0] transition-colors duration-300">Pilares</a>
+            <a href="#farmacias" className="hover:text-[#A8C5A0] transition-colors duration-300">Farmacias</a>
+            <a href="#cumplimiento" className="hover:text-[#A8C5A0] transition-colors duration-300">Cumplimiento</a>
+            <a href="#planes" className="hover:text-[#A8C5A0] transition-colors duration-300">Planes</a>
+            <a href="#contacto" className="hover:text-[#A8C5A0] transition-colors duration-300">Contacto</a>
           </div>
+
+          {/* Contact */}
+          <a href="mailto:hola@empresasaludable.org" className="inline-flex items-center gap-2 text-[#A8C5A0] hover:text-white transition-colors duration-300 text-sm mb-8">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+            hola@empresasaludable.org
+          </a>
+
+          {/* Divider */}
+          <div className="w-24 h-px bg-white/10 mx-auto mb-6" />
+
+          {/* Copyright */}
+          <p className="text-white/30 text-xs">
+            © {new Date().getFullYear()} Empresa Saludable. Todos los derechos reservados.
+          </p>
         </div>
       </footer>
 
     </div>
+    </>
   );
 }

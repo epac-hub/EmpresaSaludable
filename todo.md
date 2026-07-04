@@ -98,3 +98,8 @@
 - [x] Hero→Ambassadors transition: cleaner 3-layer wave, floating leaf accent, no blur
 - [x] Bienestar Integral: hover scale-[1.04] + translate-y-2 + shadow-2xl effect
 - [x] Enhanced GSAP scroll animations: stats (rotateX/scale), compliance (alternating sides), ambassadors (3D flip + parallax depth), contact (field stagger), map (scale)
+- [x] Footer: align and center content properly (centered layout with logo, tagline, nav links, email, copyright)
+- [x] Bienestar Integral: center the title + icon centered above text + GSAP parallax animation
+- [x] GSAP preloader: logo reveal + progress bar + fade-out before page content
+- [x] Scroll-to-top floating button (green, bottom-right, appears after 600px scroll)
+- [x] Contact form: real-time validation with green checkmarks on valid fields + red errors
