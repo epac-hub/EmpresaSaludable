@@ -33,3 +33,8 @@
 - [x] Hero: Convert background to video loop (like testimonials section) - gente latina saludable + frutas
 - [x] Hero: Reduce blur/overlay so people and image are more visible and appreciated
 - [x] Cursor: Ensure futuristic cursor works consistently in Pilares and Planificación sections (global via CSS + window listener)
+- [x] Hero: Remove descriptive paragraph and buttons, keep only "Bienvenido a Empresa Saludable"
+- [x] Hero: Add kinetic typography animation (GSAP SplitText-style) to "Empresa Saludable"
+- [x] Hero: Generate new video with boricua-style fit people (Ricky Martin/Chayanne vibe)
+- [x] Pilares: Remove/replace heavy 3D particles with subtle lightweight effect (CSS floating dots)
+- [x] Planificación: Remove/replace heavy 3D particles with subtle lightweight effect (CSS floating dots)

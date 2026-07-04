@@ -12,8 +12,8 @@ import Lenis from "lenis";
 import MusicPlayer from "@/components/saludable/MusicPlayer";
 import FuturisticCursor from "@/components/saludable/FuturisticCursor";
 import MagneticButton from "@/components/saludable/MagneticButton";
-import GreenParticles from "@/components/saludable/GreenParticles";
-import Interactive3DParticles from "@/components/saludable/Interactive3DParticles";
+// GreenParticles removed from hero (video background now)
+// Interactive3DParticles removed — replaced with lightweight CSS floating dots
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -317,23 +317,30 @@ export default function Saludable() {
   // ─── GSAP Animations (FIXED: immediateRender:false on all from() calls) ──
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Hero text reveal
-      gsap.from(".hero-title span", {
-        y: 100,
-        opacity: 0,
-        duration: 1.2,
-        stagger: 0.1,
-        ease: "power4.out",
-        delay: 0.5,
-      });
-
-      gsap.from(".hero-subtitle", {
-        y: 30,
-        opacity: 0,
-        duration: 1,
-        ease: "power3.out",
-        delay: 1.2,
-      });
+      // Kinetic Typography — staggered word reveal with motion
+      const kineticTl = gsap.timeline({ delay: 0.4 });
+      kineticTl
+        .from(".hero-title", {
+          y: 60,
+          opacity: 0,
+          duration: 0.8,
+          ease: "power3.out",
+        })
+        .from(".kinetic-word", {
+          y: 120,
+          rotateX: -45,
+          opacity: 0,
+          scale: 0.8,
+          stagger: 0.2,
+          duration: 1.4,
+          ease: "power4.out",
+        }, "-=0.3")
+        .to(".kinetic-word", {
+          letterSpacing: "0.02em",
+          duration: 2,
+          ease: "power1.inOut",
+          stagger: 0.15,
+        }, "-=0.8");
 
       // Ambassador cards entrance
       if (celebsRef.current) {
@@ -529,59 +536,45 @@ export default function Saludable() {
       </nav>
 
       {/* ═══ HERO SECTION ═══ */}
-      <section ref={heroRef} className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+      <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
         <video
           autoPlay
           muted
           loop
           playsInline
           className="hero-video absolute inset-0 w-full h-full object-cover"
-          style={{ filter: 'brightness(1.1) saturate(1.15)' }}
+          style={{ filter: 'brightness(1.05) saturate(1.2)' }}
         >
-          <source src="/manus-storage/hero-wellness-video_9acc7ff0.mp4" type="video/mp4" />
+          <source src="/manus-storage/hero-boricua-wellness_f950a080.mp4" type="video/mp4" />
         </video>
-        {/* Lighter overlay — let the video show through more */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#E8F5E0]/50 via-[#F4F9F2]/40 to-[#DFF0D8]/45" />
+        {/* Very light overlay — let the people show clearly */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/30" />
 
-        {/* Green particles with mouse-tracking */}
-        <GreenParticles />
-
-        <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
-          {/* Brand Name — Dynamic & Prominent */}
-          <div className="hero-title mb-6">
-            <span className="block text-lg md:text-xl tracking-[0.3em] uppercase text-[#6BAF8D] font-semibold mb-4 animate-pulse" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-              Bienvenido a
-            </span>
-            <h1
-              className="text-6xl md:text-8xl lg:text-[10rem] font-black leading-[0.85] tracking-tight"
+        {/* Kinetic Typography — Empresa Saludable */}
+        <div className="relative z-10 text-center px-6">
+          <span className="hero-title block text-sm md:text-lg tracking-[0.4em] uppercase text-white/80 font-medium mb-6" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+            Bienvenido a
+          </span>
+          <h1 className="hero-title overflow-hidden">
+            <span
+              className="kinetic-word block text-7xl md:text-9xl lg:text-[11rem] font-black leading-[0.85] tracking-tight text-white drop-shadow-[0_4px_30px_rgba(0,0,0,0.4)]"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
-              <span className="block text-[#2D3B2D] drop-shadow-[0_4px_20px_rgba(107,175,141,0.3)]">Empresa</span>
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#6BAF8D] via-[#4CAF50] to-[#2E7D32] animate-[gradient_4s_ease_infinite] bg-[length:200%_200%]">Saludable</span>
-            </h1>
-          </div>
-          <p className="hero-subtitle text-xl md:text-2xl text-[#2D3B2D]/70 max-w-2xl mx-auto leading-relaxed font-light">
-            Red integral de bienestar conectando comunidades, farmacias y servicios de salud en todo Puerto Rico.
-          </p>
-          <div className="hero-subtitle mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="#pilares"
-              className="px-8 py-4 rounded-full bg-[#6BAF8D] text-white font-semibold hover:bg-[#5A9E7D] transition-all duration-300 hover:scale-105 shadow-lg shadow-[#6BAF8D]/20"
+              Empresa
+            </span>
+            <span
+              className="kinetic-word block text-7xl md:text-9xl lg:text-[11rem] font-black leading-[0.85] tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#81C784] via-[#66BB6A] to-[#43A047] drop-shadow-[0_4px_30px_rgba(76,175,80,0.5)]"
+              style={{ fontFamily: "'Playfair Display', serif" }}
             >
-              Explorar Pilares
-            </a>
-            <a
-              href="#farmacias"
-              className="px-8 py-4 rounded-full border-2 border-[#6BAF8D] text-[#6BAF8D] hover:bg-[#6BAF8D]/10 transition-all duration-300"
-            >
-              Encuentra tu Farmacia
-            </a>
-          </div>
+              Saludable
+            </span>
+          </h1>
         </div>
 
+        {/* Scroll indicator */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
-          <span className="text-xs text-[#6BAF8D]/60 tracking-widest uppercase">Scroll</span>
-          <div className="w-px h-8 bg-gradient-to-b from-[#6BAF8D]/60 to-transparent" />
+          <span className="text-xs text-white/50 tracking-widest uppercase">Scroll</span>
+          <div className="w-px h-8 bg-gradient-to-b from-white/50 to-transparent" />
         </div>
       </section>
 
@@ -662,7 +655,21 @@ export default function Saludable() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-[#4CAF50]/10 blur-[150px] animate-pulse" style={{ animationDelay: '3s' }} />
 
         {/* 3D Interactive Particles */}
-        <Interactive3DParticles count={600} color="#43A047" spread={8} size={0.035} speed={0.25} />
+        {/* Subtle floating dots — lightweight CSS */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {[...Array(12)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-1.5 h-1.5 rounded-full bg-[#81C784]/30 animate-[float_8s_ease-in-out_infinite]"
+              style={{
+                left: `${8 + i * 8}%`,
+                top: `${15 + (i % 4) * 20}%`,
+                animationDelay: `${i * 0.6}s`,
+                animationDuration: `${6 + (i % 3) * 2}s`,
+              }}
+            />
+          ))}
+        </div>
 
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-8">
@@ -890,7 +897,21 @@ export default function Saludable() {
         </div>
 
         {/* 3D Interactive Particles */}
-        <Interactive3DParticles count={500} color="#2E7D32" spread={7} size={0.03} speed={0.2} />
+        {/* Subtle floating dots — lightweight CSS */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {[...Array(10)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-1 h-1 rounded-full bg-[#66BB6A]/25 animate-[float_8s_ease-in-out_infinite]"
+              style={{
+                left: `${5 + i * 9}%`,
+                top: `${10 + (i % 5) * 18}%`,
+                animationDelay: `${i * 0.7}s`,
+                animationDuration: `${7 + (i % 3) * 2}s`,
+              }}
+            />
+          ))}
+        </div>
 
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-6">
