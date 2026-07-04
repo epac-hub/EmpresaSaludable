@@ -1,9 +1,10 @@
 /**
  * Empresa Saludable — WOW Health & Wellness Website
- * Design: Botanical Sanctuary — organic minimalism, tropical wellness, Puerto Rico
- * Tech: Three.js 3D orb, GSAP ScrollTrigger, Lenis smooth scroll, custom cursor, Bossa Nova
+ * Design: Light Botanical Sanctuary — soft sage, mint, cream, calming greens
+ * Tech: GSAP ScrollTrigger, Lenis smooth scroll, floating particles, Bossa Nova
+ * Section order: Hero → Celebrities → Pillars → Stats → Compliance → Plans → Contact → Pharmacy Map (last)
  */
-import { useEffect, useRef, useState, Suspense, lazy } from "react";
+import { useEffect, useRef, useState, Suspense, lazy, useCallback } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
@@ -11,17 +12,43 @@ import MusicPlayer from "@/components/saludable/MusicPlayer";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// FloatingOrb removed
 const PharmacyMap = lazy(() => import("@/components/saludable/PharmacyMap"));
 
 // ─── Data ───────────────────────────────────────────────────────────────────
+
+const CELEBRITIES = [
+  {
+    name: "Chayanne",
+    role: "Entrenamiento de Fuerza",
+    image: "/manus-storage/fitness-chayanne_62488a49.png",
+    quote: "La disciplina física transforma la mente.",
+  },
+  {
+    name: "Ricky Martin",
+    role: "Yoga & Meditación",
+    image: "/manus-storage/fitness-ricky_0737be02.png",
+    quote: "El bienestar comienza con la calma interior.",
+  },
+  {
+    name: "Zuleyka Rivera",
+    role: "Fitness & Nutrición",
+    image: "/manus-storage/fitness-zuleyka_6b53e95a.png",
+    quote: "Cuerpo fuerte, mente poderosa.",
+  },
+  {
+    name: "Dayanara Torres",
+    role: "Nutrición & Bienestar",
+    image: "/manus-storage/fitness-dayanara_4d0aa017.png",
+    quote: "Alimentar el cuerpo es alimentar el alma.",
+  },
+];
 
 const PILLARS = [
   {
     id: "mental",
     title: "Salud Mental",
     icon: "🧠",
-    color: "#C4B5D4",
+    color: "#A8C5A0",
     description: "Programas de bienestar emocional, manejo del estrés y apoyo psicológico para empleados y comunidades.",
     stats: ["85% reducción en ausentismo", "Talleres semanales", "Línea de apoyo 24/7"],
   },
@@ -29,15 +56,15 @@ const PILLARS = [
     id: "fisica",
     title: "Salud Física",
     icon: "💪",
-    color: "#8B9E7C",
+    color: "#7EB89A",
     description: "Actividad física, nutrición personalizada y prevención de enfermedades crónicas para una vida activa.",
-    stats: ["215+ farmacias aliadas", "Planes nutricionales", "Evaluaciones periódicas"],
+    stats: ["112+ farmacias aliadas", "Planes nutricionales", "Evaluaciones periódicas"],
   },
   {
     id: "financiera",
     title: "Salud Financiera",
     icon: "📊",
-    color: "#D4A574",
+    color: "#B8D4A8",
     description: "Educación financiera, planificación de retiro y gestión de beneficios para estabilidad económica.",
     stats: ["ROI 3:1 comprobado", "Asesoría personalizada", "Planes de ahorro"],
   },
@@ -45,15 +72,15 @@ const PILLARS = [
     id: "corporativa",
     title: "Salud Corporativa",
     icon: "🏢",
-    color: "#C4725F",
+    color: "#6BAF8D",
     description: "Cultura organizacional saludable, cumplimiento regulatorio y programas de bienestar empresarial.",
     stats: ["Cumplimiento OSHA", "Clima laboral óptimo", "Certificaciones"],
   },
 ];
 
 const STATS = [
-  { value: 215, suffix: "+", label: "Farmacias Aliadas" },
-  { value: 56, suffix: "", label: "Municipios Cubiertos" },
+  { value: 112, suffix: "+", label: "Farmacias Aliadas" },
+  { value: 70, suffix: "", label: "Municipios Cubiertos" },
   { value: 98, suffix: "%", label: "Satisfacción" },
   { value: 12, suffix: "K+", label: "Beneficiarios" },
 ];
@@ -87,11 +114,84 @@ const PLANS = [
   },
 ];
 
+// ─── Floating Particles Component ───────────────────────────────────────────
+
+function FloatingParticles() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let animationId: number;
+    let particles: { x: number; y: number; vx: number; vy: number; size: number; opacity: number; hue: number }[] = [];
+
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    resize();
+    window.addEventListener("resize", resize);
+
+    // Create particles
+    for (let i = 0; i < 40; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3 - 0.1,
+        size: Math.random() * 3 + 1,
+        opacity: Math.random() * 0.4 + 0.1,
+        hue: 130 + Math.random() * 30, // green hues
+      });
+    }
+
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      particles.forEach((p) => {
+        p.x += p.vx;
+        p.y += p.vy;
+
+        // Wrap around
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = `hsla(${p.hue}, 40%, 70%, ${p.opacity})`;
+        ctx.fill();
+      });
+
+      animationId = requestAnimationFrame(animate);
+    };
+    animate();
+
+    return () => {
+      cancelAnimationFrame(animationId);
+      window.removeEventListener("resize", resize);
+    };
+  }, []);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="absolute inset-0 pointer-events-none z-[1]"
+      style={{ mixBlendMode: "screen" }}
+    />
+  );
+}
+
 // ─── Component ──────────────────────────────────────────────────────────────
 
 export default function Saludable() {
   const containerRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLElement>(null);
+  const celebsRef = useRef<HTMLElement>(null);
   const pillarsRef = useRef<HTMLElement>(null);
   const statsRef = useRef<HTMLElement>(null);
   const mapRef = useRef<HTMLElement>(null);
@@ -139,10 +239,10 @@ export default function Saludable() {
     };
 
     const handleHover = () => {
-      gsap.to(ring, { scale: 1.5, borderColor: "#C4725F", duration: 0.3 });
+      gsap.to(ring, { scale: 1.5, borderColor: "#6BAF8D", duration: 0.3 });
     };
     const handleLeave = () => {
-      gsap.to(ring, { scale: 1, borderColor: "rgba(139,158,124,0.5)", duration: 0.3 });
+      gsap.to(ring, { scale: 1, borderColor: "rgba(168,197,160,0.5)", duration: 0.3 });
     };
 
     window.addEventListener("mousemove", moveCursor);
@@ -177,6 +277,21 @@ export default function Saludable() {
         delay: 1.2,
       });
 
+      // Celebrity cards
+      if (celebsRef.current) {
+        gsap.from(".celeb-card", {
+          scrollTrigger: {
+            trigger: celebsRef.current,
+            start: "top 80%",
+          },
+          y: 80,
+          opacity: 0,
+          duration: 0.9,
+          stagger: 0.2,
+          ease: "power3.out",
+        });
+      }
+
       // Pillars stagger
       if (pillarsRef.current) {
         gsap.from(".pillar-card", {
@@ -204,20 +319,6 @@ export default function Saludable() {
           duration: 0.6,
           stagger: 0.1,
           ease: "power2.out",
-        });
-      }
-
-      // Map section
-      if (mapRef.current) {
-        gsap.from(".map-container", {
-          scrollTrigger: {
-            trigger: mapRef.current,
-            start: "top 75%",
-          },
-          y: 50,
-          opacity: 0,
-          duration: 1,
-          ease: "power3.out",
         });
       }
 
@@ -264,6 +365,20 @@ export default function Saludable() {
           ease: "power3.out",
         });
       }
+
+      // Map section
+      if (mapRef.current) {
+        gsap.from(".map-container", {
+          scrollTrigger: {
+            trigger: mapRef.current,
+            start: "top 75%",
+          },
+          y: 50,
+          opacity: 0,
+          duration: 1,
+          ease: "power3.out",
+        });
+      }
     }, containerRef);
 
     return () => ctx.revert();
@@ -305,40 +420,40 @@ export default function Saludable() {
   }
 
   return (
-    <div ref={containerRef} className="relative bg-[#1a2418] text-[#FDF8F0] overflow-hidden">
+    <div ref={containerRef} className="relative bg-[#F4F9F2] text-[#2D3B2D] overflow-hidden">
       {/* Custom Cursor */}
       <div
         ref={cursorRef}
-        className="fixed w-2 h-2 rounded-full bg-[#8B9E7C] pointer-events-none z-[9999] mix-blend-difference hidden md:block"
+        className="fixed w-2 h-2 rounded-full bg-[#6BAF8D] pointer-events-none z-[9999] mix-blend-difference hidden md:block"
       />
       <div
         ref={cursorRingRef}
-        className="fixed w-10 h-10 rounded-full border border-[#8B9E7C]/50 pointer-events-none z-[9998] hidden md:block"
+        className="fixed w-10 h-10 rounded-full border border-[#A8C5A0]/50 pointer-events-none z-[9998] hidden md:block"
       />
 
       {/* Music Player */}
       <MusicPlayer />
 
       {/* ═══ NAVIGATION ═══ */}
-      <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between backdrop-blur-xl bg-[#1a2418]/80 border-b border-[#8B9E7C]/10">
+      <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between backdrop-blur-xl bg-[#F4F9F2]/80 border-b border-[#A8C5A0]/20 shadow-sm">
         <div className="flex items-center gap-3">
           <img
             src="/manus-storage/saludable-logo_630e22f3.png"
             alt="Empresa Saludable"
             className="w-10 h-10 object-contain"
           />
-          <span className="text-lg font-semibold tracking-tight" style={{ fontFamily: "'Playfair Display', serif" }}>
+          <span className="text-lg font-semibold tracking-tight text-[#2D3B2D]" style={{ fontFamily: "'Playfair Display', serif" }}>
             Empresa Saludable
           </span>
         </div>
-        <div className="hidden md:flex items-center gap-8 text-sm text-[#FDF8F0]/70">
-          <a href="#pilares" className="hover:text-[#8B9E7C] transition-colors" data-hover>Pilares</a>
-          <a href="#farmacias" className="hover:text-[#8B9E7C] transition-colors" data-hover>Farmacias</a>
-          <a href="#cumplimiento" className="hover:text-[#8B9E7C] transition-colors" data-hover>Cumplimiento</a>
-          <a href="#planes" className="hover:text-[#8B9E7C] transition-colors" data-hover>Planes</a>
+        <div className="hidden md:flex items-center gap-8 text-sm text-[#2D3B2D]/70">
+          <a href="#pilares" className="hover:text-[#6BAF8D] transition-colors" data-hover>Pilares</a>
+          <a href="#farmacias" className="hover:text-[#6BAF8D] transition-colors" data-hover>Farmacias</a>
+          <a href="#cumplimiento" className="hover:text-[#6BAF8D] transition-colors" data-hover>Cumplimiento</a>
+          <a href="#planes" className="hover:text-[#6BAF8D] transition-colors" data-hover>Planes</a>
           <a
             href="#contacto"
-            className="px-4 py-2 rounded-full bg-[#8B9E7C]/20 border border-[#8B9E7C]/40 hover:bg-[#8B9E7C]/30 transition-all"
+            className="px-4 py-2 rounded-full bg-[#6BAF8D] text-white hover:bg-[#5A9E7D] transition-all"
             data-hover
           >
             Contacto
@@ -348,44 +463,44 @@ export default function Saludable() {
 
       {/* ═══ HERO SECTION ═══ */}
       <section ref={heroRef} className="relative min-h-screen flex items-center justify-center pt-20">
-        {/* Background image */}
+        {/* Light gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#E8F5E0] via-[#F4F9F2] to-[#DFF0D8]" />
+        {/* Floating particles */}
+        <FloatingParticles />
+        {/* Subtle hero image overlay */}
         <div
-          className="absolute inset-0 opacity-30"
+          className="absolute inset-0 opacity-15"
           style={{
-            backgroundImage: "url(/manus-storage/saludable-hero_452d30b2.png)",
+            backgroundImage: "url(/manus-storage/hero-light-green_948fb9ea.png)",
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
         />
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#1a2418]/60 via-[#1a2418]/40 to-[#1a2418]" />
-
-
 
         {/* Hero Content */}
-        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center lg:text-left lg:ml-[10%]">
+        <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
           <h1
             className="hero-title text-5xl md:text-7xl lg:text-8xl font-bold leading-[0.9] mb-8"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            <span className="block">Tu bienestar</span>
-            <span className="block text-[#8B9E7C]">comienza</span>
-            <span className="block">aquí</span>
+            <span className="block text-[#2D3B2D]">Tu bienestar</span>
+            <span className="block text-[#6BAF8D]">comienza</span>
+            <span className="block text-[#2D3B2D]">aquí</span>
           </h1>
-          <p className="hero-subtitle text-lg md:text-xl text-[#FDF8F0]/70 max-w-xl leading-relaxed">
+          <p className="hero-subtitle text-lg md:text-xl text-[#2D3B2D]/70 max-w-xl mx-auto leading-relaxed">
             Red integral de bienestar conectando comunidades, farmacias y servicios de salud en todo Puerto Rico.
           </p>
-          <div className="hero-subtitle mt-8 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+          <div className="hero-subtitle mt-10 flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="#pilares"
-              className="px-8 py-4 rounded-full bg-[#8B9E7C] text-[#1a2418] font-semibold hover:bg-[#9BAF8C] transition-all duration-300 hover:scale-105"
+              className="px-8 py-4 rounded-full bg-[#6BAF8D] text-white font-semibold hover:bg-[#5A9E7D] transition-all duration-300 hover:scale-105 shadow-lg shadow-[#6BAF8D]/20"
               data-hover
             >
               Explorar Pilares
             </a>
             <a
               href="#farmacias"
-              className="px-8 py-4 rounded-full border border-[#8B9E7C]/40 text-[#8B9E7C] hover:bg-[#8B9E7C]/10 transition-all duration-300"
+              className="px-8 py-4 rounded-full border-2 border-[#6BAF8D] text-[#6BAF8D] hover:bg-[#6BAF8D]/10 transition-all duration-300"
               data-hover
             >
               Encuentra tu Farmacia
@@ -395,21 +510,66 @@ export default function Saludable() {
 
         {/* Scroll indicator */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
-          <span className="text-xs text-[#8B9E7C]/60 tracking-widest uppercase">Scroll</span>
-          <div className="w-px h-8 bg-gradient-to-b from-[#8B9E7C]/60 to-transparent" />
+          <span className="text-xs text-[#6BAF8D]/60 tracking-widest uppercase">Scroll</span>
+          <div className="w-px h-8 bg-gradient-to-b from-[#6BAF8D]/60 to-transparent" />
+        </div>
+      </section>
+
+      {/* ═══ CELEBRITY FITNESS SECTION ═══ */}
+      <section ref={celebsRef} className="py-32 px-6 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <h2
+            className="text-4xl md:text-5xl font-bold text-center mb-4 text-[#2D3B2D]"
+            style={{ fontFamily: "'Playfair Display', serif" }}
+          >
+            Inspirados por los <span className="text-[#6BAF8D]">Mejores</span>
+          </h2>
+          <p className="text-center text-[#2D3B2D]/60 mb-16 max-w-2xl mx-auto">
+            Nuestros programas están inspirados en el compromiso con la salud de los más grandes de Puerto Rico.
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {CELEBRITIES.map((celeb, i) => (
+              <div
+                key={i}
+                className="celeb-card group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
+                data-hover
+              >
+                <div className="aspect-[3/4] overflow-hidden">
+                  <img
+                    src={celeb.image}
+                    alt={celeb.name}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                </div>
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#2D3B2D]/90 via-[#2D3B2D]/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
+                {/* Content */}
+                <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                  <h3 className="text-xl font-bold mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>
+                    {celeb.name}
+                  </h3>
+                  <p className="text-[#A8C5A0] text-sm font-medium mb-3">{celeb.role}</p>
+                  <p className="text-white/70 text-sm italic opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-500">
+                    "{celeb.quote}"
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* ═══ 4 PILLARS SECTION ═══ */}
-      <section ref={pillarsRef} id="pilares" className="py-32 px-6">
+      <section ref={pillarsRef} id="pilares" className="py-32 px-6 bg-[#F4F9F2]">
         <div className="max-w-6xl mx-auto">
           <h2
-            className="text-4xl md:text-5xl font-bold text-center mb-4"
+            className="text-4xl md:text-5xl font-bold text-center mb-4 text-[#2D3B2D]"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            Los 4 Pilares del <span className="text-[#8B9E7C]">Bienestar</span>
+            Los 4 Pilares del <span className="text-[#6BAF8D]">Bienestar</span>
           </h2>
-          <p className="text-center text-[#FDF8F0]/60 mb-16 max-w-2xl mx-auto">
+          <p className="text-center text-[#2D3B2D]/60 mb-16 max-w-2xl mx-auto">
             Un enfoque holístico que integra todas las dimensiones de la salud para resultados sostenibles.
           </p>
 
@@ -417,31 +577,35 @@ export default function Saludable() {
             {PILLARS.map((pillar) => (
               <div
                 key={pillar.id}
-                className={`pillar-card group relative p-8 rounded-2xl border transition-all duration-500 cursor-pointer ${
+                className={`pillar-card group relative p-8 rounded-2xl border transition-all duration-500 cursor-pointer hover:-translate-y-1 hover:shadow-xl ${
                   activePillar === pillar.id
-                    ? "border-[color:var(--pillar-color)] bg-[color:var(--pillar-color)]/5 scale-[1.02]"
-                    : "border-[#8B9E7C]/15 bg-[#2D3B2D]/20 hover:border-[#8B9E7C]/40"
+                    ? "border-[#6BAF8D] bg-white shadow-lg scale-[1.02]"
+                    : "border-[#A8C5A0]/30 bg-white/60 hover:border-[#6BAF8D]/50 hover:bg-white"
                 }`}
-                style={{ "--pillar-color": pillar.color } as React.CSSProperties}
                 onClick={() => setActivePillar(activePillar === pillar.id ? null : pillar.id)}
                 data-hover
               >
-                {/* Glow effect */}
+                {/* Glow effect on hover */}
                 <div
                   className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                   style={{
-                    background: `radial-gradient(circle at 50% 50%, ${pillar.color}10, transparent 70%)`,
+                    background: `radial-gradient(circle at 50% 50%, ${pillar.color}20, transparent 70%)`,
                   }}
                 />
 
                 <div className="relative z-10">
                   <div className="flex items-center gap-4 mb-4">
-                    <span className="text-4xl">{pillar.icon}</span>
-                    <h3 className="text-2xl font-bold" style={{ color: pillar.color }}>
+                    <div
+                      className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3"
+                      style={{ background: `${pillar.color}20` }}
+                    >
+                      {pillar.icon}
+                    </div>
+                    <h3 className="text-2xl font-bold text-[#2D3B2D]" style={{ fontFamily: "'Playfair Display', serif" }}>
                       {pillar.title}
                     </h3>
                   </div>
-                  <p className="text-[#FDF8F0]/70 leading-relaxed mb-4">{pillar.description}</p>
+                  <p className="text-[#2D3B2D]/70 leading-relaxed mb-4">{pillar.description}</p>
 
                   {/* Expanded stats */}
                   <div
@@ -449,9 +613,9 @@ export default function Saludable() {
                       activePillar === pillar.id ? "max-h-40 opacity-100" : "max-h-0 opacity-0"
                     }`}
                   >
-                    <div className="pt-4 border-t border-[#8B9E7C]/20 space-y-2">
+                    <div className="pt-4 border-t border-[#A8C5A0]/30 space-y-2">
                       {pillar.stats.map((stat, i) => (
-                        <div key={i} className="flex items-center gap-2 text-sm text-[#FDF8F0]/80">
+                        <div key={i} className="flex items-center gap-2 text-sm text-[#2D3B2D]/80">
                           <div className="w-1.5 h-1.5 rounded-full" style={{ background: pillar.color }} />
                           {stat}
                         </div>
@@ -460,7 +624,7 @@ export default function Saludable() {
                   </div>
 
                   {/* Toggle hint */}
-                  <div className="mt-4 text-xs text-[#8B9E7C]/50 flex items-center gap-1">
+                  <div className="mt-4 text-xs text-[#6BAF8D] flex items-center gap-1 font-medium">
                     <span>{activePillar === pillar.id ? "Cerrar" : "Ver más"}</span>
                     <svg
                       className={`w-3 h-3 transition-transform duration-300 ${activePillar === pillar.id ? "rotate-180" : ""}`}
@@ -479,61 +643,33 @@ export default function Saludable() {
       </section>
 
       {/* ═══ STATS DASHBOARD ═══ */}
-      <section ref={statsRef} className="py-24 px-6 bg-[#2D3B2D]/30">
+      <section ref={statsRef} className="py-24 px-6 bg-[#2D3B2D]">
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {STATS.map((stat, i) => (
               <div key={i} className="stat-item text-center">
                 <div
-                  className="text-4xl md:text-5xl font-bold mb-2"
-                  style={{ color: ["#8B9E7C", "#C4725F", "#C4B5D4", "#D4A574"][i] }}
+                  className="text-4xl md:text-5xl font-bold mb-2 text-white"
                 >
                   <AnimatedCounter value={stat.value} suffix={stat.suffix} />
                 </div>
-                <p className="text-sm text-[#FDF8F0]/60">{stat.label}</p>
+                <p className="text-sm text-[#A8C5A0]">{stat.label}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ═══ PHARMACY MAP ═══ */}
-      <section ref={mapRef} id="farmacias" className="py-32 px-6">
-        <div className="max-w-6xl mx-auto">
-          <h2
-            className="text-4xl md:text-5xl font-bold text-center mb-4"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
-            Red de <span className="text-[#8B9E7C]">Farmacias</span>
-          </h2>
-          <p className="text-center text-[#FDF8F0]/60 mb-12 max-w-2xl mx-auto">
-            Más de 215 farmacias aliadas en 56 municipios de Puerto Rico, listas para servirte.
-          </p>
-
-          <div className="map-container">
-            <Suspense
-              fallback={
-                <div className="h-[500px] rounded-2xl bg-[#2D3B2D]/30 border border-[#8B9E7C]/20 flex items-center justify-center">
-                  <div className="animate-pulse text-[#8B9E7C]/60">Cargando mapa...</div>
-                </div>
-              }
-            >
-              <PharmacyMap />
-            </Suspense>
-          </div>
-        </div>
-      </section>
-
       {/* ═══ COMPLIANCE STEPS ═══ */}
-      <section ref={complianceRef} id="cumplimiento" className="py-32 px-6 bg-[#2D3B2D]/20">
+      <section ref={complianceRef} id="cumplimiento" className="py-32 px-6 bg-white">
         <div className="max-w-5xl mx-auto">
           <h2
-            className="text-4xl md:text-5xl font-bold text-center mb-4"
+            className="text-4xl md:text-5xl font-bold text-center mb-4 text-[#2D3B2D]"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            Planificación y <span className="text-[#C4725F]">Cumplimiento</span>
+            Planificación y <span className="text-[#6BAF8D]">Cumplimiento</span>
           </h2>
-          <p className="text-center text-[#FDF8F0]/60 mb-16 max-w-2xl mx-auto">
+          <p className="text-center text-[#2D3B2D]/60 mb-16 max-w-2xl mx-auto">
             Un proceso estructurado para garantizar resultados medibles y cumplimiento regulatorio.
           </p>
 
@@ -543,8 +679,8 @@ export default function Saludable() {
                 key={item.step}
                 className={`compliance-step group flex items-start gap-6 p-6 rounded-xl border transition-all duration-500 cursor-pointer ${
                   activeStep === item.step
-                    ? "border-[#C4725F]/50 bg-[#C4725F]/5"
-                    : "border-[#8B9E7C]/10 bg-[#2D3B2D]/20 hover:border-[#8B9E7C]/30"
+                    ? "border-[#6BAF8D] bg-[#6BAF8D]/5 shadow-md"
+                    : "border-[#A8C5A0]/20 bg-[#F4F9F2] hover:border-[#6BAF8D]/40 hover:shadow-sm"
                 }`}
                 onClick={() => setActiveStep(item.step)}
                 data-hover
@@ -553,30 +689,23 @@ export default function Saludable() {
                 <div
                   className={`flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg transition-all duration-300 ${
                     activeStep === item.step
-                      ? "bg-[#C4725F] text-[#FDF8F0]"
-                      : "bg-[#2D3B2D] text-[#8B9E7C] border border-[#8B9E7C]/30"
+                      ? "bg-[#6BAF8D] text-white"
+                      : "bg-[#E8F5E0] text-[#6BAF8D] border border-[#A8C5A0]/30"
                   }`}
                 >
                   {item.step}
                 </div>
 
                 <div className="flex-1">
-                  <h3 className="text-xl font-semibold mb-1">{item.title}</h3>
+                  <h3 className="text-xl font-semibold text-[#2D3B2D] mb-1">{item.title}</h3>
                   <p
-                    className={`text-[#FDF8F0]/60 leading-relaxed transition-all duration-500 ${
+                    className={`text-[#2D3B2D]/60 leading-relaxed transition-all duration-500 ${
                       activeStep === item.step ? "max-h-20 opacity-100" : "max-h-0 opacity-0 overflow-hidden"
                     }`}
                   >
                     {item.desc}
                   </p>
                 </div>
-
-                {/* Progress line */}
-                <div
-                  className={`hidden md:block w-1 h-full absolute right-8 top-0 transition-all duration-500 ${
-                    activeStep >= item.step ? "bg-[#C4725F]/30" : "bg-transparent"
-                  }`}
-                />
               </div>
             ))}
           </div>
@@ -584,15 +713,15 @@ export default function Saludable() {
       </section>
 
       {/* ═══ SERVICE PLANS ═══ */}
-      <section ref={plansRef} id="planes" className="py-32 px-6">
+      <section ref={plansRef} id="planes" className="py-32 px-6 bg-[#F4F9F2]">
         <div className="max-w-6xl mx-auto">
           <h2
-            className="text-4xl md:text-5xl font-bold text-center mb-4"
+            className="text-4xl md:text-5xl font-bold text-center mb-4 text-[#2D3B2D]"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            Planes de <span className="text-[#D4A574]">Servicio</span>
+            Planes de <span className="text-[#6BAF8D]">Servicio</span>
           </h2>
-          <p className="text-center text-[#FDF8F0]/60 mb-16 max-w-2xl mx-auto">
+          <p className="text-center text-[#2D3B2D]/60 mb-16 max-w-2xl mx-auto">
             Soluciones escalables adaptadas al tamaño y necesidades de tu organización.
           </p>
 
@@ -600,24 +729,24 @@ export default function Saludable() {
             {PLANS.map((plan, i) => (
               <div
                 key={i}
-                className={`plan-card relative p-8 rounded-2xl border transition-all duration-500 hover:scale-[1.02] ${
+                className={`plan-card relative p-8 rounded-2xl border transition-all duration-500 hover:scale-[1.02] hover:-translate-y-1 hover:shadow-xl ${
                   plan.highlighted
-                    ? "border-[#8B9E7C] bg-[#8B9E7C]/10 shadow-lg shadow-[#8B9E7C]/10"
-                    : "border-[#8B9E7C]/15 bg-[#2D3B2D]/20"
+                    ? "border-[#6BAF8D] bg-white shadow-lg shadow-[#6BAF8D]/10"
+                    : "border-[#A8C5A0]/30 bg-white hover:border-[#6BAF8D]/50"
                 }`}
                 data-hover
               >
                 {plan.highlighted && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-[#8B9E7C] text-[#1a2418] text-xs font-semibold">
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-[#6BAF8D] text-white text-xs font-semibold">
                     Recomendado
                   </div>
                 )}
-                <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
-                <p className="text-3xl font-bold text-[#8B9E7C] mb-6">{plan.price}</p>
+                <h3 className="text-2xl font-bold mb-2 text-[#2D3B2D]">{plan.name}</h3>
+                <p className="text-3xl font-bold text-[#6BAF8D] mb-6">{plan.price}</p>
                 <ul className="space-y-3 mb-8">
                   {plan.features.map((f, j) => (
-                    <li key={j} className="flex items-center gap-2 text-sm text-[#FDF8F0]/70">
-                      <svg className="w-4 h-4 text-[#8B9E7C] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <li key={j} className="flex items-center gap-2 text-sm text-[#2D3B2D]/70">
+                      <svg className="w-4 h-4 text-[#6BAF8D] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
                       {f}
@@ -628,8 +757,8 @@ export default function Saludable() {
                   href="#contacto"
                   className={`block text-center py-3 rounded-full font-semibold transition-all duration-300 ${
                     plan.highlighted
-                      ? "bg-[#8B9E7C] text-[#1a2418] hover:bg-[#9BAF8C]"
-                      : "border border-[#8B9E7C]/40 text-[#8B9E7C] hover:bg-[#8B9E7C]/10"
+                      ? "bg-[#6BAF8D] text-white hover:bg-[#5A9E7D]"
+                      : "border-2 border-[#6BAF8D] text-[#6BAF8D] hover:bg-[#6BAF8D]/10"
                   }`}
                 >
                   Solicitar Info
@@ -641,17 +770,17 @@ export default function Saludable() {
       </section>
 
       {/* ═══ CONTACT FORM ═══ */}
-      <section ref={contactRef} id="contacto" className="py-32 px-6 bg-[#2D3B2D]/20">
+      <section ref={contactRef} id="contacto" className="py-32 px-6 bg-white">
         <div className="max-w-3xl mx-auto">
           <h2
-            className="text-4xl md:text-5xl font-bold text-center mb-4"
+            className="text-4xl md:text-5xl font-bold text-center mb-4 text-[#2D3B2D]"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            Hablemos de <span className="text-[#8B9E7C]">Bienestar</span>
+            Hablemos de <span className="text-[#6BAF8D]">Bienestar</span>
           </h2>
-          <p className="text-center text-[#FDF8F0]/60 mb-12">
+          <p className="text-center text-[#2D3B2D]/60 mb-12">
             Escríbenos a{" "}
-            <a href="mailto:hola@empresasaludable.org" className="text-[#8B9E7C] hover:underline" data-hover>
+            <a href="mailto:hola@empresasaludable.org" className="text-[#6BAF8D] hover:underline" data-hover>
               hola@empresasaludable.org
             </a>{" "}
             o completa el formulario.
@@ -670,7 +799,7 @@ export default function Saludable() {
                 placeholder="Nombre completo"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="w-full px-5 py-4 rounded-xl bg-[#2D3B2D]/50 border border-[#8B9E7C]/20 text-[#FDF8F0] placeholder-[#8B9E7C]/40 focus:outline-none focus:border-[#8B9E7C] transition-colors"
+                className="w-full px-5 py-4 rounded-xl bg-[#F4F9F2] border border-[#A8C5A0]/30 text-[#2D3B2D] placeholder-[#2D3B2D]/40 focus:outline-none focus:border-[#6BAF8D] focus:ring-2 focus:ring-[#6BAF8D]/20 transition-all"
                 required
               />
               <input
@@ -678,7 +807,7 @@ export default function Saludable() {
                 placeholder="Email"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="w-full px-5 py-4 rounded-xl bg-[#2D3B2D]/50 border border-[#8B9E7C]/20 text-[#FDF8F0] placeholder-[#8B9E7C]/40 focus:outline-none focus:border-[#8B9E7C] transition-colors"
+                className="w-full px-5 py-4 rounded-xl bg-[#F4F9F2] border border-[#A8C5A0]/30 text-[#2D3B2D] placeholder-[#2D3B2D]/40 focus:outline-none focus:border-[#6BAF8D] focus:ring-2 focus:ring-[#6BAF8D]/20 transition-all"
                 required
               />
             </div>
@@ -687,19 +816,19 @@ export default function Saludable() {
               placeholder="Empresa / Organización"
               value={formData.company}
               onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-              className="w-full px-5 py-4 rounded-xl bg-[#2D3B2D]/50 border border-[#8B9E7C]/20 text-[#FDF8F0] placeholder-[#8B9E7C]/40 focus:outline-none focus:border-[#8B9E7C] transition-colors"
+              className="w-full px-5 py-4 rounded-xl bg-[#F4F9F2] border border-[#A8C5A0]/30 text-[#2D3B2D] placeholder-[#2D3B2D]/40 focus:outline-none focus:border-[#6BAF8D] focus:ring-2 focus:ring-[#6BAF8D]/20 transition-all"
             />
             <textarea
               placeholder="¿Cómo podemos ayudarte?"
               value={formData.message}
               onChange={(e) => setFormData({ ...formData, message: e.target.value })}
               rows={5}
-              className="w-full px-5 py-4 rounded-xl bg-[#2D3B2D]/50 border border-[#8B9E7C]/20 text-[#FDF8F0] placeholder-[#8B9E7C]/40 focus:outline-none focus:border-[#8B9E7C] transition-colors resize-none"
+              className="w-full px-5 py-4 rounded-xl bg-[#F4F9F2] border border-[#A8C5A0]/30 text-[#2D3B2D] placeholder-[#2D3B2D]/40 focus:outline-none focus:border-[#6BAF8D] focus:ring-2 focus:ring-[#6BAF8D]/20 transition-all resize-none"
               required
             />
             <button
               type="submit"
-              className="w-full py-4 rounded-full bg-[#8B9E7C] text-[#1a2418] font-semibold text-lg hover:bg-[#9BAF8C] transition-all duration-300 hover:scale-[1.02]"
+              className="w-full py-4 rounded-full bg-[#6BAF8D] text-white font-semibold text-lg hover:bg-[#5A9E7D] transition-all duration-300 hover:scale-[1.02] shadow-lg shadow-[#6BAF8D]/20"
               data-hover
             >
               Enviar Mensaje
@@ -708,19 +837,43 @@ export default function Saludable() {
         </div>
       </section>
 
+      {/* ═══ PHARMACY MAP (LAST SECTION) ═══ */}
+      <section ref={mapRef} id="farmacias" className="py-32 px-6 bg-[#F4F9F2]">
+        <div className="max-w-6xl mx-auto">
+          <h2
+            className="text-4xl md:text-5xl font-bold text-center mb-4 text-[#2D3B2D]"
+            style={{ fontFamily: "'Playfair Display', serif" }}
+          >
+            Red de <span className="text-[#6BAF8D]">Farmacias</span>
+          </h2>
+          <p className="text-center text-[#2D3B2D]/60 mb-12 max-w-2xl mx-auto">
+            Más de 112 farmacias aliadas en 70 municipios de Puerto Rico, listas para servirte.
+          </p>
+
+          <div className="map-container">
+            <Suspense
+              fallback={
+                <div className="h-[500px] rounded-2xl bg-white border border-[#A8C5A0]/30 flex items-center justify-center shadow-inner">
+                  <div className="animate-pulse text-[#6BAF8D]">Cargando mapa...</div>
+                </div>
+              }
+            >
+              <PharmacyMap />
+            </Suspense>
+          </div>
+        </div>
+      </section>
+
       {/* ═══ FOOTER ═══ */}
-      <footer className="py-12 px-6 border-t border-[#8B9E7C]/10">
+      <footer className="py-12 px-6 border-t border-[#A8C5A0]/20 bg-[#2D3B2D]">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
             <img src="/manus-storage/saludable-logo_630e22f3.png" alt="" className="w-8 h-8" />
-            <span className="text-sm text-[#FDF8F0]/60">Empresa Saludable — Puerto Rico</span>
+            <span className="text-sm text-white/60">Empresa Saludable — Puerto Rico</span>
           </div>
-          <div className="flex items-center gap-6 text-sm text-[#FDF8F0]/40">
-            <a href="mailto:hola@empresasaludable.org" className="hover:text-[#8B9E7C] transition-colors">
+          <div className="flex items-center gap-6 text-sm text-white/40">
+            <a href="mailto:hola@empresasaludable.org" className="hover:text-[#A8C5A0] transition-colors">
               hola@empresasaludable.org
-            </a>
-            <a href="/" className="hover:text-[#8B9E7C] transition-colors">
-              WOW Showcase
             </a>
           </div>
         </div>
