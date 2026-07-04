@@ -945,25 +945,28 @@ export default function Saludable() {
         }
       }
 
-      // Beneficiarios horizontal scroll — vertical scroll drives horizontal movement
-      if (beneficiaryScrollRef.current && testimonialSectionRef.current) {
+      // Beneficiarios cards — infinite marquee scroll (no page scroll hijack)
+      if (beneficiaryScrollRef.current) {
         const track = beneficiaryScrollRef.current.querySelector('.beneficiary-track') as HTMLElement;
         if (track) {
-          const totalWidth = track.scrollWidth - beneficiaryScrollRef.current.offsetWidth;
-          if (totalWidth > 0) {
-            gsap.to(track, {
-              scrollTrigger: {
-                trigger: testimonialSectionRef.current,
-                start: "top top",
-                end: () => `+=${totalWidth}`,
-                scrub: 1,
-                pin: true,
-                anticipatePin: 1,
-              },
-              x: -totalWidth,
-              ease: "none",
-            });
-          }
+          // Duplicate cards for seamless infinite loop
+          const cards = track.innerHTML;
+          track.innerHTML = cards + cards;
+
+          const totalWidth = track.scrollWidth / 2;
+          const marquee = gsap.to(track, {
+            x: -totalWidth,
+            duration: totalWidth / 50, // speed: 50px per second
+            ease: "none",
+            repeat: -1,
+            modifiers: {
+              x: gsap.utils.unitize((x: number) => x % totalWidth),
+            },
+          });
+
+          // Pause on hover
+          beneficiaryScrollRef.current.addEventListener('mouseenter', () => marquee.pause());
+          beneficiaryScrollRef.current.addEventListener('mouseleave', () => marquee.resume());
         }
       }
     }, containerRef);
@@ -971,32 +974,42 @@ export default function Saludable() {
     return () => ctx.revert();
   }, []);
 
-  // Refresh horizontal scroll when filter changes
+  // Restart marquee when filter changes
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (beneficiaryScrollRef.current && testimonialSectionRef.current) {
+      if (beneficiaryScrollRef.current) {
         const track = beneficiaryScrollRef.current.querySelector('.beneficiary-track') as HTMLElement;
         if (track) {
-          ScrollTrigger.getAll().forEach(st => {
-            if (st.trigger === testimonialSectionRef.current) st.kill();
-          });
+          // Kill existing tweens on this track
+          gsap.killTweensOf(track);
           gsap.set(track, { x: 0 });
-          const totalWidth = track.scrollWidth - beneficiaryScrollRef.current.offsetWidth;
-          if (totalWidth > 0) {
-            gsap.to(track, {
-              scrollTrigger: {
-                trigger: testimonialSectionRef.current,
-                start: "top top",
-                end: () => `+=${totalWidth}`,
-                scrub: 1,
-                pin: true,
-                anticipatePin: 1,
-              },
-              x: -totalWidth,
-              ease: "none",
-            });
+
+          // Re-duplicate cards for the new filtered set
+          const children = track.querySelectorAll('.beneficiary-panel');
+          // Remove duplicates (second half)
+          const half = children.length / 2;
+          for (let i = children.length - 1; i >= half; i--) {
+            children[i].remove();
           }
-          ScrollTrigger.refresh();
+          // Re-duplicate
+          const cards = track.innerHTML;
+          track.innerHTML = cards + cards;
+
+          const totalWidth = track.scrollWidth / 2;
+          if (totalWidth > 0) {
+            const marquee = gsap.to(track, {
+              x: -totalWidth,
+              duration: totalWidth / 50,
+              ease: "none",
+              repeat: -1,
+              modifiers: {
+                x: gsap.utils.unitize((x: number) => x % totalWidth),
+              },
+            });
+
+            beneficiaryScrollRef.current.addEventListener('mouseenter', () => marquee.pause());
+            beneficiaryScrollRef.current.addEventListener('mouseleave', () => marquee.resume());
+          }
         }
       }
     }, 100);
@@ -1899,8 +1912,8 @@ export default function Saludable() {
             ))}
           </div>
 
-          {/* HORIZONTAL SCROLL PANELS — vertical scroll triggers horizontal card movement */}
-          <div ref={beneficiaryScrollRef} className="relative overflow-hidden">
+          {/* INFINITE MARQUEE — cards scroll horizontally without blocking page scroll */}
+          <div ref={beneficiaryScrollRef} className="relative overflow-hidden py-4">
             <div className="beneficiary-track flex gap-6 will-change-transform">
               {filteredTestimonials.map((testimonial, i) => (
                 <div
@@ -1923,7 +1936,7 @@ export default function Saludable() {
             </div>
           </div>
           <div className="flex justify-center mt-6">
-            <span className="text-xs text-[#2E7D32]/50 animate-pulse">Scroll para descubrir más historias ↓</span>
+            <span className="text-xs text-[#2E7D32]/50">Pasa el cursor para pausar • Toca para explorar</span>
           </div>
         </div>
       </section>
