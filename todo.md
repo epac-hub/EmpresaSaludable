@@ -114,3 +114,8 @@
 - [x] Beneficiarios section: category filter to sort through testimonials
 - [x] Hero text WOW effect: split-text reveal with GSAP (letter-by-letter stagger + 3D rotation) + animated gradient on "Saludable"
 - [x] Add Farmacia Isla Verde (Isla Verde, Carolina) to the pharmacy/farmacias listing
+- [x] WOW scroll-reveal effect on all section titles (GSAP split-text with ScrollTrigger)
+- [x] Glassmorphism styling on section header containers
+- [x] Asymmetric layouts and variable typography on section headers
+- [x] Únete Ahora button hover color change effect
+- [x] Aliados logos smooth zoom on hover

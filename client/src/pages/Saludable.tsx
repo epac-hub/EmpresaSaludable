@@ -526,56 +526,74 @@ export default function Saludable() {
           ease: "back.out(1.7)",
         });
 
-      // ═══ CINEMATIC SECTION TRANSITIONS ═══
-      // Each major section reveals with a unique cinematic entrance
-      const sectionRefs = [
-        { ref: celebsRef, direction: 'left' },
-        { ref: pillarsRef, direction: 'bottom' },
-        { ref: statsRef, direction: 'right' },
-        { ref: complianceRef, direction: 'bottom' },
-        { ref: plansRef, direction: 'scale' },
-        { ref: mapRef, direction: 'left' },
-        { ref: contactRef, direction: 'right' },
-      ];
+      // ═══ WOW SPLIT-TEXT SCROLL REVEAL ON ALL SECTION TITLES ═══
+      // Dynamically split .wow-title h2 text into words/chars and animate on scroll
+      const wowTitles = containerRef.current?.querySelectorAll('.wow-title') || [];
+      wowTitles.forEach((title) => {
+        const h2 = title as HTMLElement;
+        const section = h2.closest('section') || h2.parentElement?.parentElement;
+        if (!section) return;
 
-      sectionRefs.forEach(({ ref, direction }) => {
-        if (!ref.current) return;
-        const el = ref.current;
+        // Split text into words and chars (preserve existing spans like .emphasis)
+        const childNodes = Array.from(h2.childNodes);
+        h2.innerHTML = '';
+        childNodes.forEach((node) => {
+          if (node.nodeType === Node.TEXT_NODE) {
+            const words = (node.textContent || '').split(' ').filter(w => w);
+            words.forEach((word) => {
+              const wordSpan = document.createElement('span');
+              wordSpan.className = 'word';
+              word.split('').forEach((char) => {
+                const charSpan = document.createElement('span');
+                charSpan.className = 'char';
+                charSpan.textContent = char;
+                wordSpan.appendChild(charSpan);
+              });
+              h2.appendChild(wordSpan);
+              h2.appendChild(document.createTextNode(' '));
+            });
+          } else if (node.nodeType === Node.ELEMENT_NODE) {
+            const el = node as HTMLElement;
+            const text = el.textContent || '';
+            const wordSpan = document.createElement('span');
+            wordSpan.className = 'word';
+            text.split('').forEach((char) => {
+              const charSpan = document.createElement('span');
+              charSpan.className = 'char ' + el.className;
+              charSpan.textContent = char;
+              wordSpan.appendChild(charSpan);
+            });
+            h2.appendChild(wordSpan);
+            h2.appendChild(document.createTextNode(' '));
+          }
+        });
 
-        // Section header cinematic reveal
-        const header = el.querySelector('h2');
-        if (header) {
-          const fromVars: Record<string, unknown> = {
-            opacity: 0,
-            duration: 1,
-            ease: "power3.out",
-            immediateRender: false,
-          };
-          if (direction === 'left') { fromVars.x = -80; fromVars.clipPath = 'inset(0 100% 0 0)'; }
-          else if (direction === 'right') { fromVars.x = 80; fromVars.clipPath = 'inset(0 0 0 100%)'; }
-          else if (direction === 'scale') { fromVars.scale = 0.85; fromVars.y = 40; }
-          else { fromVars.y = 60; }
+        // Animate chars on scroll
+        const chars = h2.querySelectorAll('.char');
+        gsap.set(chars, { y: 120, opacity: 0, rotateX: -40 });
+        gsap.to(chars, {
+          scrollTrigger: { trigger: section, start: "top 78%" },
+          y: 0,
+          opacity: 1,
+          rotateX: 0,
+          duration: 0.8,
+          stagger: 0.02,
+          ease: "back.out(1.7)",
+        });
+      });
 
-          gsap.from(header, {
-            scrollTrigger: { trigger: el, start: "top 80%" },
-            ...fromVars,
-            clearProps: 'clipPath',
-          });
-        }
-
-        // Subtitle/paragraph reveal with slight delay
-        const subtitle = el.querySelector('p');
-        if (subtitle) {
-          gsap.from(subtitle, {
-            scrollTrigger: { trigger: el, start: "top 78%" },
-            y: 30,
-            opacity: 0,
-            duration: 0.8,
-            delay: 0.15,
-            ease: "power2.out",
-            immediateRender: false,
-          });
-        }
+      // Glass header containers — fade up with scale
+      gsap.utils.toArray<HTMLElement>('.glass-header').forEach((glass) => {
+        const section = glass.closest('section') || glass.parentElement;
+        gsap.from(glass, {
+          scrollTrigger: { trigger: section || glass, start: "top 82%" },
+          y: 40,
+          opacity: 0,
+          scale: 0.96,
+          duration: 1,
+          ease: "power3.out",
+          immediateRender: false,
+        });
       });
 
       // Sections with data-reveal attribute get a full-section cinematic fade-up
@@ -1048,7 +1066,7 @@ export default function Saludable() {
         <MusicPlayer />
         <a
           href="#planes"
-          className="hero-cta inline-flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-[#43A047] to-[#66BB6A] text-white font-bold text-sm rounded-full shadow-[0_8px_32px_rgba(67,160,71,0.4)] hover:shadow-[0_12px_48px_rgba(67,160,71,0.6)] hover:scale-105 active:scale-95 transition-all duration-300 relative overflow-hidden group"
+          className="hero-cta unete-btn inline-flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-[#43A047] to-[#66BB6A] text-white font-bold text-sm rounded-full shadow-[0_8px_32px_rgba(67,160,71,0.4)] relative overflow-hidden group"
           style={{ fontFamily: "'Space Grotesk', sans-serif" }}
         >
           <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
@@ -1163,18 +1181,21 @@ export default function Saludable() {
       {/* ═══ INSPIRADOS POR LOS MEJORES — PROFESSIONAL AMBASSADORS ═══ */}
       <section ref={celebsRef} className="pt-16 pb-24 px-6 overflow-hidden" style={{ background: 'linear-gradient(180deg, #F0F7F4 0%, #FDFCFB 15%, #F0F7F4 40%, #EBF5FB 100%)' }}>
         <div className="max-w-6xl mx-auto">
-          <h2
-            className="text-4xl md:text-5xl font-bold text-center mb-4 text-[#2D3B2D]"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
-            Inspirados por los <span className="text-[#6BAF8D]">Mejores</span>
-          </h2>
-          <p className="text-center text-[#2D3B2D]/60 mb-6 max-w-2xl mx-auto">
-            Profesionales puertorriqueños de excelencia que lideran cada dimensión del bienestar en Empresa Saludable.
-          </p>
-          <p className="text-center text-[#2D3B2D]/50 mb-16 max-w-3xl mx-auto text-sm leading-relaxed">
-            Cada embajador aporta experiencia clínica, académica y corporativa real. Desde la nutrición basada en evidencia hasta la medicina preventiva, el fitness funcional y la consultoría en cultura organizacional — nuestro equipo diseña programas que transforman empresas en toda la isla.
-          </p>
+          <div className="glass-header max-w-4xl mb-16 md:text-left text-center wow-title-shimmer md:ml-0 mx-auto">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-[#6BAF8D]/10 text-[#2E7D32] text-xs font-bold uppercase tracking-[0.2em] mb-4 border border-[#6BAF8D]/20">Equipo de Excelencia</span>
+            <h2
+              className="wow-title text-4xl md:text-6xl font-bold mb-4 text-[#2D3B2D]"
+              style={{ fontFamily: "'Playfair Display', serif" }}
+            >
+              Inspirados por los <span className="emphasis">Mejores</span>
+            </h2>
+            <p className="text-[#2D3B2D]/60 max-w-2xl mb-3">
+              Profesionales puertorriqueños de excelencia que lideran cada dimensión del bienestar en Empresa Saludable.
+            </p>
+            <p className="text-[#2D3B2D]/50 max-w-3xl text-sm leading-relaxed">
+              Cada embajador aporta experiencia clínica, académica y corporativa real. Desde la nutrición basada en evidencia hasta la medicina preventiva, el fitness funcional y la consultoría en cultura organizacional — nuestro equipo diseña programas que transforman empresas en toda la isla.
+            </p>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             {AMBASSADORS.map((amb, i) => (
@@ -1560,15 +1581,17 @@ export default function Saludable() {
               Enfoque Holístico Circular
             </span>
           </div>
-          <h2
-            className="text-5xl md:text-7xl font-bold text-center mb-6 text-[#1B5E20]"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
-            Los 5 Pilares del <span className="text-[#43A047] drop-shadow-[0_0_20px_rgba(67,160,71,0.4)]">Bienestar</span>
-          </h2>
-          <p className="text-center text-[#2E7D32]/70 mb-8 max-w-3xl mx-auto text-lg leading-relaxed">
-            Cada pilar apoya al siguiente en un ciclo continuo de bienestar integral — un sistema donde la salud mental fortalece la física, la física potencia la nutrición, y así sucesivamente.
-          </p>
+          <div className="glass-header max-w-4xl mx-auto mb-8 text-center wow-title-shimmer">
+            <h2
+              className="wow-title text-5xl md:text-7xl font-bold text-center mb-6 text-[#1B5E20]"
+              style={{ fontFamily: "'Playfair Display', serif" }}
+            >
+              Los 5 Pilares del <span className="emphasis">Bienestar</span>
+            </h2>
+            <p className="text-[#2E7D32]/70 max-w-3xl mx-auto text-lg leading-relaxed">
+              Cada pilar apoya al siguiente en un ciclo continuo de bienestar integral — un sistema donde la salud mental fortalece la física, la física potencia la nutrición, y así sucesivamente.
+            </p>
+          </div>
 
           {/* Bienestar Integral Context Block */}
           <div data-bienestar-block className="max-w-4xl mx-auto mb-20 p-10 rounded-3xl bg-white/50 backdrop-blur-md border border-[#66BB6A]/30 shadow-xl relative overflow-hidden hover:shadow-2xl hover:shadow-[#43A047]/25 hover:border-[#66BB6A]/60 hover:scale-[1.04] hover:-translate-y-3 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] cursor-default group">
@@ -1776,15 +1799,17 @@ export default function Saludable() {
         <div className="absolute inset-0 bg-gradient-to-b from-[#E8F5E0]/50 via-[#C8E6C9]/45 to-[#A5D6A7]/55" />
 
         <div className="relative z-10 max-w-6xl mx-auto">
-          <h2
-            className="text-4xl md:text-5xl font-bold text-center mb-4 text-[#1B5E20]"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
-            Lo Que Dicen Nuestros <span className="text-[#43A047] drop-shadow-[0_0_15px_rgba(67,160,71,0.3)]">Beneficiarios</span>
-          </h2>
-          <p className="text-center text-[#2E7D32]/70 mb-8 max-w-xl mx-auto">
-            Historias reales de transformación y bienestar en toda la isla.
-          </p>
+          <div className="glass-header max-w-3xl mx-auto mb-8 text-center wow-title-shimmer">
+            <h2
+              className="wow-title text-4xl md:text-5xl font-bold text-center mb-4 text-[#1B5E20]"
+              style={{ fontFamily: "'Playfair Display', serif" }}
+            >
+              Lo Que Dicen Nuestros <span className="emphasis">Beneficiarios</span>
+            </h2>
+            <p className="text-[#2E7D32]/70 max-w-xl mx-auto">
+              Historias reales de transformación y bienestar en toda la isla.
+            </p>
+          </div>
 
           {/* Category Filter Buttons */}
           <div className="flex flex-wrap justify-center gap-3 mb-12">
@@ -1893,15 +1918,17 @@ export default function Saludable() {
               Proceso Certificado
             </span>
           </div>
-          <h2
-            className="text-5xl md:text-7xl font-bold text-center mb-6 text-[#1B5E20]"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
-            Planificación y <span className="text-[#43A047] drop-shadow-[0_0_20px_rgba(67,160,71,0.4)]">Cumplimiento</span>
-          </h2>
-          <p className="text-center text-[#2E7D32]/70 mb-20 max-w-3xl mx-auto text-lg leading-relaxed">
-            Un proceso estructurado en 5 pasos para garantizar resultados medibles y cumplimiento regulatorio completo con el Depto. de Salud y Depto. del Trabajo de PR.
-          </p>
+          <div className="glass-header max-w-4xl mx-auto mb-20 text-center wow-title-shimmer">
+            <h2
+              className="wow-title text-5xl md:text-7xl font-bold text-center mb-6 text-[#1B5E20]"
+              style={{ fontFamily: "'Playfair Display', serif" }}
+            >
+              Planificación y <span className="emphasis">Cumplimiento</span>
+            </h2>
+            <p className="text-[#2E7D32]/70 max-w-3xl mx-auto text-lg leading-relaxed">
+              Un proceso estructurado en 5 pasos para garantizar resultados medibles y cumplimiento regulatorio completo con el Depto. de Salud y Depto. del Trabajo de PR.
+            </p>
+          </div>
 
           {/* Animated connecting line */}
           <div className="hidden md:block absolute top-[calc(50%+80px)] left-[8%] right-[8%] h-[2px] z-0">
@@ -1981,15 +2008,17 @@ export default function Saludable() {
           />
         </Suspense>
         <div className="max-w-7xl mx-auto relative z-10">
-          <h2
-            className="text-4xl md:text-5xl font-bold text-center mb-4 text-[#2D3B2D]"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
-            Planes de <span className="text-[#6BAF8D]">Servicio</span>
-          </h2>
-          <p className="text-center text-[#2D3B2D]/60 mb-16 max-w-2xl mx-auto">
-            Soluciones escalables adaptadas al tamaño y necesidades de tu organización. Todos incluyen acceso a nuestra red de Farmacias de Comunidad.
-          </p>
+          <div className="glass-header max-w-3xl mx-auto mb-16 text-center wow-title-shimmer">
+            <h2
+              className="wow-title text-4xl md:text-5xl font-bold text-center mb-4 text-[#2D3B2D]"
+              style={{ fontFamily: "'Playfair Display', serif" }}
+            >
+              Planes de <span className="emphasis">Servicio</span>
+            </h2>
+            <p className="text-[#2D3B2D]/60 max-w-2xl mx-auto">
+              Soluciones escalables adaptadas al tamaño y necesidades de tu organización. Todos incluyen acceso a nuestra red de Farmacias de Comunidad.
+            </p>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {PLANS.map((plan, i) => (
@@ -2095,7 +2124,7 @@ export default function Saludable() {
             Alineados con las regulaciones de
           </p>
           <div className="flex flex-wrap items-center justify-center gap-12 md:gap-20">
-            <a href="https://www.salud.gov.pr/" target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center gap-3 transition-all duration-500 hover:scale-110 cursor-pointer">
+            <a href="https://www.salud.gov.pr/" target="_blank" rel="noopener noreferrer" className="aliado-logo group flex flex-col items-center gap-3 cursor-pointer">
               <img
                 src="/manus-storage/logo-depto-salud_962431fe.png"
                 alt="Departamento de Salud de Puerto Rico"
@@ -2103,7 +2132,7 @@ export default function Saludable() {
               />
               <span className="text-xs text-[#2D3B2D]/50 font-medium group-hover:text-[#43A047] transition-colors duration-300">Depto. de Salud de PR</span>
             </a>
-            <a href="https://www.trabajo.pr.gov/" target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center gap-3 transition-all duration-500 hover:scale-110 cursor-pointer">
+            <a href="https://www.trabajo.pr.gov/" target="_blank" rel="noopener noreferrer" className="aliado-logo group flex flex-col items-center gap-3 cursor-pointer">
               <img
                 src="/manus-storage/logo-depto-trabajo_d62964d2.png"
                 alt="Departamento del Trabajo y Recursos Humanos"
@@ -2126,15 +2155,17 @@ export default function Saludable() {
       {/* ═══ FAQ — PREGUNTAS FRECUENTES (GSAP Accordion) ═══ */}
       <section className="py-24 px-6 bg-[#F4F9F2]" data-reveal="fade-up">
         <div className="max-w-4xl mx-auto">
-          <h2
-            className="text-3xl md:text-4xl font-bold text-center mb-4 text-[#2D3B2D]"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
-            Preguntas <span className="text-[#6BAF8D]">Frecuentes</span>
-          </h2>
-          <p className="text-center text-[#2D3B2D]/60 mb-12 max-w-xl mx-auto">
-            Resolvemos las dudas más comunes sobre nuestros programas de bienestar corporativo.
-          </p>
+          <div className="glass-header max-w-2xl mx-auto mb-12 text-center wow-title-shimmer">
+            <h2
+              className="wow-title text-3xl md:text-4xl font-bold text-center mb-4 text-[#2D3B2D]"
+              style={{ fontFamily: "'Playfair Display', serif" }}
+            >
+              Preguntas <span className="emphasis">Frecuentes</span>
+            </h2>
+            <p className="text-[#2D3B2D]/60 max-w-xl mx-auto">
+              Resolvemos las dudas más comunes sobre nuestros programas de bienestar corporativo.
+            </p>
+          </div>
 
           <div className="space-y-3" data-faq-accordion>
             {[
@@ -2252,15 +2283,17 @@ export default function Saludable() {
       {/* ═══ PHARMACY MAP ═══ */}
       <section ref={mapRef} id="farmacias" className="py-24 px-6 bg-white">
         <div className="max-w-6xl mx-auto">
-          <h2
-            className="text-4xl md:text-5xl font-bold text-center mb-4 text-[#2D3B2D]"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
-            Red de <span className="text-[#6BAF8D]">Farmacias</span>
-          </h2>
-          <p className="text-center text-[#2D3B2D]/60 mb-12 max-w-2xl mx-auto">
-            Más de 112 Farmacias de Comunidad en 70 municipios de Puerto Rico, listas para servirte.
-          </p>
+          <div className="glass-header max-w-3xl mb-12 md:text-right text-center wow-title-shimmer md:mr-0 md:ml-auto mx-auto">
+            <h2
+              className="wow-title text-4xl md:text-5xl font-bold mb-4 text-[#2D3B2D]"
+              style={{ fontFamily: "'Playfair Display', serif" }}
+            >
+              Red de <span className="emphasis">Farmacias</span>
+            </h2>
+            <p className="text-[#2D3B2D]/60 max-w-2xl md:ml-auto">
+              Más de 112 Farmacias de Comunidad en 70 municipios de Puerto Rico, listas para servirte.
+            </p>
+          </div>
 
           <div className="map-container">
             <Suspense
@@ -2290,19 +2323,21 @@ export default function Saludable() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[#66BB6A]/10 blur-[150px] pointer-events-none" />
 
         <div className="max-w-3xl mx-auto relative z-10">
-          <h2
-            className="text-4xl md:text-5xl font-bold text-center mb-4 text-[#2D3B2D] typewriter-title"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
-            <span className="typewriter-text">Hablemos de </span><span className="text-[#6BAF8D] typewriter-text">Bienestar</span>
-          </h2>
-          <p className="text-center text-[#2D3B2D]/60 mb-12">
-            Escríbenos a{" "}
-            <a href="mailto:hola@empresasaludable.org" className="text-[#6BAF8D] hover:underline">
-              hola@empresasaludable.org
-            </a>{" "}
-            o completa el formulario.
-          </p>
+          <div className="glass-header max-w-2xl mx-auto mb-12 text-center wow-title-shimmer">
+            <h2
+              className="wow-title text-4xl md:text-5xl font-bold text-center mb-4 text-[#2D3B2D] typewriter-title"
+              style={{ fontFamily: "'Playfair Display', serif" }}
+            >
+              <span className="typewriter-text">Hablemos de </span><span className="emphasis typewriter-text">Bienestar</span>
+            </h2>
+            <p className="text-[#2D3B2D]/60">
+              Escríbenos a{" "}
+              <a href="mailto:hola@empresasaludable.org" className="text-[#6BAF8D] hover:underline">
+                hola@empresasaludable.org
+              </a>{" "}
+              o completa el formulario.
+            </p>
+          </div>
 
           {formSubmitted ? (
             <div className="contact-form text-center py-16 animate-[fadeIn_0.6s_ease-out] relative">
