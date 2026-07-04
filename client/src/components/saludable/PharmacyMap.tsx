@@ -1,22 +1,11 @@
 /**
  * PharmacyMap — Interactive Google Maps pharmacy locator for Puerto Rico
  * Design: Light Botanical Sanctuary — sage markers, clean info windows
- * Featured: Super Farmacia Isla Verde, Carolina PR
+ * Shows map + municipality dropdown only (no featured pharmacy banner)
  */
 import { useEffect, useRef, useState } from "react";
 import { MapView } from "@/components/Map";
 import { PHARMACIES } from "./pharmacyData";
-
-// Featured pharmacy
-const FEATURED_PHARMACY = {
-  name: "Super Farmacia Isla Verde",
-  municipality: "Carolina",
-  address: "1035 #AO-16 Marginal Villamar, Isla Verde",
-  phone: "+1-787-200-0380",
-  lat: 18.4498,
-  lng: -66.0015,
-  featured: true,
-};
 
 export default function PharmacyMap() {
   const [selectedMunicipio, setSelectedMunicipio] = useState<string>("all");
@@ -148,58 +137,11 @@ export default function PharmacyMap() {
       "Yauco": { lat: 18.0350, lng: -66.8497 },
     };
 
-    // Add FEATURED marker first (Super Farmacia Isla Verde)
-    const featuredEl = document.createElement("div");
-    featuredEl.innerHTML = `
-      <div style="
-        width: 44px; height: 44px;
-        background: linear-gradient(135deg, #6BAF8D, #4A9070);
-        border: 3px solid #FFFFFF;
-        border-radius: 50% 50% 50% 0;
-        transform: rotate(-45deg);
-        box-shadow: 0 4px 16px rgba(107,175,141,0.5);
-        display: flex; align-items: center; justify-content: center;
-        animation: pulse 2s infinite;
-      ">
-        <span style="transform: rotate(45deg); color: #FFF; font-size: 18px; font-weight: bold;">★</span>
-      </div>
-    `;
-
-    const featuredMarker = new google.maps.marker.AdvancedMarkerElement({
-      map,
-      position: { lat: FEATURED_PHARMACY.lat, lng: FEATURED_PHARMACY.lng },
-      content: featuredEl,
-      title: FEATURED_PHARMACY.name,
-      zIndex: 1000,
-    });
-
-    featuredMarker.addListener("click", () => {
-      if (infoWindowRef.current) {
-        infoWindowRef.current.setContent(`
-          <div style="padding: 16px; font-family: 'DM Sans', sans-serif; max-width: 280px;">
-            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-              <span style="background: #6BAF8D; color: white; font-size: 10px; padding: 2px 8px; border-radius: 12px; font-weight: 600;">★ DESTACADA</span>
-            </div>
-            <h3 style="margin: 0 0 6px; color: #2D3B2D; font-size: 16px; font-weight: 700;">${FEATURED_PHARMACY.name}</h3>
-            <p style="margin: 0 0 4px; color: #6BAF8D; font-size: 13px; font-weight: 500;">${FEATURED_PHARMACY.municipality}, Puerto Rico</p>
-            <p style="margin: 0 0 8px; color: #666; font-size: 12px;">${FEATURED_PHARMACY.address}</p>
-            <a href="tel:${FEATURED_PHARMACY.phone.replace(/[^+\d]/g, '')}" style="color: #6BAF8D; font-size: 13px; text-decoration: none; font-weight: 600;">${FEATURED_PHARMACY.phone}</a>
-          </div>
-        `);
-        infoWindowRef.current.open(map, featuredMarker);
-      }
-    });
-
-    markersRef.current.push(featuredMarker);
-
-    // Place regular markers
+    // Place markers for all filtered pharmacies
     const pharmaciesToShow = filtered.slice(0, 100);
     const offsetCounters: Record<string, number> = {};
 
     pharmaciesToShow.forEach((pharmacy) => {
-      // Skip featured pharmacy from regular markers
-      if (pharmacy.name === "Super Farmacia Isla Verde" && pharmacy.municipality === "Carolina") return;
-
       const muniKey = pharmacy.municipality;
       const coords = MUNI_COORDS[muniKey];
       if (!coords) return;
@@ -263,29 +205,6 @@ export default function PharmacyMap() {
 
   return (
     <div className="w-full">
-      {/* ═══ FEATURED PHARMACY BANNER ═══ */}
-      <div className="mb-8 p-6 rounded-2xl bg-gradient-to-r from-[#6BAF8D]/10 to-[#A8C5A0]/10 border border-[#6BAF8D]/30 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-[#6BAF8D]/5 rounded-full -translate-y-1/2 translate-x-1/2" />
-        <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <span className="px-3 py-1 rounded-full bg-[#6BAF8D] text-white text-xs font-semibold">★ Farmacia Destacada</span>
-            </div>
-            <h3 className="text-xl font-bold text-[#2D3B2D]" style={{ fontFamily: "'Playfair Display', serif" }}>
-              {FEATURED_PHARMACY.name}
-            </h3>
-            <p className="text-sm text-[#2D3B2D]/60 mt-1">{FEATURED_PHARMACY.address}</p>
-            <p className="text-sm text-[#2D3B2D]/60">{FEATURED_PHARMACY.municipality}, Puerto Rico</p>
-          </div>
-          <a
-            href={`tel:${FEATURED_PHARMACY.phone.replace(/[^+\d]/g, "")}`}
-            className="px-6 py-3 rounded-full bg-[#6BAF8D] text-white font-semibold hover:bg-[#5A9E7D] transition-all duration-300 hover:scale-105 shadow-md shadow-[#6BAF8D]/20 text-sm whitespace-nowrap"
-          >
-            Llamar: {FEATURED_PHARMACY.phone}
-          </a>
-        </div>
-      </div>
-
       {/* ═══ FILTER CONTROLS ═══ */}
       <div className="flex flex-col md:flex-row gap-4 mb-6">
         {/* Search input */}
@@ -361,36 +280,6 @@ export default function PharmacyMap() {
         Mostrando {Math.min(filtered.length, 100)} de {filtered.length} farmacias
         {selectedMunicipio !== "all" && ` en ${selectedMunicipio}`}
       </p>
-
-      {/* ═══ PHARMACY LIST ═══ */}
-      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-h-[400px] overflow-y-auto pr-2">
-        {filtered.slice(0, 30).map((pharmacy, i) => {
-          const isFeatured = pharmacy.name === "Super Farmacia Isla Verde" && pharmacy.municipality === "Carolina";
-          return (
-            <div
-              key={i}
-              className={`p-4 rounded-xl border transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md ${
-                isFeatured
-                  ? "bg-[#6BAF8D]/5 border-[#6BAF8D]/40 shadow-sm"
-                  : "bg-white border-[#A8C5A0]/20 hover:border-[#6BAF8D]/30"
-              }`}
-            >
-              {isFeatured && (
-                <span className="inline-block px-2 py-0.5 rounded-full bg-[#6BAF8D] text-white text-[10px] font-semibold mb-2">★ DESTACADA</span>
-              )}
-              <h4 className="text-sm font-semibold text-[#2D3B2D] mb-1">{pharmacy.name}</h4>
-              <p className="text-xs text-[#6BAF8D] font-medium mb-1">{pharmacy.municipality}</p>
-              <p className="text-xs text-[#2D3B2D]/50 mb-2">{pharmacy.address}</p>
-              <a
-                href={`tel:${pharmacy.phone.replace(/[^+\d]/g, "")}`}
-                className="text-xs text-[#6BAF8D] hover:text-[#5A9E7D] font-medium transition-colors"
-              >
-                {pharmacy.phone}
-              </a>
-            </div>
-          );
-        })}
-      </div>
     </div>
   );
 }
