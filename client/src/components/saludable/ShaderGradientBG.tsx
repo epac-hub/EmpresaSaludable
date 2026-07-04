@@ -1,9 +1,9 @@
 /**
  * ShaderGradientBG — Animated simplex noise gradient shader background
- * Replaces static section backgrounds with a living, breathing gradient
+ * INTERACTIVE: Colors react to mouse position (distortion + color shift)
  * Uses React Three Fiber + custom GLSL fragment shader
  */
-import { useRef } from "react";
+import { useRef, useEffect, useCallback } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
@@ -22,6 +22,7 @@ const fragmentShader = `
   uniform vec3 uColor2;
   uniform vec3 uColor3;
   uniform float uOpacity;
+  uniform vec2 uMouse; // Normalized mouse position (0-1)
   varying vec2 vUv;
 
   // Simplex 2D noise
@@ -57,21 +58,34 @@ const fragmentShader = `
   void main() {
     vec2 uv = vUv;
     
+    // Mouse influence: distort UV based on distance to mouse
+    vec2 mouseOffset = uMouse - uv;
+    float mouseDist = length(mouseOffset);
+    float mouseInfluence = smoothstep(0.5, 0.0, mouseDist) * 0.15;
+    uv += mouseOffset * mouseInfluence;
+    
     // Multi-octave noise for organic flow
     float n1 = snoise(uv * 2.0 + uTime * 0.08);
     float n2 = snoise(uv * 4.0 - uTime * 0.12 + 100.0);
     float n3 = snoise(uv * 1.5 + uTime * 0.05 + 50.0);
     
+    // Mouse adds extra turbulence near cursor
+    float mouseTurbulence = snoise(uv * 6.0 + uMouse * 3.0 + uTime * 0.2) * mouseInfluence * 2.0;
+    
     // Combine octaves with different weights
-    float noise = n1 * 0.5 + n2 * 0.3 + n3 * 0.2;
+    float noise = n1 * 0.5 + n2 * 0.3 + n3 * 0.2 + mouseTurbulence;
     noise = noise * 0.5 + 0.5; // Normalize to 0-1
     
     // Blend three colors based on noise
     vec3 color = mix(uColor1, uColor2, smoothstep(0.2, 0.6, noise));
     color = mix(color, uColor3, smoothstep(0.5, 0.9, noise + sin(uTime * 0.1) * 0.15));
     
+    // Mouse proximity brightens colors slightly
+    float mouseGlow = smoothstep(0.4, 0.0, mouseDist) * 0.12;
+    color += mouseGlow;
+    
     // Subtle vignette
-    float vignette = 1.0 - length((uv - 0.5) * 1.2) * 0.3;
+    float vignette = 1.0 - length((vUv - 0.5) * 1.2) * 0.3;
     color *= vignette;
     
     gl_FragColor = vec4(color, uOpacity);
@@ -84,9 +98,10 @@ interface ShaderPlaneProps {
   color3: [number, number, number];
   opacity: number;
   speed?: number;
+  mouseRef: React.MutableRefObject<{ x: number; y: number }>;
 }
 
-function ShaderPlane({ color1, color2, color3, opacity, speed = 1 }: ShaderPlaneProps) {
+function ShaderPlane({ color1, color2, color3, opacity, speed = 1, mouseRef }: ShaderPlaneProps) {
   const meshRef = useRef<THREE.Mesh>(null);
   const uniformsRef = useRef({
     uTime: { value: 0 },
@@ -94,10 +109,16 @@ function ShaderPlane({ color1, color2, color3, opacity, speed = 1 }: ShaderPlane
     uColor2: { value: new THREE.Vector3(...color2) },
     uColor3: { value: new THREE.Vector3(...color3) },
     uOpacity: { value: opacity },
+    uMouse: { value: new THREE.Vector2(0.5, 0.5) },
   });
 
   useFrame(({ clock }) => {
     uniformsRef.current.uTime.value = clock.getElapsedTime() * speed;
+    // Smooth lerp toward mouse position
+    const target = mouseRef.current;
+    const current = uniformsRef.current.uMouse.value;
+    current.x += (target.x - current.x) * 0.05;
+    current.y += (target.y - current.y) * 0.05;
   });
 
   return (
@@ -130,15 +151,36 @@ interface ShaderGradientBGProps {
 }
 
 export default function ShaderGradientBG({
-  color1 = [0.91, 0.96, 0.88],   // #E8F5E0 light green
-  color2 = [0.78, 0.90, 0.79],   // #C8E6C9 medium green
-  color3 = [0.65, 0.84, 0.65],   // #A5D6A7 sage green
+  color1 = [0.91, 0.96, 0.88],
+  color2 = [0.78, 0.90, 0.79],
+  color3 = [0.65, 0.84, 0.65],
   opacity = 0.6,
   speed = 1,
   className = "",
 }: ShaderGradientBGProps) {
+  const mouseRef = useRef({ x: 0.5, y: 0.5 });
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    const container = containerRef.current;
+    if (!container) return;
+    const rect = container.getBoundingClientRect();
+    // Only update if mouse is within or near this section
+    if (e.clientY >= rect.top - 200 && e.clientY <= rect.bottom + 200) {
+      mouseRef.current = {
+        x: (e.clientX - rect.left) / rect.width,
+        y: 1.0 - (e.clientY - rect.top) / rect.height, // Flip Y for GLSL
+      };
+    }
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, [handleMouseMove]);
+
   return (
-    <div className={`absolute inset-0 z-0 pointer-events-none ${className}`}>
+    <div ref={containerRef} className={`absolute inset-0 z-0 pointer-events-none ${className}`}>
       <Canvas
         camera={{ position: [0, 0, 5], fov: 60 }}
         style={{ width: "100%", height: "100%" }}
@@ -151,6 +193,7 @@ export default function ShaderGradientBG({
           color3={color3}
           opacity={opacity}
           speed={speed}
+          mouseRef={mouseRef}
         />
       </Canvas>
     </div>

@@ -109,3 +109,6 @@
 - [x] GLSL animated noise gradient shader as background layer replacing static section backgrounds
 - [x] Custom loading animation that transitions smoothly into the cosmic portal effect on first load
 - [x] Beneficiarios horizontal scroll panels: interactive hover effects (scale up cards on hover)
+- [x] Particle trail effect on custom cursor for immersive scrolling experience
+- [x] GLSL shader backgrounds interactive: organic flowing colors react to mouse movements
+- [x] Beneficiarios section: category filter to sort through testimonials

@@ -260,36 +260,43 @@ const PLANS = [
   },
 ];
 
+const TESTIMONIAL_CATEGORIES = ["Todos", "Bienestar", "Farmacias", "Finanzas", "Cumplimiento"] as const;
+
 const TESTIMONIALS = [
   {
     quote: "Desde que mi empresa se unió a Empresa Saludable, la energía del equipo cambió por completo. Los talleres de salud mental nos dieron herramientas reales.",
     name: "María del Carmen Ortiz",
     role: "Directora de RRHH, Corporación del Caribe",
     municipality: "San Juan",
+    category: "Bienestar" as const,
   },
   {
     quote: "La red de farmacias me permite acceder a mis medicamentos y consultas nutricionales cerca de casa. Es un servicio que realmente funciona.",
     name: "José Luis Rivera",
     role: "Beneficiario, Plan Profesional",
     municipality: "Carolina",
+    category: "Farmacias" as const,
   },
   {
     quote: "El programa de salud financiera me ayudó a planificar mi retiro con confianza. Nunca pensé que un programa de bienestar incluyera eso.",
     name: "Ana Sofía Méndez",
     role: "Empleada, Sector Farmacéutico",
     municipality: "Caguas",
+    category: "Finanzas" as const,
   },
   {
     quote: "Como farmacéutica aliada, veo el impacto directo en mis pacientes. Llegan más informados y comprometidos con su salud.",
     name: "Dra. Carmen Luisa Vega",
     role: "Farmacéutica, Red Aliada",
     municipality: "Carolina",
+    category: "Farmacias" as const,
   },
   {
     quote: "El cumplimiento regulatorio ya no es una carga. El equipo nos guía paso a paso y nos mantiene al día con cada requisito.",
     name: "Roberto Colón Torres",
     role: "CEO, Grupo Salud Integral",
     municipality: "Ponce",
+    category: "Cumplimiento" as const,
   },
 ];
 
@@ -319,6 +326,12 @@ export default function Saludable() {
   const [apptForm, setApptForm] = useState({ name: '', email: '', phone: '', date: '', message: '' });
   const [apptSubmitting, setApptSubmitting] = useState(false);
   const [apptSuccess, setApptSuccess] = useState(false);
+
+  // Testimonial category filter
+  const [testimonialFilter, setTestimonialFilter] = useState<typeof TESTIMONIAL_CATEGORIES[number]>("Todos");
+  const filteredTestimonials = testimonialFilter === "Todos"
+    ? TESTIMONIALS
+    : TESTIMONIALS.filter(t => t.category === testimonialFilter);
 
   // Preloader state
   const [preloaderDone, setPreloaderDone] = useState(false);
@@ -935,6 +948,38 @@ export default function Saludable() {
 
     return () => ctx.revert();
   }, []);
+
+  // Refresh horizontal scroll when filter changes
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (beneficiaryScrollRef.current && testimonialSectionRef.current) {
+        const track = beneficiaryScrollRef.current.querySelector('.beneficiary-track') as HTMLElement;
+        if (track) {
+          ScrollTrigger.getAll().forEach(st => {
+            if (st.trigger === testimonialSectionRef.current) st.kill();
+          });
+          gsap.set(track, { x: 0 });
+          const totalWidth = track.scrollWidth - beneficiaryScrollRef.current.offsetWidth;
+          if (totalWidth > 0) {
+            gsap.to(track, {
+              scrollTrigger: {
+                trigger: testimonialSectionRef.current,
+                start: "top top",
+                end: () => `+=${totalWidth}`,
+                scrub: 1,
+                pin: true,
+                anticipatePin: 1,
+              },
+              x: -totalWidth,
+              ease: "none",
+            });
+          }
+          ScrollTrigger.refresh();
+        }
+      }
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [testimonialFilter]);
 
   // ─── Animated Counter ─────────────────────────────────────────────────────
   function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
@@ -1778,14 +1823,31 @@ export default function Saludable() {
           >
             Lo Que Dicen Nuestros <span className="text-[#43A047] drop-shadow-[0_0_15px_rgba(67,160,71,0.3)]">Beneficiarios</span>
           </h2>
-          <p className="text-center text-[#2E7D32]/70 mb-16 max-w-xl mx-auto">
+          <p className="text-center text-[#2E7D32]/70 mb-8 max-w-xl mx-auto">
             Historias reales de transformación y bienestar en toda la isla.
           </p>
+
+          {/* Category Filter Buttons */}
+          <div className="flex flex-wrap justify-center gap-3 mb-12">
+            {TESTIMONIAL_CATEGORIES.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setTestimonialFilter(cat)}
+                className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+                  testimonialFilter === cat
+                    ? 'bg-[#43A047] text-white shadow-lg shadow-[#43A047]/30 scale-105'
+                    : 'bg-white/60 text-[#2E7D32] border border-[#66BB6A]/30 hover:bg-[#43A047]/10 hover:border-[#43A047]/50 hover:scale-105'
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
 
           {/* HORIZONTAL SCROLL PANELS — vertical scroll triggers horizontal card movement */}
           <div ref={beneficiaryScrollRef} className="relative overflow-hidden">
             <div className="beneficiary-track flex gap-6 will-change-transform">
-              {TESTIMONIALS.map((testimonial, i) => (
+              {filteredTestimonials.map((testimonial, i) => (
                 <div
                   key={i}
                   className="beneficiary-panel flex-shrink-0 w-[340px] md:w-[380px] p-8 rounded-2xl bg-white/55 backdrop-blur-md border border-[#66BB6A]/20 shadow-xl hover:shadow-[0_20px_60px_rgba(67,160,71,0.35)] hover:-translate-y-4 hover:scale-[1.06] hover:bg-white/80 hover:border-[#43A047]/40 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group cursor-pointer"
