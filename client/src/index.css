@@ -236,3 +236,34 @@ body::after {
   20% { opacity: 1; transform: scale(1.2); }
   100% { opacity: 0; transform: scale(0.5) translate(var(--tx, 20px), var(--ty, -30px)); }
 }
+
+/* ═══ SECTION TRANSITION BRIDGES ═══ */
+.section-bridge {
+  position: relative;
+  height: 5rem;
+  margin-top: -1px;
+  overflow: hidden;
+}
+
+.section-bridge::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--bridge-gradient, linear-gradient(to bottom, transparent, #F0F7F4));
+}
+
+/* ═══ SUN ICON SLOW ROTATION ═══ */
+@keyframes sunRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.sun-icon-rotate {
+  animation: sunRotate 20s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sun-icon-rotate {
+    animation: none;
+  }
+}

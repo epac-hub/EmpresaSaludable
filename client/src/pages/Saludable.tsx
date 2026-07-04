@@ -636,6 +636,34 @@ export default function Saludable() {
             ease: "none",
           });
         }
+
+        // Bienestar Integral block — parallax float + scale on scroll
+        const bienestarBlock = pillarsRef.current.querySelector("[data-bienestar-block]");
+        if (bienestarBlock) {
+          gsap.from(bienestarBlock, {
+            scrollTrigger: {
+              trigger: bienestarBlock,
+              start: "top 85%",
+              toggleActions: "play none none none",
+            },
+            y: 50,
+            opacity: 0,
+            scale: 0.95,
+            duration: 1,
+            ease: "power3.out",
+            immediateRender: false,
+          });
+          gsap.to(bienestarBlock, {
+            scrollTrigger: {
+              trigger: pillarsRef.current,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 1.5,
+            },
+            y: -25,
+            ease: "none",
+          });
+        }
       }
 
       // Stats counter
@@ -898,8 +926,19 @@ export default function Saludable() {
         </div>
       </section>
 
+      {/* ═══ TRANSITION BRIDGE: Hero → Ambassadors ═══ */}
+      <div className="relative h-32 -mt-1">
+        {/* Gradient from dark (hero bottom) to light (ambassadors top) */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-[#1B3B2D]/30 to-[#F0F7F4]" />
+        {/* Organic wave SVG divider */}
+        <svg className="absolute bottom-0 left-0 w-full h-20" viewBox="0 0 1440 80" preserveAspectRatio="none" fill="none">
+          <path d="M0,40 C360,80 720,0 1080,40 C1260,60 1380,50 1440,40 L1440,80 L0,80 Z" fill="#F0F7F4" />
+          <path d="M0,50 C360,70 720,20 1080,50 C1260,65 1380,55 1440,50 L1440,80 L0,80 Z" fill="#F0F7F4" opacity="0.5" />
+        </svg>
+      </div>
+
       {/* ═══ INSPIRADOS POR LOS MEJORES — PROFESSIONAL AMBASSADORS ═══ */}
-      <section ref={celebsRef} className="py-24 px-6 overflow-hidden" style={{ background: 'linear-gradient(135deg, #FDFCFB 0%, #F0F7F4 40%, #EBF5FB 100%)' }}>
+      <section ref={celebsRef} className="pt-16 pb-24 px-6 overflow-hidden" style={{ background: 'linear-gradient(180deg, #F0F7F4 0%, #FDFCFB 15%, #F0F7F4 40%, #EBF5FB 100%)' }}>
         <div className="max-w-6xl mx-auto">
           <h2
             className="text-4xl md:text-5xl font-bold text-center mb-4 text-[#2D3B2D]"
@@ -918,7 +957,7 @@ export default function Saludable() {
             {AMBASSADORS.map((amb, i) => (
               <div
                 key={i}
-                className="celeb-card group relative flex flex-col md:flex-row rounded-3xl overflow-hidden bg-white border border-[#A8C5A0]/20 shadow-md hover:shadow-2xl hover:shadow-[#6BAF8D]/20 transition-all duration-500 hover:-translate-y-3 hover:border-[#6BAF8D]/40"
+                className="celeb-card group relative flex flex-col md:flex-row rounded-3xl overflow-hidden bg-white border border-[#A8C5A0]/20 shadow-md hover:shadow-[0_25px_60px_rgba(107,175,141,0.25)] transition-all duration-500 hover:-translate-y-4 hover:scale-[1.02] hover:border-[#6BAF8D]/50"
                 style={{ transformStyle: 'preserve-3d', perspective: '1200px' }}
                 onMouseMove={(e) => {
                   const card = e.currentTarget;
@@ -1253,8 +1292,26 @@ export default function Saludable() {
         </div>
       )}
 
+      {/* ═══ TRANSITION BRIDGE: Ambassadors → Testimonios Carousel ═══ */}
+      <div className="relative h-20 -mt-1">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#EBF5FB] to-[#FDFCFB]" />
+        <svg className="absolute bottom-0 left-0 w-full h-12" viewBox="0 0 1440 48" preserveAspectRatio="none" fill="none">
+          <path d="M0,24 C360,48 720,0 1080,24 C1260,36 1380,30 1440,24 L1440,48 L0,48 Z" fill="#FDFCFB" />
+          <path d="M0,32 C480,48 960,12 1440,32 L1440,48 L0,48 Z" fill="#FDFCFB" opacity="0.6" />
+        </svg>
+      </div>
+
       {/* ═══ TESTIMONIOS DE CLIENTES — AUTO-ROTATING CAROUSEL ═══ */}
       <TestimonialCarousel />
+
+      {/* ═══ TRANSITION BRIDGE: Testimonios → Pilares ═══ */}
+      <div className="relative h-24 -mt-1">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#F0F7F4] to-[#E8F5E9]" />
+        <svg className="absolute bottom-0 left-0 w-full h-16" viewBox="0 0 1440 64" preserveAspectRatio="none" fill="none">
+          <path d="M0,32 C480,64 960,0 1440,32 L1440,64 L0,64 Z" fill="#E8F5E9" />
+          <path d="M0,40 C480,56 960,16 1440,40 L1440,64 L0,64 Z" fill="#E8F5E9" opacity="0.6" />
+        </svg>
+      </div>
 
       {/* ═══ LOS 5 PILARES DEL BIENESTAR — SUMMER GREEN PARALLAX ═══ */}
 
@@ -1281,11 +1338,11 @@ export default function Saludable() {
           </p>
 
           {/* Bienestar Integral Context Block */}
-          <div className="max-w-4xl mx-auto mb-20 p-8 rounded-2xl bg-white/50 backdrop-blur-sm border border-[#66BB6A]/30 shadow-lg relative overflow-hidden">
+          <div data-bienestar-block className="max-w-4xl mx-auto mb-20 p-8 rounded-2xl bg-white/50 backdrop-blur-sm border border-[#66BB6A]/30 shadow-lg relative overflow-hidden hover:shadow-xl hover:shadow-[#43A047]/15 hover:border-[#66BB6A]/50 transition-all duration-700">
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#43A047] via-[#66BB6A] to-[#81C784]" />
             <div className="flex flex-col md:flex-row items-center gap-6">
-              <div className="flex-shrink-0 w-20 h-20 rounded-full bg-gradient-to-br from-[#43A047] to-[#66BB6A] flex items-center justify-center shadow-lg">
-                <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="flex-shrink-0 w-20 h-20 rounded-full bg-gradient-to-br from-[#43A047] to-[#66BB6A] flex items-center justify-center shadow-lg shadow-[#43A047]/30">
+                <svg className="w-10 h-10 text-white sun-icon-rotate" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 3v1m0 16v1m-8-9H3m18 0h-1m-2.636-5.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707" />
                   <circle cx="12" cy="12" r="4" strokeWidth={1.5} />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8a4 4 0 0 1 4 4m-4-4a4 4 0 0 0-4 4m4 4a4 4 0 0 1-4-4m4 4a4 4 0 0 0 4-4" />
@@ -1428,6 +1485,14 @@ export default function Saludable() {
         </div>
       </section>
 
+      {/* ═══ TRANSITION BRIDGE: Pilares → Stats ═══ */}
+      <div className="relative h-20 -mt-1">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#E8F5E9] to-[#43A047]" />
+        <svg className="absolute bottom-0 left-0 w-full h-12" viewBox="0 0 1440 48" preserveAspectRatio="none" fill="none">
+          <path d="M0,24 C360,48 720,0 1080,24 C1260,36 1380,30 1440,24 L1440,48 L0,48 Z" fill="#43A047" />
+        </svg>
+      </div>
+
       {/* ═══ STATS DASHBOARD ═══ */}
       <section ref={statsRef} className="py-20 px-6 bg-gradient-to-r from-[#43A047] via-[#66BB6A] to-[#43A047]">
         <div className="max-w-5xl mx-auto">
@@ -1443,6 +1508,15 @@ export default function Saludable() {
           </div>
         </div>
       </section>
+
+      {/* ═══ TRANSITION BRIDGE: Stats → Testimonials Video ═══ */}
+      <div className="relative h-20 -mt-1">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#43A047] to-[#E8F5E0]" />
+        <svg className="absolute bottom-0 left-0 w-full h-12" viewBox="0 0 1440 48" preserveAspectRatio="none" fill="none">
+          <path d="M0,20 C360,48 720,0 1080,28 C1260,40 1380,32 1440,24 L1440,48 L0,48 Z" fill="#E8F5E0" />
+          <path d="M0,30 C480,48 960,12 1440,32 L1440,48 L0,48 Z" fill="#E8F5E0" opacity="0.5" />
+        </svg>
+      </div>
 
       {/* ═══ TESTIMONIALS — VIDEO BACKGROUND ═══ */}
       <section ref={testimonialSectionRef} className="relative py-32 px-6 overflow-hidden">
@@ -1505,6 +1579,15 @@ export default function Saludable() {
           </div>
         </div>
       </section>
+
+      {/* ═══ TRANSITION BRIDGE: Testimonials → Compliance ═══ */}
+      <div className="relative h-24 -mt-1">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#A5D6A7]/80 to-[#E8F5E0]" />
+        <svg className="absolute bottom-0 left-0 w-full h-16" viewBox="0 0 1440 64" preserveAspectRatio="none" fill="none">
+          <path d="M0,28 C360,64 720,0 1080,36 C1260,50 1380,42 1440,32 L1440,64 L0,64 Z" fill="#E8F5E0" />
+          <path d="M0,40 C480,56 960,20 1440,44 L1440,64 L0,64 Z" fill="#E8F5E0" opacity="0.5" />
+        </svg>
+      </div>
 
       {/* ═══ PLANIFICACIÓN Y CUMPLIMIENTO — WOW INTERACTIVE TIMELINE ═══ */}
       <section ref={complianceRef} id="cumplimiento" className="py-32 px-6 relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #E8F5E0 0%, #C8E6C9 40%, #B9DEB5 70%, #E8F5E0 100%)' }}>
@@ -1615,6 +1698,14 @@ export default function Saludable() {
         </div>
       </section>
 
+      {/* ═══ TRANSITION BRIDGE: Compliance → Plans ═══ */}
+      <div className="relative h-20 -mt-1">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#E8F5E0] to-[#F4F9F2]" />
+        <svg className="absolute bottom-0 left-0 w-full h-12" viewBox="0 0 1440 48" preserveAspectRatio="none" fill="none">
+          <path d="M0,24 C480,48 960,0 1440,24 L1440,48 L0,48 Z" fill="#F4F9F2" />
+        </svg>
+      </div>
+
       {/* ═══ PLANES DE SERVICIO — FULL 3 PLANS ═══ */}
       <section ref={plansRef} id="planes" className="py-24 px-6 bg-gradient-to-b from-[#F4F9F2] to-[#EDF5EA]">
         <div className="max-w-7xl mx-auto">
@@ -1717,6 +1808,14 @@ export default function Saludable() {
         </div>
       </section>
 
+      {/* ═══ TRANSITION BRIDGE: Plans → Logos ═══ */}
+      <div className="relative h-16 -mt-1">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#EDF5EA] to-white" />
+        <svg className="absolute bottom-0 left-0 w-full h-10" viewBox="0 0 1440 40" preserveAspectRatio="none" fill="none">
+          <path d="M0,20 C360,40 720,0 1080,20 C1260,30 1380,25 1440,20 L1440,40 L0,40 Z" fill="white" />
+        </svg>
+      </div>
+
       {/* ═══ LOGOS INSTITUCIONALES — CARRUSEL INTERACTIVO ═══ */}
       <section className="py-16 px-6 bg-white border-y border-[#A8C5A0]/10" data-reveal="fade-up">
         <div className="max-w-5xl mx-auto">
@@ -1743,6 +1842,14 @@ export default function Saludable() {
           </div>
         </div>
       </section>
+
+      {/* ═══ TRANSITION BRIDGE: Logos → FAQ ═══ */}
+      <div className="relative h-16 -mt-1">
+        <div className="absolute inset-0 bg-gradient-to-b from-white to-[#F4F9F2]" />
+        <svg className="absolute bottom-0 left-0 w-full h-10" viewBox="0 0 1440 40" preserveAspectRatio="none" fill="none">
+          <path d="M0,20 C480,40 960,0 1440,20 L1440,40 L0,40 Z" fill="#F4F9F2" />
+        </svg>
+      </div>
 
       {/* ═══ FAQ — PREGUNTAS FRECUENTES (GSAP Accordion) ═══ */}
       <section className="py-24 px-6 bg-[#F4F9F2]" data-reveal="fade-up">
@@ -1843,6 +1950,14 @@ export default function Saludable() {
         </div>
       </section>
 
+      {/* ═══ TRANSITION BRIDGE: FAQ → Map ═══ */}
+      <div className="relative h-16 -mt-1">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#F4F9F2] to-white" />
+        <svg className="absolute bottom-0 left-0 w-full h-10" viewBox="0 0 1440 40" preserveAspectRatio="none" fill="none">
+          <path d="M0,20 C360,40 720,0 1080,20 C1260,30 1380,25 1440,20 L1440,40 L0,40 Z" fill="white" />
+        </svg>
+      </div>
+
       {/* ═══ PHARMACY MAP ═══ */}
       <section ref={mapRef} id="farmacias" className="py-24 px-6 bg-white">
         <div className="max-w-6xl mx-auto">
@@ -1869,6 +1984,14 @@ export default function Saludable() {
           </div>
         </div>
       </section>
+
+      {/* ═══ TRANSITION BRIDGE: Map → Contact ═══ */}
+      <div className="relative h-16 -mt-1">
+        <div className="absolute inset-0 bg-gradient-to-b from-white to-[#F4F9F2]" />
+        <svg className="absolute bottom-0 left-0 w-full h-10" viewBox="0 0 1440 40" preserveAspectRatio="none" fill="none">
+          <path d="M0,20 C480,40 960,0 1440,20 L1440,40 L0,40 Z" fill="#F4F9F2" />
+        </svg>
+      </div>
 
       {/* ═══ HABLEMOS DE BIENESTAR — CONTACT FORM (LAST) ═══ */}
       <section ref={contactRef} id="contacto" className="py-24 px-6 bg-[#F4F9F2] relative overflow-hidden">
@@ -2022,8 +2145,16 @@ export default function Saludable() {
         </div>
       </section>
 
+      {/* ═══ TRANSITION BRIDGE: Contact → Footer ═══ */}
+      <div className="relative h-16 -mt-1">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#F4F9F2] to-[#2D3B2D]" />
+        <svg className="absolute bottom-0 left-0 w-full h-10" viewBox="0 0 1440 40" preserveAspectRatio="none" fill="none">
+          <path d="M0,20 C360,40 720,0 1080,20 C1260,30 1380,25 1440,20 L1440,40 L0,40 Z" fill="#2D3B2D" />
+        </svg>
+      </div>
+
       {/* ═══ FOOTER ═══ */}
-      <footer className="py-12 px-6 border-t border-[#A8C5A0]/20 bg-[#2D3B2D]">
+      <footer className="py-12 px-6 border-t-0 bg-[#2D3B2D]">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
             <img src="/manus-storage/saludable-logo_630e22f3.png" alt="" className="w-8 h-8" />

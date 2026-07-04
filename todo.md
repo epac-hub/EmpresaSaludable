@@ -85,3 +85,8 @@
 - [x] Agendar Cita popup: Animated thank-you message after form submission (confetti burst + gradient checkmark + staggered fadeIn)
 - [x] Specialist modals: Add specific services description for each specialist (5 services per specialist)
 - [x] Bienestar Integral: Remove graduation cap (birrete) icon and replace with sun/radiance wellness icon
+- [x] Smoother transition from Hero to Ambassadors section (gradient bridge, color harmony, cinematic flow)
+- [x] Apply wave gradient transition bridges between ALL sections (9 bridges total)
+- [x] Add slow rotation animation to the sun/wellness icon in Bienestar Integral block
+- [x] Add enhanced hover effect on specialist cards (glow, scale, translate)
+- [x] Add parallax effect with ScrollTrigger on Bienestar Integral block
