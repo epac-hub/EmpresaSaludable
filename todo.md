@@ -103,3 +103,6 @@
 - [x] GSAP preloader: logo reveal + progress bar + fade-out before page content
 - [x] Scroll-to-top floating button (green, bottom-right, appears after 600px scroll)
 - [x] Contact form: real-time validation with green checkmarks on valid fields + red errors
+- [x] Footer: make whiter/more transparent, properly center the tagline text
+- [x] Pilares: clip-path circle portal reveal on scroll (cosmic portal effect with GSAP ScrollTrigger)
+- [x] Beneficiarios (video testimonials): horizontal scroll panels (vertical scroll → horizontal card movement)

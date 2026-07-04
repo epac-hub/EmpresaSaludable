@@ -330,6 +330,7 @@ export default function Saludable() {
   const [showParticles3D, setShowParticles3D] = useState(false);
   const [showTestimonialVideo, setShowTestimonialVideo] = useState(false);
   const testimonialSectionRef = useRef<HTMLElement>(null);
+  const beneficiaryScrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const observerOptions = { rootMargin: '400px 0px', threshold: 0 };
@@ -629,6 +630,19 @@ export default function Saludable() {
 
       // Pillars WOW entrance — 3D flip + stagger + glow burst
       if (pillarsRef.current) {
+        // CLIP-PATH CIRCLE PORTAL REVEAL — cosmic portal opens on scroll
+        gsap.set(pillarsRef.current, { clipPath: "circle(0% at 50% 50%)" });
+        gsap.to(pillarsRef.current, {
+          scrollTrigger: {
+            trigger: pillarsRef.current,
+            start: "top 90%",
+            end: "top 40%",
+            scrub: 1,
+          },
+          clipPath: "circle(100% at 50% 50%)",
+          ease: "power2.inOut",
+        });
+
         // Entrance animation for pillar nodes
         gsap.from(".pillar-node", {
           scrollTrigger: { trigger: pillarsRef.current, start: "top 75%" },
@@ -870,6 +884,28 @@ export default function Saludable() {
           ease: "power3.out",
           immediateRender: false,
         });
+      }
+
+      // Beneficiarios horizontal scroll — vertical scroll drives horizontal movement
+      if (beneficiaryScrollRef.current && testimonialSectionRef.current) {
+        const track = beneficiaryScrollRef.current.querySelector('.beneficiary-track') as HTMLElement;
+        if (track) {
+          const totalWidth = track.scrollWidth - beneficiaryScrollRef.current.offsetWidth;
+          if (totalWidth > 0) {
+            gsap.to(track, {
+              scrollTrigger: {
+                trigger: testimonialSectionRef.current,
+                start: "top top",
+                end: () => `+=${totalWidth}`,
+                scrub: 1,
+                pin: true,
+                anticipatePin: 1,
+              },
+              x: -totalWidth,
+              ease: "none",
+            });
+          }
+        }
       }
     }, containerRef);
 
@@ -1706,28 +1742,31 @@ export default function Saludable() {
             Historias reales de transformación y bienestar en toda la isla.
           </p>
 
-          <div className="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-6" style={{ scrollbarWidth: 'none' }}>
-            {TESTIMONIALS.map((testimonial, i) => (
-              <div
-                key={i}
-                className="flex-shrink-0 w-[340px] md:w-[380px] snap-center p-8 rounded-2xl bg-white/55 backdrop-blur-md border border-[#66BB6A]/20 shadow-xl hover:shadow-[0_20px_60px_rgba(67,160,71,0.2)] hover:-translate-y-3 hover:scale-[1.02] hover:bg-white/75 transition-all duration-700 group"
-              >
-                <svg className="w-8 h-8 text-[#43A047]/50 mb-4 group-hover:text-[#2E7D32] group-hover:scale-110 transition-all duration-500" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983z" />
-                </svg>
-                <p className="text-[#2D3B2D]/80 text-sm leading-relaxed mb-6 italic">
-                  "{testimonial.quote}"
-                </p>
-                <div className="border-t border-[#66BB6A]/20 pt-4">
-                  <p className="font-semibold text-[#1B5E20] text-sm">{testimonial.name}</p>
-                  <p className="text-xs text-[#43A047] mt-0.5">{testimonial.role}</p>
-                  <p className="text-xs text-[#2D3B2D]/50 mt-0.5">{testimonial.municipality}, PR</p>
+          {/* HORIZONTAL SCROLL PANELS — vertical scroll triggers horizontal card movement */}
+          <div ref={beneficiaryScrollRef} className="relative overflow-hidden">
+            <div className="beneficiary-track flex gap-6 will-change-transform">
+              {TESTIMONIALS.map((testimonial, i) => (
+                <div
+                  key={i}
+                  className="beneficiary-panel flex-shrink-0 w-[340px] md:w-[380px] p-8 rounded-2xl bg-white/55 backdrop-blur-md border border-[#66BB6A]/20 shadow-xl hover:shadow-[0_20px_60px_rgba(67,160,71,0.2)] hover:-translate-y-3 hover:scale-[1.02] hover:bg-white/75 transition-all duration-700 group"
+                >
+                  <svg className="w-8 h-8 text-[#43A047]/50 mb-4 group-hover:text-[#2E7D32] group-hover:scale-110 transition-all duration-500" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983z" />
+                  </svg>
+                  <p className="text-[#2D3B2D]/80 text-sm leading-relaxed mb-6 italic">
+                    "{testimonial.quote}"
+                  </p>
+                  <div className="border-t border-[#66BB6A]/20 pt-4">
+                    <p className="font-semibold text-[#1B5E20] text-sm">{testimonial.name}</p>
+                    <p className="text-xs text-[#43A047] mt-0.5">{testimonial.role}</p>
+                    <p className="text-xs text-[#2D3B2D]/50 mt-0.5">{testimonial.municipality}, PR</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
           <div className="flex justify-center mt-6">
-            <span className="text-xs text-[#2E7D32]/50">← Desliza para ver más →</span>
+            <span className="text-xs text-[#2E7D32]/50 animate-pulse">Scroll para descubrir más historias ↓</span>
           </div>
         </div>
       </section>
@@ -2345,32 +2384,32 @@ export default function Saludable() {
       </div>
 
       {/* ═══ FOOTER ═══ */}
-      <footer className="py-16 px-6 border-t-0 bg-[#2D3B2D]">
-        <div className="max-w-4xl mx-auto text-center">
+      <footer className="py-16 px-6 border-t-0 bg-white/80 backdrop-blur-md">
+        <div className="max-w-4xl mx-auto text-center flex flex-col items-center">
           {/* Logo + Brand */}
-          <div className="flex items-center justify-center gap-3 mb-6">
+          <div className="flex items-center justify-center gap-3 mb-4">
             <img src="/manus-storage/saludable-logo_630e22f3.png" alt="Empresa Saludable" className="w-10 h-10 rounded-lg" />
-            <span className="text-xl font-bold text-white" style={{ fontFamily: "'Playfair Display', serif" }}>
-              Empresa <span className="text-[#A8C5A0]">Saludable</span>
+            <span className="text-xl font-bold text-[#1B3B1B]" style={{ fontFamily: "'Playfair Display', serif" }}>
+              Empresa <span className="text-[#2E7D32]">Saludable</span>
             </span>
           </div>
 
-          {/* Tagline */}
-          <p className="text-white/50 text-sm mb-8 max-w-md mx-auto">
+          {/* Tagline — centered */}
+          <p className="text-[#4a6b4a] text-sm mb-8 text-center w-full">
             Transformando el bienestar corporativo en Puerto Rico, un pilar a la vez.
           </p>
 
           {/* Nav links */}
-          <div className="flex items-center justify-center gap-8 mb-8 text-sm text-white/60">
-            <a href="#pilares" className="hover:text-[#A8C5A0] transition-colors duration-300">Pilares</a>
-            <a href="#farmacias" className="hover:text-[#A8C5A0] transition-colors duration-300">Farmacias</a>
-            <a href="#cumplimiento" className="hover:text-[#A8C5A0] transition-colors duration-300">Cumplimiento</a>
-            <a href="#planes" className="hover:text-[#A8C5A0] transition-colors duration-300">Planes</a>
-            <a href="#contacto" className="hover:text-[#A8C5A0] transition-colors duration-300">Contacto</a>
+          <div className="flex items-center justify-center flex-wrap gap-6 md:gap-8 mb-8 text-sm text-[#3a5a3a]">
+            <a href="#pilares" className="hover:text-[#2E7D32] transition-colors duration-300">Pilares</a>
+            <a href="#farmacias" className="hover:text-[#2E7D32] transition-colors duration-300">Farmacias</a>
+            <a href="#cumplimiento" className="hover:text-[#2E7D32] transition-colors duration-300">Cumplimiento</a>
+            <a href="#planes" className="hover:text-[#2E7D32] transition-colors duration-300">Planes</a>
+            <a href="#contacto" className="hover:text-[#2E7D32] transition-colors duration-300">Contacto</a>
           </div>
 
           {/* Contact */}
-          <a href="mailto:hola@empresasaludable.org" className="inline-flex items-center gap-2 text-[#A8C5A0] hover:text-white transition-colors duration-300 text-sm mb-8">
+          <a href="mailto:hola@empresasaludable.org" className="inline-flex items-center gap-2 text-[#2E7D32] hover:text-[#1B5E20] transition-colors duration-300 text-sm mb-8">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
@@ -2378,10 +2417,10 @@ export default function Saludable() {
           </a>
 
           {/* Divider */}
-          <div className="w-24 h-px bg-white/10 mx-auto mb-6" />
+          <div className="w-24 h-px bg-[#2E7D32]/20 mx-auto mb-6" />
 
           {/* Copyright */}
-          <p className="text-white/30 text-xs">
+          <p className="text-[#6b8b6b] text-xs text-center">
             © {new Date().getFullYear()} Empresa Saludable. Todos los derechos reservados.
           </p>
         </div>
