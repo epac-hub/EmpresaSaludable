@@ -2098,22 +2098,22 @@ export default function Saludable() {
             Alineados con las regulaciones de
           </p>
           <div className="flex flex-wrap items-center justify-center gap-12 md:gap-20">
-            <div className="group flex flex-col items-center gap-3 transition-all duration-500 hover:scale-110">
+            <a href="https://www.salud.gov.pr/" target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center gap-3 transition-all duration-500 hover:scale-110 cursor-pointer">
               <img
                 src="/manus-storage/logo-depto-salud_962431fe.png"
                 alt="Departamento de Salud de Puerto Rico"
                 className="h-20 md:h-24 w-auto object-contain opacity-80 group-hover:opacity-100 transition-opacity duration-500"
               />
-              <span className="text-xs text-[#2D3B2D]/50 font-medium">Depto. de Salud de PR</span>
-            </div>
-            <div className="group flex flex-col items-center gap-3 transition-all duration-500 hover:scale-110">
+              <span className="text-xs text-[#2D3B2D]/50 font-medium group-hover:text-[#43A047] transition-colors duration-300">Depto. de Salud de PR</span>
+            </a>
+            <a href="https://www.trabajo.pr.gov/" target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center gap-3 transition-all duration-500 hover:scale-110 cursor-pointer">
               <img
                 src="/manus-storage/logo-depto-trabajo_d62964d2.png"
                 alt="Departamento del Trabajo y Recursos Humanos"
                 className="h-20 md:h-24 w-auto object-contain opacity-80 group-hover:opacity-100 transition-opacity duration-500"
               />
-              <span className="text-xs text-[#2D3B2D]/50 font-medium">Depto. del Trabajo y RRHH</span>
-            </div>
+              <span className="text-xs text-[#2D3B2D]/50 font-medium group-hover:text-[#43A047] transition-colors duration-300">Depto. del Trabajo y RRHH</span>
+            </a>
           </div>
         </div>
       </section>
