@@ -1172,22 +1172,17 @@ export default function Saludable() {
 
       {/* ═══ HERO SECTION ═══ */}
       <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Hero video — people moving, with poster for instant first frame */}
+        {/* Hero image — Puerto Rico Wellness Center */}
         <div className="absolute inset-0 overflow-hidden">
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            poster="/manus-storage/hero-boricua-poster_e1973084.jpg"
+          <img
+            src="/manus-storage/hero-final-v9_5403a3ed.jpg"
+            alt="Puerto Rico Wellness Center — grupo de personas haciendo yoga y fitness en un centro de bienestar con vista al Caribe"
             className="hero-video absolute inset-0 w-full h-full object-cover"
-            style={{ filter: 'brightness(1.05) saturate(1.2)' }}
-          >
-            <source src="/manus-storage/hero-boricua-people-moving_848eae57.mp4" type="video/mp4" />
-          </video>
+            style={{ filter: 'brightness(1.05) saturate(1.1)' }}
+          />
         </div>
         {/* Dark overlay for text readability — people still visible through it */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/25 to-black/50" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/15 to-black/40" />
 
 
 
