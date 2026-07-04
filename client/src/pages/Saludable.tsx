@@ -530,13 +530,18 @@ export default function Saludable() {
 
       {/* ═══ HERO SECTION ═══ */}
       <section ref={heroRef} className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
-        <img
-          src="/manus-storage/hero-saludable-bg_18a1d2fb.png"
-          alt=""
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
           className="hero-video absolute inset-0 w-full h-full object-cover"
-          style={{ filter: 'brightness(1.05) saturate(1.1)' }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-br from-[#E8F5E0]/85 via-[#F4F9F2]/75 to-[#DFF0D8]/80" />
+          style={{ filter: 'brightness(1.1) saturate(1.15)' }}
+        >
+          <source src="/manus-storage/hero-wellness-video_9acc7ff0.mp4" type="video/mp4" />
+        </video>
+        {/* Lighter overlay — let the video show through more */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#E8F5E0]/50 via-[#F4F9F2]/40 to-[#DFF0D8]/45" />
 
         {/* Green particles with mouse-tracking */}
         <GreenParticles />

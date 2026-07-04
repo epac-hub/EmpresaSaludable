@@ -30,3 +30,6 @@
 - [x] Contact form: typewriter effect on section title
 - [x] Contact form: glow/brillo effect on field focus
 - [x] Fix: Replace "farmacias aliadas" with "Farmacias de Comunidad" everywhere
+- [x] Hero: Convert background to video loop (like testimonials section) - gente latina saludable + frutas
+- [x] Hero: Reduce blur/overlay so people and image are more visible and appreciated
+- [x] Cursor: Ensure futuristic cursor works consistently in Pilares and Planificación sections (global via CSS + window listener)
