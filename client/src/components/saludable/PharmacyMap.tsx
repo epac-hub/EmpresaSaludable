@@ -142,19 +142,26 @@ export default function PharmacyMap() {
     const offsetCounters: Record<string, number> = {};
 
     pharmaciesToShow.forEach((pharmacy) => {
-      const muniKey = pharmacy.municipality;
-      const coords = MUNI_COORDS[muniKey];
-      if (!coords) return;
+      let position: { lat: number; lng: number };
 
-      if (!offsetCounters[muniKey]) offsetCounters[muniKey] = 0;
-      offsetCounters[muniKey]++;
-      const offset = offsetCounters[muniKey] * 0.003;
-      const angle = (offsetCounters[muniKey] * 137.5 * Math.PI) / 180;
+      // Use pharmacy-specific coordinates if available
+      if (pharmacy.lat && pharmacy.lng) {
+        position = { lat: pharmacy.lat, lng: pharmacy.lng };
+      } else {
+        const muniKey = pharmacy.municipality;
+        const coords = MUNI_COORDS[muniKey];
+        if (!coords) return;
 
-      const position = {
-        lat: coords.lat + Math.cos(angle) * offset,
-        lng: coords.lng + Math.sin(angle) * offset,
-      };
+        if (!offsetCounters[muniKey]) offsetCounters[muniKey] = 0;
+        offsetCounters[muniKey]++;
+        const offset = offsetCounters[muniKey] * 0.003;
+        const angle = (offsetCounters[muniKey] * 137.5 * Math.PI) / 180;
+
+        position = {
+          lat: coords.lat + Math.cos(angle) * offset,
+          lng: coords.lng + Math.sin(angle) * offset,
+        };
+      }
 
       const markerEl = document.createElement("div");
       markerEl.innerHTML = `

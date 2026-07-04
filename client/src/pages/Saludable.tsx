@@ -515,45 +515,16 @@ export default function Saludable() {
   // ─── GSAP Animations (FIXED: immediateRender:false on all from() calls) ──
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Split-letter WOW reveal — dramatic letter-by-letter entrance
-      const kineticTl = gsap.timeline({ delay: 0 });
+      // Hero CTA entrance animation
+      const kineticTl = gsap.timeline({ delay: 0.3 });
       kineticTl
-        // BIENVENIDO A — letters cascade in from below with rotation
-        .from(".hero-letter", {
-          y: 80,
-          rotateX: -90,
-          opacity: 0,
-          stagger: 0.04,
-          duration: 0.6,
-          ease: "back.out(2)",
-        })
-        // EMPRESA — letters slam in from above with elastic bounce
-        .from(".empresa-letter", {
-          y: -150,
-          rotateY: 90,
-          rotateX: -45,
-          opacity: 0,
-          scale: 0.3,
-          stagger: 0.06,
-          duration: 1,
-          ease: "elastic.out(1, 0.5)",
-        }, "-=0.2")
-        // SALUDABLE — scales up from nothing with glow
-        .from(".saludable-word", {
-          scale: 0.3,
-          opacity: 0,
-          rotateX: -30,
-          y: 60,
-          duration: 1.2,
-          ease: "power4.out",
-        }, "-=0.6")
         .from(".hero-cta", {
           y: 40,
           opacity: 0,
           scale: 0.9,
           duration: 0.8,
           ease: "back.out(1.7)",
-        }, "-=1.2");
+        });
 
       // ═══ CINEMATIC SECTION TRANSITIONS ═══
       // Each major section reveals with a unique cinematic entrance
@@ -1149,52 +1120,8 @@ export default function Saludable() {
         {/* Dark overlay for text readability — people still visible through it */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/25 to-black/50" />
 
-        {/* Kinetic Typography — Split-letter WOW reveal */}
+        {/* Hero CTA only — no title text */}
         <div className="relative z-10 text-center px-6">
-          {/* BIENVENIDO A — letter-by-letter reveal */}
-          <div className="hero-title overflow-hidden mb-8">
-            <span className="inline-block">
-              {"BIENVENIDO A".split("").map((char, i) => (
-                <span
-                  key={i}
-                  className="hero-letter inline-block text-3xl md:text-5xl lg:text-6xl tracking-[0.3em] uppercase text-white font-bold"
-                  style={{ fontFamily: "'Space Grotesk', sans-serif", textShadow: '0 4px 20px rgba(0,0,0,0.6)' }}
-                >
-                  {char === " " ? "\u00A0" : char}
-                </span>
-              ))}
-            </span>
-          </div>
-          <h1 className="hero-title overflow-hidden">
-            {/* EMPRESA — letter split with 3D rotation */}
-            <span className="block overflow-hidden">
-              {"Empresa".split("").map((char, i) => (
-                <span
-                  key={i}
-                  className="empresa-letter inline-block text-5xl md:text-7xl lg:text-[8rem] font-black leading-[0.9] tracking-tight text-white"
-                  style={{ fontFamily: "'Playfair Display', serif", textShadow: '0 6px 40px rgba(0,0,0,0.6)' }}
-                >
-                  {char}
-                </span>
-              ))}
-            </span>
-            {/* SALUDABLE — animated flowing gradient */}
-            <span
-              className="saludable-word block text-5xl md:text-7xl lg:text-[8rem] font-black leading-[0.9] tracking-tight"
-              style={{
-                fontFamily: "'Playfair Display', serif",
-                backgroundImage: 'linear-gradient(90deg, #81C784, #43A047, #2E7D32, #66BB6A, #A5D6A7, #43A047, #81C784)',
-                backgroundSize: '300% 100%',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-                animation: 'gradientFlow 4s ease-in-out infinite',
-                filter: 'drop-shadow(0 6px 40px rgba(76,175,80,0.5))',
-              }}
-            >
-              Saludable
-            </span>
-          </h1>
 
           {/* Animated CTA button — scrolls to services */}
           <a
