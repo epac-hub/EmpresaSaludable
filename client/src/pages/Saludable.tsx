@@ -558,22 +558,24 @@ export default function Saludable() {
           }
         });
 
-        // Animate words on scroll — slide up with fade and slight rotation
+        // Animate words on scroll — slide up with fade
+        // Using gsap.from so the FINAL state is always visible (natural CSS state)
+        // This prevents titles from staying invisible if ScrollTrigger fails
         const words = h2.querySelectorAll('.word');
         if (words.length > 0) {
-          gsap.set(words, { y: 40, opacity: 0, rotateX: -10 });
-          gsap.to(words, {
+          gsap.from(words, {
             scrollTrigger: {
               trigger: section,
-              start: "top 90%",
+              start: "top 85%",
               toggleActions: "play none none none",
             },
-            y: 0,
-            opacity: 1,
-            rotateX: 0,
+            y: 35,
+            opacity: 0,
+            rotateX: -8,
             duration: 0.6,
             stagger: 0.06,
             ease: "power3.out",
+            immediateRender: false,
           });
         }
       });
