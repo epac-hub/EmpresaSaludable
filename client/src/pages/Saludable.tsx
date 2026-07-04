@@ -14,6 +14,7 @@ import FuturisticCursor from "@/components/saludable/FuturisticCursor";
 import MagneticButton from "@/components/saludable/MagneticButton";
 // GreenParticles removed from hero (video background now)
 // Interactive3DParticles removed — replaced with lightweight CSS floating dots
+import ComplianceParticles3D from "@/components/saludable/ComplianceParticles3D";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -25,7 +26,7 @@ const AMBASSADORS = [
   {
     name: "Lcda. Mariana Colón, RDN",
     role: "Nutrición Clínica",
-    image: "/manus-storage/amb-nutricion_5ee6a936.png",
+    image: "/manus-storage/nutricionista-boricua_b6ef4a1e.jpg",
     quote: "Una alimentación consciente es la base de toda transformación corporativa.",
     specialty: "Nutricionista clínica certificada con 12 años de experiencia diseñando planes alimentarios para empresas. Especialista en nutrición tropical y prevención de enfermedades metabólicas.",
     expertise: ["Planes nutricionales corporativos", "Talleres de cocina saludable", "Evaluaciones metabólicas"],
@@ -41,7 +42,7 @@ const AMBASSADORS = [
   {
     name: "Valeria Santiago, CPT, CES",
     role: "Fitness Corporativo",
-    image: "/manus-storage/amb-fitness_76026c92.png",
+    image: "/manus-storage/valeria-boricua_0889189c.jpg",
     quote: "El movimiento diario transforma equipos completos — física, mental y emocionalmente.",
     specialty: "Entrenadora personal certificada por NASM con especialización en ejercicio correctivo. Diseña programas de actividad física adaptados al entorno de oficina y manufactura.",
     expertise: ["Clases grupales corporativas", "Ergonomía activa", "Programas de reducción de estrés"],
@@ -299,16 +300,19 @@ export default function Saludable() {
   // ─── Lenis Smooth Scroll (FIXED: single RAF via gsap.ticker only) ────────
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.4,
+      duration: 1.2,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      touchMultiplier: 2,
     });
 
     lenis.on("scroll", ScrollTrigger.update);
-    gsap.ticker.add((time) => lenis.raf(time * 1000));
+    const rafCallback = (time: number) => lenis.raf(time * 1000);
+    gsap.ticker.add(rafCallback);
     gsap.ticker.lagSmoothing(0);
 
     return () => {
-      gsap.ticker.remove((time) => lenis.raf(time * 1000));
+      gsap.ticker.remove(rafCallback);
       lenis.destroy();
     };
   }, []);
@@ -318,7 +322,7 @@ export default function Saludable() {
   useEffect(() => {
     const ctx = gsap.context(() => {
       // Kinetic Typography — staggered word reveal with motion
-      const kineticTl = gsap.timeline({ delay: 0.4 });
+      const kineticTl = gsap.timeline({ delay: 0 });
       kineticTl
         .from(".hero-title", {
           y: 60,
@@ -358,42 +362,89 @@ export default function Saludable() {
 
       // Pillars WOW entrance — 3D flip + stagger + glow burst
       if (pillarsRef.current) {
-        gsap.from(".pillar-card", {
-          scrollTrigger: { trigger: pillarsRef.current, start: "top 80%" },
-          y: 120,
+        // Entrance animation for pillar nodes
+        gsap.from(".pillar-node", {
+          scrollTrigger: { trigger: pillarsRef.current, start: "top 75%" },
+          scale: 0,
           opacity: 0,
-          scale: 0.7,
-          rotateX: -25,
-          rotateY: 15,
-          duration: 1.2,
+          duration: 0.8,
           stagger: 0.15,
-          ease: "elastic.out(1, 0.6)",
+          ease: "back.out(1.7)",
           immediateRender: false,
         });
 
-        // Scroll-driven parallax on pillar cards
-        gsap.utils.toArray<HTMLElement>(".pillar-card").forEach((card, i) => {
-          gsap.to(card, {
+        // Scroll-driven parallax — elements at DIFFERENT speeds for depth
+        // Background orbs move slowly (far away)
+        gsap.to(pillarsRef.current.querySelectorAll(".absolute.rounded-full"), {
+          scrollTrigger: {
+            trigger: pillarsRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1.5,
+          },
+          y: -60,
+          ease: "none",
+        });
+
+        // Center hub moves at medium speed
+        const centerHub = pillarsRef.current.querySelector(".absolute.inset-0.flex");
+        if (centerHub) {
+          gsap.to(centerHub, {
             scrollTrigger: {
               trigger: pillarsRef.current,
               start: "top bottom",
               end: "bottom top",
               scrub: 1,
             },
-            y: -30 - (i * 10),
+            y: -30,
+            ease: "none",
+          });
+        }
+
+        // Pillar nodes move faster (foreground) with individual speeds
+        gsap.utils.toArray<HTMLElement>(".pillar-node").forEach((node, i) => {
+          gsap.to(node, {
+            scrollTrigger: {
+              trigger: pillarsRef.current,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 0.8,
+            },
+            y: -20 - (i * 12),
+            rotation: (i % 2 === 0) ? 3 : -3,
             ease: "none",
           });
         });
 
-        // Floating continuous animation on pillar icons
-        gsap.to(".pillar-icon-float", {
-          y: -8,
-          duration: 2,
-          ease: "sine.inOut",
-          yoyo: true,
-          repeat: -1,
-          stagger: 0.3,
-        });
+        // Rotating dashed circle spins faster on scroll
+        const dashedCircle = pillarsRef.current.querySelector(".animate-\\[spin_60s_linear_infinite\\]");
+        if (dashedCircle) {
+          gsap.to(dashedCircle, {
+            scrollTrigger: {
+              trigger: pillarsRef.current,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 2,
+            },
+            rotation: 180,
+            ease: "none",
+          });
+        }
+
+        // Section title parallax (moves slower = anchored feel)
+        const sectionTitle = pillarsRef.current.querySelector("h2");
+        if (sectionTitle) {
+          gsap.to(sectionTitle, {
+            scrollTrigger: {
+              trigger: pillarsRef.current,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 2,
+            },
+            y: -15,
+            ease: "none",
+          });
+        }
       }
 
       // Stats counter
@@ -545,7 +596,7 @@ export default function Saludable() {
           className="hero-video absolute inset-0 w-full h-full object-cover"
           style={{ filter: 'brightness(1.05) saturate(1.2)' }}
         >
-          <source src="/manus-storage/hero-puerto-rico_396f36fe.mp4" type="video/mp4" />
+          <source src="/manus-storage/hero-pr-people-beach_5d838a15.mp4" type="video/mp4" />
         </video>
         {/* Very light overlay — let the people show clearly */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/30" />
@@ -579,7 +630,7 @@ export default function Saludable() {
       </section>
 
       {/* ═══ INSPIRADOS POR LOS MEJORES — PROFESSIONAL AMBASSADORS ═══ */}
-      <section ref={celebsRef} className="py-24 px-6 bg-white overflow-hidden">
+      <section ref={celebsRef} className="py-24 px-6 overflow-hidden" style={{ background: 'linear-gradient(135deg, #FDFCFB 0%, #F0F7F4 40%, #EBF5FB 100%)' }}>
         <div className="max-w-6xl mx-auto">
           <h2
             className="text-4xl md:text-5xl font-bold text-center mb-4 text-[#2D3B2D]"
@@ -879,6 +930,9 @@ export default function Saludable() {
         {/* NOISE GRAIN animated overlay — cinematic texture */}
         <div className="absolute inset-0 pointer-events-none z-[1] opacity-[0.08] mix-blend-overlay" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`, animation: 'grain 0.5s steps(8) infinite' }} />
 
+        {/* Three.js 3D Particles + Wireframe Mesh Background */}
+        <ComplianceParticles3D />
+
         {/* Subtle floating dots — lightweight CSS */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           {[...Array(10)].map((_, i) => (
@@ -985,45 +1039,80 @@ export default function Saludable() {
             {PLANS.map((plan, i) => (
               <div
                 key={i}
-                className={`plan-card relative p-8 rounded-3xl border-2 transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl hover:rotate-[0.3deg] ${
-                  plan.highlighted
-                    ? "border-[#6BAF8D] bg-white shadow-xl shadow-[#6BAF8D]/15 scale-[1.02]"
-                    : "border-[#A8C5A0]/30 bg-white hover:border-[#6BAF8D]/50"
-                }`}
+                className="plan-card group relative perspective-[1200px]"
               >
-                {plan.highlighted && (
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-6 py-1.5 rounded-full bg-gradient-to-r from-[#6BAF8D] to-[#4A9070] text-white text-xs font-bold shadow-lg shadow-[#6BAF8D]/30">
-                    Más Popular
-                  </div>
-                )}
-
-                <h3 className="text-2xl font-bold mb-2 text-[#2D3B2D]" style={{ fontFamily: "'Playfair Display', serif" }}>
-                  {plan.name}
-                </h3>
-
-                <p className="text-sm text-[#2D3B2D]/60 mb-6 leading-relaxed">{plan.description}</p>
-
-                <ul className="space-y-3 mb-8">
-                  {plan.features.map((f, j) => (
-                    <li key={j} className="flex items-start gap-3 text-sm text-[#2D3B2D]/70">
-                      <svg className="w-5 h-5 text-[#6BAF8D] flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                      <span>{f}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <a
-                  href="#contacto"
-                  className={`block text-center py-4 rounded-full font-semibold transition-all duration-300 text-lg ${
+                {/* Main card */}
+                <div
+                  className={`relative p-8 rounded-3xl border-2 transition-all duration-500 group-hover:-translate-y-4 group-hover:shadow-2xl group-hover:scale-[1.03] ${
                     plan.highlighted
-                      ? "bg-gradient-to-r from-[#6BAF8D] to-[#4A9070] text-white hover:shadow-lg hover:shadow-[#6BAF8D]/30 hover:scale-105"
-                      : "border-2 border-[#6BAF8D] text-[#6BAF8D] hover:bg-[#6BAF8D]/10"
+                      ? "border-[#6BAF8D] bg-white shadow-xl shadow-[#6BAF8D]/15 scale-[1.02]"
+                      : "border-[#A8C5A0]/30 bg-white group-hover:border-[#6BAF8D]/50"
                   }`}
                 >
-                  Solicitar Cotización
-                </a>
+                  {plan.highlighted && (
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-6 py-1.5 rounded-full bg-gradient-to-r from-[#6BAF8D] to-[#4A9070] text-white text-xs font-bold shadow-lg shadow-[#6BAF8D]/30">
+                      Más Popular
+                    </div>
+                  )}
+
+                  <h3 className="text-2xl font-bold mb-2 text-[#2D3B2D]" style={{ fontFamily: "'Playfair Display', serif" }}>
+                    {plan.name}
+                  </h3>
+
+                  <p className="text-sm text-[#2D3B2D]/60 mb-6 leading-relaxed">{plan.description}</p>
+
+                  <ul className="space-y-3 mb-8">
+                    {plan.features.map((f, j) => (
+                      <li key={j} className="flex items-start gap-3 text-sm text-[#2D3B2D]/70">
+                        <svg className="w-5 h-5 text-[#6BAF8D] flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <a
+                    href="#contacto"
+                    className={`block text-center py-4 rounded-full font-semibold transition-all duration-300 text-lg ${
+                      plan.highlighted
+                        ? "bg-gradient-to-r from-[#6BAF8D] to-[#4A9070] text-white hover:shadow-lg hover:shadow-[#6BAF8D]/30 hover:scale-105"
+                        : "border-2 border-[#6BAF8D] text-[#6BAF8D] hover:bg-[#6BAF8D]/10"
+                    }`}
+                  >
+                    Solicitar Cotización
+                  </a>
+                </div>
+
+                {/* Popup overlay — expands outward on hover */}
+                <div className="absolute inset-0 z-20 pointer-events-none group-hover:pointer-events-auto">
+                  <div className="absolute -inset-4 rounded-[2rem] bg-white/95 backdrop-blur-xl border-2 border-[#6BAF8D]/40 shadow-2xl shadow-[#6BAF8D]/20 p-8 opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all duration-400 ease-[cubic-bezier(0.23,1,0.32,1)]">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#6BAF8D] to-[#4A9070] flex items-center justify-center text-white font-bold text-lg">
+                        {plan.name.charAt(0)}
+                      </div>
+                      <div>
+                        <h4 className="text-xl font-bold text-[#2D3B2D]">{plan.name}</h4>
+                        <p className="text-xs text-[#6BAF8D] font-medium uppercase tracking-wider">Plan Detallado</p>
+                      </div>
+                    </div>
+                    <p className="text-sm text-[#2D3B2D]/70 mb-4 leading-relaxed">{plan.description}</p>
+                    <div className="grid grid-cols-2 gap-2">
+                      {plan.features.slice(0, 6).map((f, j) => (
+                        <div key={j} className="flex items-center gap-2 text-xs text-[#2D3B2D]/80 bg-[#E8F5E9] rounded-lg px-3 py-2">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#6BAF8D] flex-shrink-0" />
+                          <span className="truncate">{f}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <a
+                      href="#contacto"
+                      className="mt-5 block text-center py-3 rounded-full font-semibold text-sm bg-gradient-to-r from-[#6BAF8D] to-[#4A9070] text-white hover:shadow-lg transition-all duration-300"
+                    >
+                      Solicitar Cotización →
+                    </a>
+                  </div>
+                </div>
               </div>
             ))}
           </div>

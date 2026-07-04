@@ -44,3 +44,12 @@
 - [x] Pilares: Circular layout with SVG connecting arcs between nodes
 - [x] Pilares: Mouse hover expands info outward (large popup on hover)
 - [x] Planificación: Add noise grain animated overlay for cinematic texture
+- [x] Hero: New video with PUERTO RICO people (sexy fit boricuas, beach PR, exercise/nutrition)
+- [x] Hero: Remove animation delay (instant appearance)
+- [x] Inspirados: Change white background to subtle cream/light blue tint
+- [x] Inspirados: Replace Valeria photo with more boricua sexy fit saludable woman
+- [x] Inspirados: Replace nutricionista photo with more boricua sexy fit saludable woman
+- [x] Pilares: More interactive and alive with scroll-driven parallax (different speeds)
+- [x] Planificación: Three.js 3D particles and shader background (WebGL)
+- [x] Add Lenis smooth scroll (120fps, momentum, inertia)
+- [x] Planes de Servicio: Popup on mouse hover (info expands out)
