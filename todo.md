@@ -72,3 +72,4 @@
 - [x] Backend contact form: tRPC mutation saves to DB (contact_submissions table) + notifyOwner() push notification
 - [x] Admin panel: Protected route /admin with password gate (EmpresaSaludable2026), list/expand/delete submissions, reply via mailto
 - [x] SEO meta tags: Open Graph (og:title, og:description, og:image), Twitter Card (summary_large_image), meta description, keywords, robots, locale es_PR
+- [x] Fix Dra. Valeria Santiago info: Updated to "Dra. Valeria Santiago, PharmD, CPT, CES" with correct role (Bienestar Corporativo) and full bio (farmacéutica + NASM certified, entrenamiento funcional, movilidad, prevención de lesiones, programas dentro del ambiente laboral)

@@ -41,12 +41,12 @@ const AMBASSADORS = [
     expertise: ["Evaluaciones preventivas", "Protocolos de salud ocupacional", "Gestión de riesgos clínicos"],
   },
   {
-    name: "Valeria Santiago, CPT, CES",
-    role: "Fitness Corporativo",
+    name: "Dra. Valeria Santiago, PharmD, CPT, CES",
+    role: "Bienestar Corporativo",
     image: "/manus-storage/valeria-boricua_0889189c.jpg",
     quote: "El movimiento diario transforma equipos completos — física, mental y emocionalmente.",
-    specialty: "Entrenadora personal certificada por NASM con especialización en ejercicio correctivo. Diseña programas de actividad física adaptados al entorno de oficina y manufactura.",
-    expertise: ["Clases grupales corporativas", "Ergonomía activa", "Programas de reducción de estrés"],
+    specialty: "Farmacéutica y entrenadora personal certificada por la National Academy of Sports Medicine (NASM), con especialización en entrenamiento funcional, movilidad y prevención de lesiones. Diseña programas integrales de bienestar, prevención y actividad física, adaptados a las necesidades de los empleados dentro de su ambiente laboral.",
+    expertise: ["Programas integrales de bienestar", "Entrenamiento funcional y movilidad", "Prevención de lesiones en ambiente laboral"],
   },
   {
     name: "Lcdo. Carlos Rivera, MBA, CWPC",
