@@ -469,16 +469,12 @@ export default function Saludable() {
 
       {/* ═══ HERO SECTION ═══ */}
       <section ref={heroRef} className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
+        <img
+          src="/manus-storage/hero-saludable-bg_18a1d2fb.png"
+          alt=""
           className="hero-video absolute inset-0 w-full h-full object-cover"
-          style={{ filter: 'brightness(1.1) saturate(0.9)' }}
-        >
-          <source src="/manus-storage/tropical-pr-beach_72dca1ca.mp4" type="video/mp4" />
-        </video>
+          style={{ filter: 'brightness(1.05) saturate(1.1)' }}
+        />
         <div className="absolute inset-0 bg-gradient-to-br from-[#E8F5E0]/85 via-[#F4F9F2]/75 to-[#DFF0D8]/80" />
 
         <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
@@ -535,14 +531,15 @@ export default function Saludable() {
             {AMBASSADORS.map((amb, i) => (
               <div
                 key={i}
-                className="celeb-card group relative flex flex-col md:flex-row rounded-3xl overflow-hidden bg-white border border-[#A8C5A0]/20 shadow-md hover:shadow-2xl hover:shadow-[#6BAF8D]/10 transition-all duration-500 hover:-translate-y-1"
+                className="celeb-card group relative flex flex-col md:flex-row rounded-3xl overflow-hidden bg-white border border-[#A8C5A0]/20 shadow-md hover:shadow-2xl hover:shadow-[#6BAF8D]/10 transition-all duration-500 hover:-translate-y-2 hover:rotate-[0.5deg]"
+                style={{ transformStyle: 'preserve-3d', perspective: '1000px' }}
               >
                 {/* Photo */}
                 <div className="w-full md:w-[220px] h-[280px] md:h-auto flex-shrink-0 overflow-hidden relative">
                   <img
                     src={amb.image}
                     alt={amb.name}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 group-hover:brightness-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent to-white/10 md:bg-gradient-to-b md:from-transparent md:to-[#2D3B2D]/20" />
                 </div>
@@ -775,7 +772,7 @@ export default function Saludable() {
             {PLANS.map((plan, i) => (
               <div
                 key={i}
-                className={`plan-card relative p-8 rounded-3xl border-2 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl ${
+                className={`plan-card relative p-8 rounded-3xl border-2 transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl hover:rotate-[0.3deg] ${
                   plan.highlighted
                     ? "border-[#6BAF8D] bg-white shadow-xl shadow-[#6BAF8D]/15 scale-[1.02]"
                     : "border-[#A8C5A0]/30 bg-white hover:border-[#6BAF8D]/50"
