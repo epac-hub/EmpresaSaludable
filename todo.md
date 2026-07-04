@@ -66,3 +66,7 @@
 - [x] Hero: Add animated "Únete Ahora" button that scrolls to services section (with GSAP entrance + shimmer hover effect)
 - [x] Cinematic scroll transitions between sections (GSAP ScrollTrigger clip-path + directional reveals per section)
 - [x] Interactive plan cards with visual hover effects (3D tilt via mousemove, ring glow, rotateY entrance, elastic snap-back)
+- [x] Stats section: Dynamic counter animation (scale-in entrance, power4 count-up, pulse on completion)
+- [x] Navbar: Frosted glass effect (backdrop-blur-2xl, bg-white/60, gradient CTA, underline hover animation)
+- [x] Floating WhatsApp button: Fixed bottom-right with double-ring green pulse animation + hover scale
+- [x] Backend contact form: tRPC mutation saves to DB (contact_submissions table) + notifyOwner() push notification

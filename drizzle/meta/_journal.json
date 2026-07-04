@@ -8,6 +8,13 @@
       "when": 1783130729759,
       "tag": "0000_numerous_shotgun",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1783144521138,
+      "tag": "0001_solid_wrecking_crew",
+      "breakpoints": true
     }
   ]
 }

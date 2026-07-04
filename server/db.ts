@@ -89,4 +89,23 @@ export async function getUserByOpenId(openId: string) {
   return result.length > 0 ? result[0] : undefined;
 }
 
-// TODO: add feature queries here as your schema grows.
+// ─── Contact Submissions ────────────────────────────────────────────────────────────
+export async function createContactSubmission(data: {
+  name: string;
+  email: string;
+  company?: string;
+  message: string;
+}) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+  const { contactSubmissions } = await import("../drizzle/schema");
+  await db.insert(contactSubmissions).values({
+    name: data.name,
+    email: data.email,
+    company: data.company ?? null,
+    message: data.message,
+  });
+  return { success: true };
+}
