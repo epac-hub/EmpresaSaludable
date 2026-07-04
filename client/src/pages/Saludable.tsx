@@ -21,6 +21,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const PharmacyMap = lazy(() => import("@/components/saludable/PharmacyMap"));
 const ComplianceParticles3D = lazy(() => import("@/components/saludable/ComplianceParticles3D"));
+const ShaderGradientBG = lazy(() => import("@/components/saludable/ShaderGradientBG"));
 
 // ─── Data ───────────────────────────────────────────────────────────────────
 
@@ -439,7 +440,7 @@ export default function Saludable() {
     };
   }, []);
 
-  // ─── Preloader Animation ──────────────────────────────────────────────────
+  // ─── Preloader Animation (transitions into cosmic portal) ─────────────────
   useEffect(() => {
     if (!preloaderRef.current) return;
     const tl = gsap.timeline({
@@ -462,12 +463,35 @@ export default function Saludable() {
       duration: 1.2,
       ease: "power2.inOut",
     }, "-=0.2")
-    .to(preloaderRef.current, {
-      opacity: 0,
-      scale: 1.05,
+    // Cosmic portal transition: logo shrinks + glow ring expands
+    .to(preloaderRef.current.querySelector('.preloader-logo'), {
+      scale: 0.6,
+      opacity: 0.8,
+      duration: 0.4,
+      ease: "power2.in",
+    }, "+=0.2")
+    .to(preloaderRef.current.querySelector('.preloader-portal-ring'), {
+      scale: 1,
+      opacity: 1,
       duration: 0.6,
+      ease: "power2.out",
+    }, "-=0.3")
+    .to(preloaderRef.current.querySelector('.preloader-text'), {
+      opacity: 0,
+      scale: 0.9,
+      duration: 0.3,
+      ease: "power2.in",
+    }, "-=0.4")
+    .to(preloaderRef.current.querySelector('.preloader-bar-fill')?.parentElement || preloaderRef.current, {
+      opacity: 0,
+      duration: 0.3,
+      ease: "power2.in",
+    }, "-=0.3")
+    // Clip-path circle portal opens outward from center
+    .to(preloaderRef.current, {
+      clipPath: "circle(0% at 50% 50%)",
+      duration: 0.9,
       ease: "power3.inOut",
-      delay: 0.3,
     });
   }, []);
 
@@ -969,17 +993,23 @@ export default function Saludable() {
     <>
     {/* ═══ PRELOADER ═══ */}
     {!preloaderDone && (
-      <div ref={preloaderRef} className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-gradient-to-br from-[#E8F5E9] via-[#F1F8E9] to-[#C8E6C9]">
-        <div className="preloader-logo opacity-0 scale-[0.6] mb-6">
+      <div ref={preloaderRef} className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-gradient-to-br from-[#E8F5E9] via-[#F1F8E9] to-[#C8E6C9]" style={{ clipPath: 'circle(100% at 50% 50%)' }}>
+        {/* Cosmic portal ring — expands during transition */}
+        <div className="preloader-portal-ring absolute inset-0 flex items-center justify-center opacity-0 scale-[0.3] pointer-events-none">
+          <div className="w-[300px] h-[300px] rounded-full border-4 border-[#43A047]/60 shadow-[0_0_60px_rgba(67,160,71,0.4),inset_0_0_60px_rgba(67,160,71,0.2)] animate-pulse" />
+          <div className="absolute w-[220px] h-[220px] rounded-full border-2 border-[#66BB6A]/40 shadow-[0_0_40px_rgba(102,187,106,0.3)]" style={{ animation: 'sunRotate 3s linear infinite' }} />
+          <div className="absolute w-[140px] h-[140px] rounded-full bg-gradient-radial from-[#43A047]/20 to-transparent" />
+        </div>
+        <div className="preloader-logo opacity-0 scale-[0.6] mb-6 relative z-10">
           <img src="/manus-storage/saludable-logo_630e22f3.png" alt="" className="w-24 h-24 drop-shadow-xl" />
         </div>
-        <div className="preloader-text opacity-0 translate-y-4">
+        <div className="preloader-text opacity-0 translate-y-4 relative z-10">
           <h2 className="text-3xl font-bold text-[#1B5E20]" style={{ fontFamily: "'Playfair Display', serif" }}>
             Empresa <span className="text-[#43A047]">Saludable</span>
           </h2>
           <p className="text-sm text-[#2E7D32]/60 mt-1 text-center tracking-wider uppercase">Bienestar Corporativo PR</p>
         </div>
-        <div className="mt-8 w-48 h-1 bg-[#C8E6C9] rounded-full overflow-hidden">
+        <div className="mt-8 w-48 h-1 bg-[#C8E6C9] rounded-full overflow-hidden relative z-10">
           <div className="preloader-bar-fill h-full bg-gradient-to-r from-[#43A047] to-[#66BB6A] rounded-full origin-left scale-x-0" />
         </div>
       </div>
@@ -1506,6 +1536,16 @@ export default function Saludable() {
 
       {/* ═══ LOS 5 PILARES DEL BIENESTAR — CIRCULAR HOLISTIC ═══ */}
       <section ref={pillarsRef} id="pilares" className="relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #E8F5E9 0%, #C8E6C9 50%, #E8F5E9 100%)' }}>
+        {/* GLSL Animated Noise Gradient Shader Background */}
+        <Suspense fallback={null}>
+          <ShaderGradientBG
+            color1={[0.91, 0.96, 0.88]}
+            color2={[0.78, 0.90, 0.79]}
+            color3={[0.42, 0.68, 0.42]}
+            opacity={0.45}
+            speed={0.8}
+          />
+        </Suspense>
         {/* Soft background orbs */}
         <div className="absolute top-20 left-10 w-[400px] h-[400px] rounded-full bg-[#66BB6A]/15 blur-[120px] animate-pulse" />
         <div className="absolute bottom-20 right-10 w-[350px] h-[350px] rounded-full bg-[#81C784]/20 blur-[100px] animate-pulse" style={{ animationDelay: '1.5s' }} />
@@ -1748,17 +1788,17 @@ export default function Saludable() {
               {TESTIMONIALS.map((testimonial, i) => (
                 <div
                   key={i}
-                  className="beneficiary-panel flex-shrink-0 w-[340px] md:w-[380px] p-8 rounded-2xl bg-white/55 backdrop-blur-md border border-[#66BB6A]/20 shadow-xl hover:shadow-[0_20px_60px_rgba(67,160,71,0.2)] hover:-translate-y-3 hover:scale-[1.02] hover:bg-white/75 transition-all duration-700 group"
+                  className="beneficiary-panel flex-shrink-0 w-[340px] md:w-[380px] p-8 rounded-2xl bg-white/55 backdrop-blur-md border border-[#66BB6A]/20 shadow-xl hover:shadow-[0_20px_60px_rgba(67,160,71,0.35)] hover:-translate-y-4 hover:scale-[1.06] hover:bg-white/80 hover:border-[#43A047]/40 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group cursor-pointer"
                 >
-                  <svg className="w-8 h-8 text-[#43A047]/50 mb-4 group-hover:text-[#2E7D32] group-hover:scale-110 transition-all duration-500" fill="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-8 h-8 text-[#43A047]/50 mb-4 group-hover:text-[#2E7D32] group-hover:scale-125 group-hover:rotate-6 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983z" />
                   </svg>
-                  <p className="text-[#2D3B2D]/80 text-sm leading-relaxed mb-6 italic">
+                  <p className="text-[#2D3B2D]/80 text-sm leading-relaxed mb-6 italic group-hover:text-[#1B5E20] transition-colors duration-500">
                     "{testimonial.quote}"
                   </p>
-                  <div className="border-t border-[#66BB6A]/20 pt-4">
-                    <p className="font-semibold text-[#1B5E20] text-sm">{testimonial.name}</p>
-                    <p className="text-xs text-[#43A047] mt-0.5">{testimonial.role}</p>
+                  <div className="border-t border-[#66BB6A]/20 pt-4 group-hover:border-[#43A047]/40 transition-colors duration-500">
+                    <p className="font-semibold text-[#1B5E20] text-sm group-hover:text-[#2E7D32] transition-colors duration-300">{testimonial.name}</p>
+                    <p className="text-xs text-[#43A047] mt-0.5 group-hover:text-[#1B5E20] transition-colors duration-300">{testimonial.role}</p>
                     <p className="text-xs text-[#2D3B2D]/50 mt-0.5">{testimonial.municipality}, PR</p>
                   </div>
                 </div>
@@ -1782,6 +1822,16 @@ export default function Saludable() {
 
       {/* ═══ PLANIFICACIÓN Y CUMPLIMIENTO — WOW INTERACTIVE TIMELINE ═══ */}
       <section ref={complianceRef} id="cumplimiento" className="py-32 px-6 relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #E8F5E0 0%, #C8E6C9 40%, #B9DEB5 70%, #E8F5E0 100%)' }}>
+        {/* GLSL Animated Noise Gradient Shader Background */}
+        <Suspense fallback={null}>
+          <ShaderGradientBG
+            color1={[0.91, 0.96, 0.88]}
+            color2={[0.72, 0.87, 0.71]}
+            color3={[0.40, 0.63, 0.40]}
+            opacity={0.35}
+            speed={0.6}
+          />
+        </Suspense>
         {/* Animated background elements */}
         <div className="absolute top-0 left-0 w-full h-full">
           <div className="absolute top-10 left-[20%] w-[300px] h-[300px] rounded-full bg-[#66BB6A]/15 blur-[100px] animate-pulse" />
@@ -1898,8 +1948,18 @@ export default function Saludable() {
       </div>
 
       {/* ═══ PLANES DE SERVICIO — FULL 3 PLANS ═══ */}
-      <section ref={plansRef} id="planes" className="py-24 px-6 bg-gradient-to-b from-[#F4F9F2] to-[#EDF5EA]">
-        <div className="max-w-7xl mx-auto">
+      <section ref={plansRef} id="planes" className="py-24 px-6 relative overflow-hidden bg-gradient-to-b from-[#F4F9F2] to-[#EDF5EA]">
+        {/* GLSL Animated Noise Gradient Shader Background */}
+        <Suspense fallback={null}>
+          <ShaderGradientBG
+            color1={[0.96, 0.98, 0.95]}
+            color2={[0.93, 0.96, 0.92]}
+            color3={[0.85, 0.93, 0.84]}
+            opacity={0.3}
+            speed={0.5}
+          />
+        </Suspense>
+        <div className="max-w-7xl mx-auto relative z-10">
           <h2
             className="text-4xl md:text-5xl font-bold text-center mb-4 text-[#2D3B2D]"
             style={{ fontFamily: "'Playfair Display', serif" }}

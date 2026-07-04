@@ -106,3 +106,6 @@
 - [x] Footer: make whiter/more transparent, properly center the tagline text
 - [x] Pilares: clip-path circle portal reveal on scroll (cosmic portal effect with GSAP ScrollTrigger)
 - [x] Beneficiarios (video testimonials): horizontal scroll panels (vertical scroll → horizontal card movement)
+- [x] GLSL animated noise gradient shader as background layer replacing static section backgrounds
+- [x] Custom loading animation that transitions smoothly into the cosmic portal effect on first load
+- [x] Beneficiarios horizontal scroll panels: interactive hover effects (scale up cards on hover)
