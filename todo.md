@@ -80,3 +80,7 @@
 - [x] Testimonios: Auto-rotating carousel (5s interval, pause on hover, arrows + dots, 5 testimonials)
 - [x] Agendar Cita: Opens quick popup form with name/email/phone/date/message fields (saves via tRPC)
 - [x] Specialist modal: LinkedIn icons added (real URLs where available, placeholder badge otherwise)
+- [x] Pilares: Add "Bienestar Integral" context intro explaining it's the conjunction of all 5 pillars
+- [x] Agendar Cita popup: Add specialist dropdown selector
+- [x] Agendar Cita popup: Animated thank-you message after form submission (confetti burst + gradient checkmark + staggered fadeIn)
+- [x] Specialist modals: Add specific services description for each specialist (5 services per specialist)

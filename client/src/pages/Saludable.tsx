@@ -48,6 +48,13 @@ const AMBASSADORS = [
     quote: "Una alimentación consciente es la base de toda transformación corporativa.",
     specialty: "Nutricionista clínica certificada con 12 años de experiencia diseñando planes alimentarios para empresas. Especialista en nutrición tropical y prevención de enfermedades metabólicas.",
     expertise: ["Planes nutricionales corporativos", "Talleres de cocina saludable", "Evaluaciones metabólicas"],
+    services: [
+      "Diseño de planes alimentarios corporativos personalizados",
+      "Talleres grupales de cocina saludable y nutrición tropical",
+      "Evaluaciones metabólicas individuales y grupales",
+      "Asesoría para comedores y máquinas expendedoras saludables",
+      "Programas de prevención de diabetes y enfermedades cardiovasculares",
+    ],
     linkedin: "#", // ← Reemplazar con URL real de LinkedIn
   },
   {
@@ -58,6 +65,13 @@ const AMBASSADORS = [
     quote: "Prevenir es la inversión más inteligente que una empresa puede hacer en su capital humano.",
     specialty: "Médico internista con maestría en Salud Pública. 15 años en medicina preventiva y salud ocupacional. Consultor para programas de bienestar en empresas Fortune 500 en PR.",
     expertise: ["Evaluaciones preventivas", "Protocolos de salud ocupacional", "Gestión de riesgos clínicos"],
+    services: [
+      "Exámenes médicos preventivos ejecutivos y grupales",
+      "Diseño de protocolos de salud ocupacional (OSHA-compliant)",
+      "Ferias de salud corporativas con cernimientos clínicos",
+      "Gestión de riesgos y evaluación de factores de salud laboral",
+      "Consultoría en cumplimiento regulatorio de salud (Depto. de Salud PR)",
+    ],
     linkedin: "#", // ← Reemplazar con URL real de LinkedIn
   },
   {
@@ -68,6 +82,13 @@ const AMBASSADORS = [
     quote: "El movimiento diario transforma equipos completos — física, mental y emocionalmente.",
     specialty: "Farmacéutica y entrenadora personal certificada por la National Academy of Sports Medicine (NASM), con especialización en entrenamiento funcional, movilidad y prevención de lesiones. Diseña programas integrales de bienestar, prevención y actividad física, adaptados a las necesidades de los empleados dentro de su ambiente laboral.",
     expertise: ["Programas integrales de bienestar", "Entrenamiento funcional y movilidad", "Prevención de lesiones en ambiente laboral"],
+    services: [
+      "Programas de actividad física adaptados al ambiente laboral",
+      "Sesiones de entrenamiento funcional y movilidad articular",
+      "Evaluaciones de riesgo ergonómico y prevención de lesiones",
+      "Consultoría farmacéutica en manejo de medicamentos y suplementación",
+      "Talleres de bienestar integral: cuerpo, mente y prevención",
+    ],
     linkedin: "#", // ← Reemplazar con URL real de LinkedIn
   },
   {
@@ -78,6 +99,13 @@ const AMBASSADORS = [
     quote: "Una empresa saludable es una empresa rentable — los datos lo demuestran consistentemente.",
     specialty: "Consultor certificado en bienestar corporativo con MBA en Gestión Estratégica. Implementa programas de cultura organizacional saludable y cumplimiento regulatorio en toda la isla.",
     expertise: ["Cultura organizacional", "Cumplimiento Depto. de Salud", "ROI de bienestar"],
+    services: [
+      "Diagnóstico de cultura organizacional y clima laboral",
+      "Diseño e implementación de programas de bienestar corporativo",
+      "Cumplimiento regulatorio (Depto. de Salud, OSHA, ADA)",
+      "Medición de ROI en programas de salud y bienestar",
+      "Capacitación de líderes en gestión de bienestar empresarial",
+    ],
     linkedin: "#", // ← Reemplazar con URL real de LinkedIn
   },
 ];
@@ -1019,6 +1047,23 @@ export default function Saludable() {
                 </div>
               </div>
 
+              {/* Services */}
+              {selectedSpecialist.services && selectedSpecialist.services.length > 0 && (
+                <div className="mb-6">
+                  <h4 className="text-sm font-bold text-[#2D3B2D] uppercase tracking-wider mb-3">Servicios que Ofrece</h4>
+                  <ul className="space-y-2">
+                    {selectedSpecialist.services.map((service: string, j: number) => (
+                      <li key={j} className="flex items-start gap-2 text-sm text-[#2D3B2D]/70">
+                        <span className="mt-0.5 w-5 h-5 flex-shrink-0 rounded-full bg-[#6BAF8D]/10 flex items-center justify-center">
+                          <svg className="w-3 h-3 text-[#6BAF8D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
+                        </span>
+                        <span>{service}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
               {/* Quote */}
               <div className="p-4 rounded-xl bg-[#F4F9F2] border border-[#A8C5A0]/20 mb-4">
                 <p className="text-[#2D3B2D]/70 text-sm italic">"​{selectedSpecialist.quote}​"</p>
@@ -1075,13 +1120,29 @@ export default function Saludable() {
             </button>
 
             {apptSuccess ? (
-              <div className="text-center py-8">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[#6BAF8D]/10 flex items-center justify-center">
-                  <svg className="w-8 h-8 text-[#6BAF8D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+              <div className="text-center py-8 relative overflow-hidden">
+                {/* Animated celebration particles */}
+                <div className="absolute inset-0 pointer-events-none">
+                  {Array.from({ length: 12 }).map((_, i) => (
+                    <div
+                      key={i}
+                      className="absolute w-2 h-2 rounded-full"
+                      style={{
+                        background: ['#6BAF8D', '#43A047', '#81C784', '#FFD700', '#FF6B6B', '#7C4DFF'][i % 6],
+                        left: `${50 + 40 * Math.cos((i * 2 * Math.PI) / 12)}%`,
+                        top: `${50 + 40 * Math.sin((i * 2 * Math.PI) / 12)}%`,
+                        animation: `confettiBurst 0.8s cubic-bezier(0.23,1,0.32,1) ${i * 0.05}s forwards`,
+                        opacity: 0,
+                      }}
+                    />
+                  ))}
                 </div>
-                <h3 className="text-xl font-bold text-[#2D3B2D] mb-2">Solicitud Enviada</h3>
-                <p className="text-[#2D3B2D]/60 text-sm">Nos comunicaremos contigo pronto para confirmar tu cita con {appointmentFor}.</p>
-                <button onClick={() => setAppointmentFor(null)} className="mt-6 px-6 py-2 rounded-full bg-[#6BAF8D] text-white font-medium hover:bg-[#5A9E7C] transition-colors">Cerrar</button>
+                <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-[#6BAF8D] to-[#43A047] flex items-center justify-center shadow-lg" style={{ animation: 'scaleIn 0.5s cubic-bezier(0.23,1,0.32,1) 0.1s both' }}>
+                  <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
+                </div>
+                <h3 className="text-2xl font-bold text-[#2D3B2D] mb-2" style={{ animation: 'fadeIn 0.4s ease-out 0.3s both' }}>¡Solicitud Enviada!</h3>
+                <p className="text-[#2D3B2D]/60 text-sm" style={{ animation: 'fadeIn 0.4s ease-out 0.5s both' }}>Nos comunicaremos contigo pronto para confirmar tu cita con <strong>{appointmentFor}</strong>.</p>
+                <button onClick={() => setAppointmentFor(null)} className="mt-6 px-8 py-2.5 rounded-full bg-gradient-to-r from-[#6BAF8D] to-[#4A9B6F] text-white font-medium hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300" style={{ animation: 'fadeIn 0.4s ease-out 0.7s both' }}>Cerrar</button>
               </div>
             ) : (
               <>
@@ -1113,6 +1174,20 @@ export default function Saludable() {
                   }}
                   className="space-y-4"
                 >
+                  {/* Specialist Dropdown */}
+                  <div>
+                    <label className="block text-xs font-medium text-[#2D3B2D]/70 mb-1">Especialista *</label>
+                    <select
+                      required
+                      value={appointmentFor}
+                      onChange={(e) => setAppointmentFor(e.target.value)}
+                      className="w-full px-4 py-2.5 rounded-xl border border-[#A8C5A0]/30 bg-[#F9FBF9] text-sm focus:ring-2 focus:ring-[#6BAF8D]/30 focus:border-[#6BAF8D] outline-none transition-all appearance-none cursor-pointer"
+                    >
+                      {AMBASSADORS.map((amb) => (
+                        <option key={amb.id} value={amb.name.split(',')[0]}>{amb.name.split(',')[0]} — {amb.role}</option>
+                      ))}
+                    </select>
+                  </div>
                   <div>
                     <label className="block text-xs font-medium text-[#2D3B2D]/70 mb-1">Nombre completo *</label>
                     <input
@@ -1201,9 +1276,29 @@ export default function Saludable() {
           >
             Los 5 Pilares del <span className="text-[#43A047] drop-shadow-[0_0_20px_rgba(67,160,71,0.4)]">Bienestar</span>
           </h2>
-          <p className="text-center text-[#2E7D32]/70 mb-20 max-w-3xl mx-auto text-lg leading-relaxed">
+          <p className="text-center text-[#2E7D32]/70 mb-8 max-w-3xl mx-auto text-lg leading-relaxed">
             Cada pilar apoya al siguiente en un ciclo continuo de bienestar integral — un sistema donde la salud mental fortalece la física, la física potencia la nutrición, y así sucesivamente.
           </p>
+
+          {/* Bienestar Integral Context Block */}
+          <div className="max-w-4xl mx-auto mb-20 p-8 rounded-2xl bg-white/50 backdrop-blur-sm border border-[#66BB6A]/30 shadow-lg relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#43A047] via-[#66BB6A] to-[#81C784]" />
+            <div className="flex flex-col md:flex-row items-center gap-6">
+              <div className="flex-shrink-0 w-20 h-20 rounded-full bg-gradient-to-br from-[#43A047] to-[#66BB6A] flex items-center justify-center shadow-lg">
+                <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" />
+                </svg>
+              </div>
+              <div className="text-center md:text-left">
+                <h3 className="text-2xl font-bold text-[#1B5E20] mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
+                  ¿Qué es el Bienestar Integral?
+                </h3>
+                <p className="text-[#2E7D32]/80 leading-relaxed">
+                  El <strong>Bienestar Integral</strong> es la sinergia de los 5 pilares fundamentales — Salud Mental, Actividad Física, Nutrición, Bienestar Financiero y Salud Corporativa — funcionando como un sistema unificado. No se trata de atender cada dimensión por separado, sino de reconocer que están interconectadas: cuando un pilar se fortalece, los demás se elevan. Este enfoque holístico es lo que transforma un programa de bienestar convencional en una experiencia transformadora para el empleado y la organización.
+                </p>
+              </div>
+            </div>
+          </div>
 
           {/* CIRCULAR HOLISTIC LAYOUT */}
           <div className="relative w-full max-w-3xl mx-auto aspect-square flex items-center justify-center">
