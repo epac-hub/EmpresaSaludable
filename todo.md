@@ -61,3 +61,4 @@
 - [x] Hero: Restore video background (people moving) with poster for instant first frame
 - [x] Lazy loading: Planificación (Three.js lazy import + IntersectionObserver scroll-proximity) and Testimonios (video scroll-proximity mount with poster fallback)
 - [x] Contact form: Enhanced with confetti burst animation on success submit
+- [x] Hero: Regenerate video (old expired from S3) — new video of fit boricua women doing yoga/warrior poses on Caribbean beach at golden hour, autoplay+muted+loop+playsInline confirmed working

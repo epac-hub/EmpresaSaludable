@@ -625,11 +625,11 @@ export default function Saludable() {
             muted
             loop
             playsInline
-            poster="/manus-storage/hero-pr-beach-optimized_891fef9e.jpg"
+            poster="/manus-storage/hero-boricua-poster_e1973084.jpg"
             className="hero-video absolute inset-0 w-full h-full object-cover"
             style={{ filter: 'brightness(1.05) saturate(1.2)' }}
           >
-            <source src="/manus-storage/hero-pr-people-beach_1f7e8e9b.mp4" type="video/mp4" />
+            <source src="/manus-storage/hero-boricua-people-moving_848eae57.mp4" type="video/mp4" />
           </video>
         </div>
         {/* Very light overlay — let the people show clearly */}
