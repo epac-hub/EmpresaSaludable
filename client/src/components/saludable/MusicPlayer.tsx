@@ -1,17 +1,40 @@
 /**
- * MusicPlayer — Floating Bossa Nova Jazz music toggle
+ * MusicPlayer — Floating Bossa Nova Latin Jazz music toggle
  * Design: Botanical Sanctuary — organic, breathing pulse animation
+ * AUTOPLAY: Music starts automatically on page load
  */
 import { useState, useRef, useEffect } from "react";
 
 export default function MusicPlayer() {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const hasAttemptedAutoplay = useRef(false);
 
   useEffect(() => {
-    audioRef.current = new Audio("/manus-storage/bossa-nova-jazz_333cb19d.mp3");
+    audioRef.current = new Audio("/manus-storage/bossa-nova-latin-jazz_c6e8e5d8.mp3");
     audioRef.current.loop = true;
-    audioRef.current.volume = 0.25;
+    audioRef.current.volume = 0.3;
+
+    // Attempt autoplay immediately
+    if (!hasAttemptedAutoplay.current) {
+      hasAttemptedAutoplay.current = true;
+      audioRef.current.play().catch(() => {
+        // Browser blocked autoplay - wait for first user interaction
+        setIsPlaying(false);
+        const startOnInteraction = () => {
+          if (audioRef.current) {
+            audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+          }
+          document.removeEventListener("click", startOnInteraction);
+          document.removeEventListener("scroll", startOnInteraction);
+          document.removeEventListener("touchstart", startOnInteraction);
+        };
+        document.addEventListener("click", startOnInteraction, { once: true });
+        document.addEventListener("scroll", startOnInteraction, { once: true });
+        document.addEventListener("touchstart", startOnInteraction, { once: true });
+      });
+    }
+
     return () => {
       if (audioRef.current) {
         audioRef.current.pause();
@@ -45,7 +68,7 @@ export default function MusicPlayer() {
           : "0 4px 15px rgba(0,0,0,0.2)",
       }}
       aria-label={isPlaying ? "Pausar música" : "Reproducir Bossa Nova"}
-      title={isPlaying ? "Pausar música" : "Bossa Nova Jazz"}
+      title={isPlaying ? "Pausar música" : "Bossa Nova Latin Jazz"}
     >
       {/* Breathing pulse ring when playing */}
       {isPlaying && (
@@ -83,7 +106,7 @@ export default function MusicPlayer() {
       </svg>
       {/* Label */}
       <span className="absolute -top-8 left-1/2 -translate-x-1/2 text-xs text-[#FDF8F0]/70 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
-        Bossa Nova
+        {isPlaying ? "♪ Bossa Nova" : "Música OFF"}
       </span>
     </button>
   );

@@ -811,112 +811,135 @@ export default function Saludable() {
         </div>
       </section>
 
-      {/* ═══ TESTIMONIALS CAROUSEL ═══ */}
-      <section className="py-24 px-6 bg-gradient-to-b from-[#F4F9F2] to-[#EDF5EA] overflow-hidden">
-        <div className="max-w-6xl mx-auto">
+      {/* ═══ TESTIMONIALS — VIDEO BACKGROUND ═══ */}
+      <section className="relative py-32 px-6 overflow-hidden">
+        {/* Full-section background video — always running */}
+        <video
+          className="absolute inset-0 w-full h-full object-cover"
+          autoPlay
+          loop
+          muted
+          playsInline
+          poster="/manus-storage/testimonial-bg-keyframe_dae63de5.png"
+        >
+          <source src="/manus-storage/testimonial-bg-video_0077eed0.mp4" type="video/mp4" />
+        </video>
+        {/* Dark overlay for readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a1f14]/85 via-[#0a1f14]/80 to-[#0a1f14]/90" />
+
+        <div className="relative z-10 max-w-6xl mx-auto">
           <h2
-            className="text-3xl md:text-4xl font-bold text-center mb-4 text-[#2D3B2D]"
+            className="text-4xl md:text-5xl font-bold text-center mb-4 text-white"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            Lo Que Dicen Nuestros <span className="text-[#6BAF8D]">Beneficiarios</span>
+            Lo Que Dicen Nuestros <span className="text-[#6BAF8D] drop-shadow-[0_0_20px_rgba(107,175,141,0.5)]">Beneficiarios</span>
           </h2>
-          <p className="text-center text-[#2D3B2D]/60 mb-8 max-w-xl mx-auto">
+          <p className="text-center text-white/60 mb-16 max-w-xl mx-auto">
             Historias reales de transformación y bienestar en toda la isla.
           </p>
-
-          {/* Testimonial Video */}
-          <div className="relative max-w-3xl mx-auto mb-16 rounded-2xl overflow-hidden shadow-2xl shadow-[#6BAF8D]/20 group">
-            <video
-              className="w-full aspect-video object-cover rounded-2xl"
-              controls
-              poster="/manus-storage/testimonial-keyframe1_81929664.png"
-              preload="metadata"
-            >
-              <source src="/manus-storage/testimonial-video_e49cb23e.mp4" type="video/mp4" />
-            </video>
-            <div className="absolute inset-0 bg-gradient-to-t from-[#2D3B2D]/40 to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl" />
-            <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between pointer-events-none">
-              <span className="text-white/80 text-sm font-medium drop-shadow-lg">Bienestar en acción — Empresa Saludable</span>
-            </div>
-          </div>
 
           <div className="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-6" style={{ scrollbarWidth: 'none' }}>
             {TESTIMONIALS.map((testimonial, i) => (
               <div
                 key={i}
-                className="flex-shrink-0 w-[340px] md:w-[380px] snap-center p-8 rounded-2xl bg-white border border-[#A8C5A0]/20 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-500"
+                className="flex-shrink-0 w-[340px] md:w-[380px] snap-center p-8 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl hover:shadow-[0_20px_60px_rgba(107,175,141,0.3)] hover:-translate-y-3 hover:scale-[1.02] transition-all duration-700 group"
               >
-                <svg className="w-8 h-8 text-[#6BAF8D]/30 mb-4" fill="currentColor" viewBox="0 0 24 24">
+                <svg className="w-8 h-8 text-[#6BAF8D]/60 mb-4 group-hover:text-[#6BAF8D] group-hover:scale-110 transition-all duration-500" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983z" />
                 </svg>
-                <p className="text-[#2D3B2D]/80 text-sm leading-relaxed mb-6 italic">
+                <p className="text-white/90 text-sm leading-relaxed mb-6 italic">
                   "{testimonial.quote}"
                 </p>
-                <div className="border-t border-[#A8C5A0]/20 pt-4">
-                  <p className="font-semibold text-[#2D3B2D] text-sm">{testimonial.name}</p>
+                <div className="border-t border-white/20 pt-4">
+                  <p className="font-semibold text-white text-sm">{testimonial.name}</p>
                   <p className="text-xs text-[#6BAF8D] mt-0.5">{testimonial.role}</p>
-                  <p className="text-xs text-[#2D3B2D]/40 mt-0.5">{testimonial.municipality}, PR</p>
+                  <p className="text-xs text-white/40 mt-0.5">{testimonial.municipality}, PR</p>
                 </div>
               </div>
             ))}
           </div>
-          <div className="flex justify-center mt-4">
-            <span className="text-xs text-[#2D3B2D]/40">← Desliza para ver más →</span>
+          <div className="flex justify-center mt-6">
+            <span className="text-xs text-white/30">← Desliza para ver más →</span>
           </div>
         </div>
       </section>
 
-      {/* ═══ PLANIFICACIÓN Y CUMPLIMIENTO — HORIZONTAL TIMELINE ═══ */}
-      <section ref={complianceRef} id="cumplimiento" className="py-24 px-6 bg-white">
-        <div className="max-w-6xl mx-auto">
+      {/* ═══ PLANIFICACIÓN Y CUMPLIMIENTO — WOW INTERACTIVE TIMELINE ═══ */}
+      <section ref={complianceRef} id="cumplimiento" className="py-32 px-6 relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #0d2818 0%, #1a3a2a 50%, #0a1f14 100%)' }}>
+        {/* Animated background elements */}
+        <div className="absolute top-0 left-0 w-full h-full">
+          <div className="absolute top-10 left-[20%] w-[300px] h-[300px] rounded-full bg-[#6BAF8D]/5 blur-[100px] animate-pulse" />
+          <div className="absolute bottom-10 right-[20%] w-[400px] h-[400px] rounded-full bg-[#4CAF50]/5 blur-[120px] animate-pulse" style={{ animationDelay: '1.5s' }} />
+          {/* Grid lines */}
+          <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'linear-gradient(rgba(107,175,141,1) 1px, transparent 1px), linear-gradient(90deg, rgba(107,175,141,1) 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
+        </div>
+
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="text-center mb-6">
+            <span className="inline-block px-5 py-2 rounded-full bg-[#6BAF8D]/15 text-[#6BAF8D] text-xs font-bold uppercase tracking-[0.25em] mb-6 border border-[#6BAF8D]/30 backdrop-blur-sm">
+              Proceso Certificado
+            </span>
+          </div>
           <h2
-            className="text-4xl md:text-5xl font-bold text-center mb-4 text-[#2D3B2D]"
+            className="text-5xl md:text-7xl font-bold text-center mb-6 text-white"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            Planificación y <span className="text-[#6BAF8D]">Cumplimiento</span>
+            Planificación y <span className="text-[#6BAF8D] drop-shadow-[0_0_30px_rgba(107,175,141,0.5)]">Cumplimiento</span>
           </h2>
-          <p className="text-center text-[#2D3B2D]/60 mb-16 max-w-2xl mx-auto">
-            Un proceso estructurado en 5 pasos para garantizar resultados medibles y cumplimiento regulatorio completo.
+          <p className="text-center text-white/50 mb-20 max-w-3xl mx-auto text-lg leading-relaxed">
+            Un proceso estructurado en 5 pasos para garantizar resultados medibles y cumplimiento regulatorio completo con el Depto. de Salud y Depto. del Trabajo de PR.
           </p>
 
-          {/* Timeline - responsive: vertical on mobile, horizontal visual on desktop */}
-          <div className="relative">
-            {/* Connecting line (desktop) */}
-            <div className="hidden md:block absolute top-[60px] left-[10%] right-[10%] h-[3px] bg-gradient-to-r from-[#A8C5A0] via-[#6BAF8D] to-[#4A9070] rounded-full" />
+          {/* Animated connecting line */}
+          <div className="hidden md:block absolute top-[calc(50%+80px)] left-[8%] right-[8%] h-[2px] z-0">
+            <div className="w-full h-full bg-gradient-to-r from-[#6BAF8D]/20 via-[#6BAF8D]/60 to-[#6BAF8D]/20 rounded-full" />
+            <div className="absolute top-0 left-0 h-full w-1/3 bg-gradient-to-r from-[#6BAF8D] to-transparent rounded-full animate-pulse" style={{ animationDuration: '3s' }} />
+          </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-4">
-              {COMPLIANCE_STEPS.map((step, i) => (
-                <div key={step.step} className="compliance-step relative flex flex-col items-center text-center group">
-                  {/* Step circle */}
-                  <div className="relative z-10 w-[72px] h-[72px] rounded-full bg-white border-[3px] border-[#6BAF8D] flex items-center justify-center text-3xl shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-500 mb-5">
-                    {step.icon}
-                  </div>
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-5 relative z-10">
+            {COMPLIANCE_STEPS.map((step, i) => (
+              <div key={step.step} className="compliance-step relative flex flex-col items-center text-center group" style={{ perspective: '800px' }}>
+                {/* Step circle with glow */}
+                <div
+                  className="relative z-10 w-[80px] h-[80px] rounded-full flex items-center justify-center text-3xl mb-6 group-hover:scale-125 group-hover:rotate-12 transition-all duration-700"
+                  style={{
+                    background: 'linear-gradient(135deg, #1a3a2a, #2D4F3C)',
+                    border: '3px solid rgba(107,175,141,0.5)',
+                    boxShadow: '0 0 30px rgba(107,175,141,0.2), inset 0 0 20px rgba(107,175,141,0.1)',
+                  }}
+                >
+                  <span className="drop-shadow-[0_0_10px_rgba(107,175,141,0.8)]">{step.icon}</span>
+                  {/* Orbiting ring */}
+                  <div className="absolute inset-[-6px] rounded-full border border-[#6BAF8D]/30 animate-spin" style={{ animationDuration: `${8 + i * 2}s` }} />
+                </div>
 
-                  {/* Step number badge */}
-                  <div className="absolute top-0 right-[calc(50%-52px)] w-6 h-6 rounded-full bg-[#6BAF8D] text-white text-xs font-bold flex items-center justify-center shadow-md z-20">
-                    {step.step}
-                  </div>
+                {/* Step number */}
+                <div className="absolute top-0 right-[calc(50%-56px)] w-7 h-7 rounded-full bg-gradient-to-br from-[#6BAF8D] to-[#4A9070] text-white text-xs font-bold flex items-center justify-center shadow-lg shadow-[#6BAF8D]/40 z-20">
+                  {step.step}
+                </div>
 
-                  {/* Content card */}
-                  <div className="bg-[#F4F9F2] rounded-2xl p-5 border border-[#A8C5A0]/20 hover:border-[#6BAF8D]/50 hover:shadow-lg transition-all duration-500 w-full">
-                    <h3 className="text-base font-bold text-[#2D3B2D] mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
-                      {step.title}
-                    </h3>
-                    <p className="text-[#2D3B2D]/60 text-xs leading-relaxed mb-3">
-                      {step.desc}
+                {/* Content card with 3D hover */}
+                <div
+                  className="bg-white/5 backdrop-blur-md rounded-2xl p-6 border border-[#6BAF8D]/20 w-full transition-all duration-700 group-hover:-translate-y-3 group-hover:border-[#6BAF8D]/60 group-hover:shadow-[0_20px_60px_rgba(107,175,141,0.2)]"
+                  style={{ transformStyle: 'preserve-3d' }}
+                >
+                  <h3 className="text-lg font-bold text-white mb-3 group-hover:text-[#6BAF8D] transition-colors duration-500" style={{ fontFamily: "'Playfair Display', serif" }}>
+                    {step.title}
+                  </h3>
+                  <p className="text-white/50 text-xs leading-relaxed mb-4 group-hover:text-white/70 transition-colors duration-500">
+                    {step.desc}
+                  </p>
+                  <div className="pt-3 border-t border-[#6BAF8D]/20">
+                    <p className="text-[10px] font-bold text-[#6BAF8D] uppercase tracking-wider mb-1">
+                      Entregable
                     </p>
-                    <div className="pt-2 border-t border-[#A8C5A0]/20">
-                      <p className="text-[10px] font-semibold text-[#6BAF8D] uppercase tracking-wider">
-                        Entregable
-                      </p>
-                      <p className="text-xs text-[#2D3B2D]/70 mt-1 font-medium">
-                        {step.deliverable}
-                      </p>
-                    </div>
+                    <p className="text-xs text-white/60 font-medium group-hover:text-white/80 transition-colors duration-500">
+                      {step.deliverable}
+                    </p>
                   </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
