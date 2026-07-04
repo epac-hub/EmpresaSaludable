@@ -327,6 +327,9 @@ export default function Saludable() {
   const [apptSubmitting, setApptSubmitting] = useState(false);
   const [apptSuccess, setApptSuccess] = useState(false);
 
+  // Pillar tap-to-expand state (mobile)
+  const [selectedPillar, setSelectedPillar] = useState<string | null>(null);
+
   // Testimonial category filter
   const [testimonialFilter, setTestimonialFilter] = useState<typeof TESTIMONIAL_CATEGORIES[number]>("Todos");
   const filteredTestimonials = testimonialFilter === "Todos"
@@ -1218,13 +1221,13 @@ export default function Saludable() {
               >
                 {/* Photo — click to open bio modal */}
                 <div
-                  className="w-full md:w-[220px] h-[280px] md:h-auto flex-shrink-0 overflow-hidden relative cursor-pointer"
+                  className="w-full md:w-[220px] h-[320px] md:h-auto flex-shrink-0 overflow-hidden relative cursor-pointer"
                   onClick={() => setSelectedSpecialist(amb)}
                 >
                   <img
                     src={amb.image}
                     alt={amb.name}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 group-hover:brightness-105"
+                    className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110 group-hover:brightness-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent to-white/10 md:bg-gradient-to-b md:from-transparent md:to-[#2D3B2D]/20" />
                   {/* Click hint overlay */}
@@ -1666,16 +1669,17 @@ export default function Saludable() {
               return (
                 <div
                   key={pillar.id}
-                  className="pillar-node absolute group z-10"
+                  className={`pillar-node absolute z-10 ${selectedPillar === pillar.id ? 'pillar-active' : ''} group`}
                   style={{
                     left: `${x}%`,
                     top: `${y}%`,
                     transform: 'translate(-50%, -50%)',
                   }}
+                  onClick={() => setSelectedPillar(selectedPillar === pillar.id ? null : pillar.id)}
                 >
                   {/* The node circle */}
                   <div
-                    className="relative w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center cursor-pointer transition-all duration-500 group-hover:scale-[1.6] group-hover:z-50 shadow-xl group-hover:shadow-2xl"
+                    className={`relative w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center cursor-pointer transition-all duration-500 group-hover:scale-[1.6] group-hover:z-50 shadow-xl group-hover:shadow-2xl ${selectedPillar === pillar.id ? 'scale-[1.4] z-50 shadow-2xl' : ''}`}
                     style={{
                       background: `linear-gradient(135deg, ${pillar.color}, ${pillar.color}CC)`,
                       boxShadow: `0 8px 30px ${pillar.color}40`,
@@ -1685,9 +1689,10 @@ export default function Saludable() {
                     <span className="text-2xl md:text-3xl drop-shadow-lg group-hover:scale-110 transition-transform duration-300">{pillar.icon}</span>
                   </div>
 
-                  {/* Expanded info panel — appears on hover, expands outward LARGE */}
+                  {/* Expanded info panel — appears on hover (desktop) OR tap (mobile) */}
+                  {/* Desktop: positioned popup */}
                   <div
-                    className="absolute opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-all duration-500 ease-out z-[100]"
+                    className={`hidden md:block absolute transition-all duration-500 ease-out z-[100] ${selectedPillar === pillar.id ? 'opacity-100 pointer-events-auto' : 'opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto'}`}
                     style={{
                       width: '340px',
                       left: x > 55 ? '110%' : x < 45 ? 'auto' : '50%',
@@ -1733,9 +1738,53 @@ export default function Saludable() {
             })}
           </div>
 
+          {/* Mobile: full-width card below the wheel when a pillar is tapped */}
+          {selectedPillar && (
+            <div className="md:hidden mt-8 mx-auto max-w-sm animate-in fade-in slide-in-from-bottom-4 duration-400">
+              {(() => {
+                const pillar = PILLARS.find(p => p.id === selectedPillar);
+                if (!pillar) return null;
+                return (
+                  <div
+                    className="bg-white/95 backdrop-blur-xl rounded-2xl p-5 shadow-2xl border"
+                    style={{ borderColor: `${pillar.color}40` }}
+                  >
+                    <div className="flex items-center gap-3 mb-3">
+                      <div
+                        className="w-10 h-10 rounded-xl flex items-center justify-center text-xl"
+                        style={{ background: `${pillar.color}20` }}
+                      >
+                        {pillar.icon}
+                      </div>
+                      <h3 className="text-lg font-bold text-[#1B5E20]" style={{ fontFamily: "'Playfair Display', serif" }}>
+                        {pillar.title}
+                      </h3>
+                    </div>
+                    <p className="text-sm text-[#2D3B2D]/70 leading-relaxed mb-3">{pillar.description}</p>
+                    <div className="space-y-2 pt-3 border-t border-[#66BB6A]/20">
+                      {pillar.stats.map((stat, i) => (
+                        <div key={i} className="flex items-center gap-2 text-xs text-[#2D3B2D]/70">
+                          <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: pillar.color }} />
+                          <span>{stat}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <button
+                      onClick={() => setSelectedPillar(null)}
+                      className="mt-4 w-full py-2 text-xs font-semibold text-[#2E7D32] bg-[#6BAF8D]/10 rounded-lg hover:bg-[#6BAF8D]/20 transition-colors"
+                    >
+                      Cerrar
+                    </button>
+                  </div>
+                );
+              })()}
+            </div>
+          )}
+
           {/* Holistic instruction */}
           <p className="text-center text-[#2E7D32]/60 mt-12 text-sm italic max-w-2xl mx-auto">
-            Pasa el cursor sobre cada pilar para explorar cómo se integran en un ciclo continuo de bienestar.
+            <span className="hidden md:inline">Pasa el cursor sobre cada pilar para explorar cómo se integran en un ciclo continuo de bienestar.</span>
+            <span className="md:hidden">Toca cada pilar para ver su información detallada.</span>
           </p>
         </div>
       </section>

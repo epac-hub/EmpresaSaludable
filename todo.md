@@ -119,3 +119,5 @@
 - [x] Asymmetric layouts and variable typography on section headers
 - [x] Únete Ahora button hover color change effect
 - [x] Aliados logos smooth zoom on hover
+- [x] Fix: Inspirados specialist photos cut off heads on mobile (iPhone 16 Pro Max) - adjust object-position
+- [x] Fix: Los 5 Pilares - tapping each pillar should show its detailed information
