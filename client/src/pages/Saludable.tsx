@@ -12,6 +12,7 @@ import Lenis from "lenis";
 import MusicPlayer from "@/components/saludable/MusicPlayer";
 import FuturisticCursor from "@/components/saludable/FuturisticCursor";
 import MagneticButton from "@/components/saludable/MagneticButton";
+import GreenParticles from "@/components/saludable/GreenParticles";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -250,6 +251,49 @@ export default function Saludable() {
   const contactRef = useRef<HTMLElement>(null);
 
   const [formData, setFormData] = useState({ name: "", email: "", company: "", message: "" });
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [formTouched, setFormTouched] = useState<Record<string, boolean>>({});
+  const [formSubmitted, setFormSubmitted] = useState(false);
+
+  const validateField = (field: string, value: string) => {
+    if (field === "name" && !value.trim()) return "Nombre es requerido";
+    if (field === "email") {
+      if (!value.trim()) return "Email es requerido";
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return "Email inválido";
+    }
+    if (field === "message" && !value.trim()) return "Mensaje es requerido";
+    return "";
+  };
+
+  const handleFieldChange = (field: string, value: string) => {
+    setFormData({ ...formData, [field]: value });
+    if (formTouched[field]) {
+      const error = validateField(field, value);
+      setFormErrors(prev => ({ ...prev, [field]: error }));
+    }
+  };
+
+  const handleFieldBlur = (field: string) => {
+    setFormTouched(prev => ({ ...prev, [field]: true }));
+    const error = validateField(field, formData[field as keyof typeof formData]);
+    setFormErrors(prev => ({ ...prev, [field]: error }));
+  };
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const errors: Record<string, string> = {};
+    errors.name = validateField("name", formData.name);
+    errors.email = validateField("email", formData.email);
+    errors.message = validateField("message", formData.message);
+    setFormErrors(errors);
+    setFormTouched({ name: true, email: true, message: true });
+    if (Object.values(errors).some(e => e)) return;
+    // Success!
+    setFormSubmitted(true);
+    setTimeout(() => {
+      window.location.href = `mailto:hola@empresasaludable.org?subject=Consulta de ${formData.name} - ${formData.company}&body=${formData.message}`;
+    }, 2000);
+  };
 
   // ─── Lenis Smooth Scroll (FIXED: single RAF via gsap.ticker only) ────────
   useEffect(() => {
@@ -492,6 +536,9 @@ export default function Saludable() {
           style={{ filter: 'brightness(1.05) saturate(1.1)' }}
         />
         <div className="absolute inset-0 bg-gradient-to-br from-[#E8F5E0]/85 via-[#F4F9F2]/75 to-[#DFF0D8]/80" />
+
+        {/* Green particles with mouse-tracking */}
+        <GreenParticles />
 
         <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
           {/* Brand Name — Dynamic & Prominent */}
@@ -1114,53 +1161,97 @@ export default function Saludable() {
             o completa el formulario.
           </p>
 
+          {formSubmitted ? (
+            <div className="contact-form text-center py-16 animate-[fadeIn_0.6s_ease-out]">
+              <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-[#66BB6A] to-[#43A047] flex items-center justify-center animate-[bounceIn_0.6s_ease-out]">
+                <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <h3 className="text-2xl font-bold text-[#1B5E20] mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>Mensaje Enviado</h3>
+              <p className="text-[#2D3B2D]/60">Gracias por contactarnos. Te responderemos pronto.</p>
+            </div>
+          ) : (
           <form
             className="contact-form space-y-6"
-            onSubmit={(e) => {
-              e.preventDefault();
-              window.location.href = `mailto:hola@empresasaludable.org?subject=Consulta de ${formData.name} - ${formData.company}&body=${formData.message}`;
-            }}
+            onSubmit={handleFormSubmit}
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <input
-                type="text"
-                placeholder="Nombre completo"
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="w-full px-5 py-4 rounded-xl bg-white border border-[#A8C5A0]/30 text-[#2D3B2D] placeholder-[#2D3B2D]/40 focus:outline-none focus:border-[#6BAF8D] focus:ring-2 focus:ring-[#6BAF8D]/20 transition-all"
-                required
-              />
-              <input
-                type="email"
-                placeholder="Email"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="w-full px-5 py-4 rounded-xl bg-white border border-[#A8C5A0]/30 text-[#2D3B2D] placeholder-[#2D3B2D]/40 focus:outline-none focus:border-[#6BAF8D] focus:ring-2 focus:ring-[#6BAF8D]/20 transition-all"
-                required
-              />
+              <div>
+                <input
+                  type="text"
+                  placeholder="Nombre completo"
+                  value={formData.name}
+                  onChange={(e) => handleFieldChange("name", e.target.value)}
+                  onBlur={() => handleFieldBlur("name")}
+                  className={`w-full px-5 py-4 rounded-xl bg-white border text-[#2D3B2D] placeholder-[#2D3B2D]/40 focus:outline-none focus:ring-2 transition-all ${
+                    formErrors.name && formTouched.name
+                      ? "border-red-400 focus:border-red-400 focus:ring-red-200"
+                      : formTouched.name && !formErrors.name
+                      ? "border-[#66BB6A] focus:border-[#66BB6A] focus:ring-[#66BB6A]/20"
+                      : "border-[#A8C5A0]/30 focus:border-[#6BAF8D] focus:ring-[#6BAF8D]/20"
+                  }`}
+                />
+                {formErrors.name && formTouched.name && (
+                  <p className="mt-1 text-xs text-red-500 animate-[fadeIn_0.2s_ease-out]">{formErrors.name}</p>
+                )}
+              </div>
+              <div>
+                <input
+                  type="email"
+                  placeholder="Email"
+                  value={formData.email}
+                  onChange={(e) => handleFieldChange("email", e.target.value)}
+                  onBlur={() => handleFieldBlur("email")}
+                  className={`w-full px-5 py-4 rounded-xl bg-white border text-[#2D3B2D] placeholder-[#2D3B2D]/40 focus:outline-none focus:ring-2 transition-all ${
+                    formErrors.email && formTouched.email
+                      ? "border-red-400 focus:border-red-400 focus:ring-red-200"
+                      : formTouched.email && !formErrors.email
+                      ? "border-[#66BB6A] focus:border-[#66BB6A] focus:ring-[#66BB6A]/20"
+                      : "border-[#A8C5A0]/30 focus:border-[#6BAF8D] focus:ring-[#6BAF8D]/20"
+                  }`}
+                />
+                {formErrors.email && formTouched.email && (
+                  <p className="mt-1 text-xs text-red-500 animate-[fadeIn_0.2s_ease-out]">{formErrors.email}</p>
+                )}
+              </div>
             </div>
             <input
               type="text"
               placeholder="Empresa / Organización"
               value={formData.company}
-              onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+              onChange={(e) => handleFieldChange("company", e.target.value)}
               className="w-full px-5 py-4 rounded-xl bg-white border border-[#A8C5A0]/30 text-[#2D3B2D] placeholder-[#2D3B2D]/40 focus:outline-none focus:border-[#6BAF8D] focus:ring-2 focus:ring-[#6BAF8D]/20 transition-all"
             />
-            <textarea
-              placeholder="¿Cómo podemos ayudarte?"
-              value={formData.message}
-              onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-              rows={5}
-              className="w-full px-5 py-4 rounded-xl bg-white border border-[#A8C5A0]/30 text-[#2D3B2D] placeholder-[#2D3B2D]/40 focus:outline-none focus:border-[#6BAF8D] focus:ring-2 focus:ring-[#6BAF8D]/20 transition-all resize-none"
-              required
-            />
-            <button
-              type="submit"
-              className="w-full py-4 rounded-full bg-gradient-to-r from-[#6BAF8D] to-[#4A9070] text-white font-semibold text-lg hover:shadow-lg hover:shadow-[#6BAF8D]/30 transition-all duration-300 hover:scale-[1.02]"
-            >
-              Enviar Mensaje
-            </button>
+            <div>
+              <textarea
+                placeholder="¿Cómo podemos ayudarte?"
+                value={formData.message}
+                onChange={(e) => handleFieldChange("message", e.target.value)}
+                onBlur={() => handleFieldBlur("message")}
+                rows={5}
+                className={`w-full px-5 py-4 rounded-xl bg-white border text-[#2D3B2D] placeholder-[#2D3B2D]/40 focus:outline-none focus:ring-2 transition-all resize-none ${
+                  formErrors.message && formTouched.message
+                    ? "border-red-400 focus:border-red-400 focus:ring-red-200"
+                    : formTouched.message && !formErrors.message
+                    ? "border-[#66BB6A] focus:border-[#66BB6A] focus:ring-[#66BB6A]/20"
+                    : "border-[#A8C5A0]/30 focus:border-[#6BAF8D] focus:ring-[#6BAF8D]/20"
+                }`}
+              />
+              {formErrors.message && formTouched.message && (
+                <p className="mt-1 text-xs text-red-500 animate-[fadeIn_0.2s_ease-out]">{formErrors.message}</p>
+              )}
+            </div>
+            <MagneticButton strength={0.15} className="w-full">
+              <button
+                type="submit"
+                className="w-full py-4 rounded-full bg-gradient-to-r from-[#66BB6A] to-[#43A047] text-white font-semibold text-lg hover:shadow-lg hover:shadow-[#43A047]/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.97]"
+              >
+                Enviar Mensaje
+              </button>
+            </MagneticButton>
           </form>
+          )}
         </div>
       </section>
 

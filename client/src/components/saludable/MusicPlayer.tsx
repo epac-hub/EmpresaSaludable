@@ -11,7 +11,7 @@ export default function MusicPlayer() {
   const hasAttemptedAutoplay = useRef(false);
 
   useEffect(() => {
-    audioRef.current = new Audio("/manus-storage/bossa-nova-latin-jazz_c6e8e5d8.mp3");
+    audioRef.current = new Audio("/manus-storage/bossa-nova-latin-jazz_68fac705.mp3");
     audioRef.current.loop = true;
     audioRef.current.volume = 0.3;
 

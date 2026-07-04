@@ -20,3 +20,8 @@
 - [x] Cumplimiento: LIGHTER greens with magnetic buttons
 - [x] Futuristic custom cursor (dot + follower, state changes on hover)
 - [x] All dark sections → lighter summer/peace green tones
+- [x] Music: Regenerate Bossa Nova Latin Jazz mp3 (old file expired from S3)
+- [x] Green particles with mouse-tracking in hero section background
+- [x] Contact form: real-time field validation with visual feedback
+- [x] Contact form: success animation on submit
+- [x] Contact form: magnetic button on submit
