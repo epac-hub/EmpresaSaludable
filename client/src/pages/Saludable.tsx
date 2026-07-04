@@ -465,20 +465,22 @@ export default function Saludable() {
       </nav>
 
       {/* ═══ HERO SECTION ═══ */}
-      <section ref={heroRef} className="relative min-h-screen flex items-center justify-center pt-20">
-        {/* Light gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#E8F5E0] via-[#F4F9F2] to-[#DFF0D8]" />
-        {/* Floating particles */}
+      <section ref={heroRef} className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+        {/* Video background */}
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ filter: 'brightness(1.1) saturate(0.9)' }}
+        >
+          <source src="/manus-storage/tropical-hero_10de25f6.mp4" type="video/mp4" />
+        </video>
+        {/* Soft gradient overlay for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#E8F5E0]/85 via-[#F4F9F2]/75 to-[#DFF0D8]/80" />
+        {/* Floating particles on top */}
         <FloatingParticles />
-        {/* Subtle hero image overlay */}
-        <div
-          className="absolute inset-0 opacity-15"
-          style={{
-            backgroundImage: "url(/manus-storage/hero-light-green_948fb9ea.png)",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        />
 
         {/* Hero Content */}
         <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
