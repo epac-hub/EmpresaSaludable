@@ -131,3 +131,4 @@
 - [x] Fix: Font sizes too large on section titles — reduced all from 5xl-7xl to 3xl-5xl range
 - [x] Fix: Glass containers too large relative to content — reduced max-w-4xl to max-w-3xl, reduced padding
 - [x] Fix: Beneficiarios title visible — reduced to text-3xl md:text-4xl, glass container max-w-2xl
+- [x] Integrate background music (bossa-vocal-final) with play/mute button into Saludable page
