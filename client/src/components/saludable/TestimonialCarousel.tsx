@@ -72,7 +72,7 @@ export default function TestimonialCarousel() {
           >
             {TESTIMONIALS.map((testimonial, i) => (
               <div key={i} className="w-full flex-shrink-0 px-4">
-                <div className="p-8 md:p-10 rounded-3xl bg-white border border-[#A8C5A0]/20 shadow-lg">
+                <div className="p-8 md:p-10 rounded-3xl bg-white/70 backdrop-blur-sm border border-[#A8C5A0]/15 shadow-lg">
                   {/* Stars */}
                   <div className="flex gap-1 mb-6 justify-center">
                     {[...Array(5)].map((_, s) => (

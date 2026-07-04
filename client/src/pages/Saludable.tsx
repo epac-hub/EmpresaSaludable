@@ -524,30 +524,57 @@ export default function Saludable() {
         });
       });
 
-      // Ambassador cards entrance
+      // Ambassador cards entrance — cinematic 3D with depth
       if (celebsRef.current) {
-        // Specialist cards — cinematic entrance with rotateY + stagger
-        gsap.from(".celeb-card", {
-          scrollTrigger: { trigger: celebsRef.current, start: "top 80%" },
-          y: 80,
+        // Section header — clip-path reveal from left
+        gsap.from(celebsRef.current.querySelector("h2"), {
+          scrollTrigger: { trigger: celebsRef.current, start: "top 82%" },
+          x: -100,
           opacity: 0,
-          scale: 0.9,
-          rotateY: 15,
-          duration: 1,
-          stagger: 0.2,
-          ease: "back.out(1.4)",
+          clipPath: 'inset(0 100% 0 0)',
+          duration: 1.2,
+          ease: "power3.out",
+          clearProps: 'clipPath',
           immediateRender: false,
         });
 
-        // Animate the section header
-        gsap.from(celebsRef.current.querySelectorAll("h2, p"), {
-          scrollTrigger: { trigger: celebsRef.current, start: "top 85%" },
-          y: 40,
+        gsap.from(celebsRef.current.querySelectorAll("p"), {
+          scrollTrigger: { trigger: celebsRef.current, start: "top 82%" },
+          y: 30,
           opacity: 0,
           duration: 0.8,
           stagger: 0.1,
+          delay: 0.3,
           ease: "power2.out",
           immediateRender: false,
+        });
+
+        // Specialist cards — dramatic 3D flip entrance with stagger
+        gsap.from(".celeb-card", {
+          scrollTrigger: { trigger: celebsRef.current, start: "top 75%" },
+          y: 100,
+          opacity: 0,
+          scale: 0.85,
+          rotateY: 25,
+          rotateX: 10,
+          duration: 1.2,
+          stagger: 0.25,
+          ease: "back.out(1.2)",
+          immediateRender: false,
+        });
+
+        // Parallax depth on ambassador cards while scrolling
+        gsap.utils.toArray<HTMLElement>(".celeb-card").forEach((card, i) => {
+          gsap.to(card, {
+            scrollTrigger: {
+              trigger: celebsRef.current,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 1,
+            },
+            y: -15 - (i * 8),
+            ease: "none",
+          });
         });
       }
 
@@ -666,29 +693,36 @@ export default function Saludable() {
         }
       }
 
-      // Stats counter
+      // Stats counter — dramatic scale + rotate entrance
       if (statsRef.current) {
         gsap.from(".stat-item", {
-          scrollTrigger: { trigger: statsRef.current, start: "top 85%" },
-          y: 30,
+          scrollTrigger: { trigger: statsRef.current, start: "top 80%" },
+          y: 60,
           opacity: 0,
-          duration: 0.5,
-          stagger: 0.08,
-          ease: "power2.out",
+          scale: 0.8,
+          rotateX: 20,
+          duration: 0.9,
+          stagger: 0.12,
+          ease: "back.out(1.4)",
           immediateRender: false,
         });
       }
 
-      // Compliance steps
+      // Compliance steps — cinematic stagger with slide from alternating sides
       if (complianceRef.current) {
-        gsap.from(".compliance-step", {
-          scrollTrigger: { trigger: complianceRef.current, start: "top 85%" },
-          y: 40,
-          opacity: 0,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: "power3.out",
-          immediateRender: false,
+        const steps = complianceRef.current.querySelectorAll(".compliance-step");
+        steps.forEach((step, i) => {
+          gsap.from(step, {
+            scrollTrigger: { trigger: complianceRef.current, start: "top 80%" },
+            x: i % 2 === 0 ? -60 : 60,
+            y: 40,
+            opacity: 0,
+            scale: 0.9,
+            duration: 0.9,
+            delay: i * 0.15,
+            ease: "power3.out",
+            immediateRender: false,
+          });
         });
       }
 
@@ -751,25 +785,39 @@ export default function Saludable() {
         });
       }
 
-      // Contact
+      // Contact — cinematic scale + blur entrance
       if (contactRef.current) {
         gsap.from(".contact-form", {
-          scrollTrigger: { trigger: contactRef.current, start: "top 85%" },
-          y: 30,
+          scrollTrigger: { trigger: contactRef.current, start: "top 80%" },
+          y: 60,
           opacity: 0,
-          duration: 0.7,
+          scale: 0.95,
+          duration: 1,
           ease: "power3.out",
+          immediateRender: false,
+        });
+
+        // Stagger form fields entrance
+        gsap.from(contactRef.current.querySelectorAll("input, textarea, select"), {
+          scrollTrigger: { trigger: contactRef.current, start: "top 75%" },
+          y: 20,
+          opacity: 0,
+          duration: 0.5,
+          stagger: 0.08,
+          delay: 0.3,
+          ease: "power2.out",
           immediateRender: false,
         });
       }
 
-      // Map
+      // Map — dramatic slide-up with scale
       if (mapRef.current) {
         gsap.from(".map-container", {
-          scrollTrigger: { trigger: mapRef.current, start: "top 85%" },
-          y: 40,
+          scrollTrigger: { trigger: mapRef.current, start: "top 80%" },
+          y: 80,
           opacity: 0,
-          duration: 0.8,
+          scale: 0.92,
+          duration: 1.2,
           ease: "power3.out",
           immediateRender: false,
         });
@@ -843,16 +891,18 @@ export default function Saludable() {
       {/* ═══ NAVIGATION — Frosted Glass + Animated Hover ═══ */}
       <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between backdrop-blur-2xl bg-white/60 border-b border-[#6BAF8D]/10 shadow-[0_4px_30px_rgba(107,175,141,0.08)] transition-all duration-500">
         <div className="flex items-center gap-3">
-          <img
-            src="/manus-storage/saludable-logo_630e22f3.png"
-            alt="Empresa Saludable"
-            className="w-12 h-12 object-contain drop-shadow-md hover:scale-110 transition-transform duration-300"
-          />
+          <div className="w-12 h-12 rounded-xl bg-white/80 p-1.5 shadow-md border border-[#6BAF8D]/20 hover:scale-110 hover:shadow-lg transition-all duration-300">
+            <img
+              src="/manus-storage/saludable-logo_630e22f3.png"
+              alt="Empresa Saludable"
+              className="w-full h-full object-contain"
+            />
+          </div>
           <div className="flex flex-col">
-            <span className="text-xl font-black tracking-tight text-[#2D3B2D]" style={{ fontFamily: "'Playfair Display', serif" }}>
-              Empresa <span className="text-[#6BAF8D]">Saludable</span>
+            <span className="text-xl font-black tracking-tight text-[#1B3B1B] drop-shadow-[0_1px_2px_rgba(0,0,0,0.1)]" style={{ fontFamily: "'Playfair Display', serif" }}>
+              Empresa <span className="text-[#2E7D32] font-black">Saludable</span>
             </span>
-            <span className="text-[10px] tracking-[0.2em] uppercase text-[#6BAF8D]/70 font-medium -mt-0.5">Bienestar Corporativo PR</span>
+            <span className="text-[10px] tracking-[0.2em] uppercase text-[#2E7D32] font-semibold -mt-0.5">Bienestar Corporativo PR</span>
           </div>
         </div>
         <div className="hidden md:flex items-center gap-1 text-sm text-[#2D3B2D]/70">
@@ -942,14 +992,21 @@ export default function Saludable() {
       </section>
 
       {/* ═══ TRANSITION BRIDGE: Hero → Ambassadors ═══ */}
-      <div className="relative h-32 -mt-1">
-        {/* Gradient from dark (hero bottom) to light (ambassadors top) */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-[#1B3B2D]/30 to-[#F0F7F4]" />
-        {/* Organic wave SVG divider */}
-        <svg className="absolute bottom-0 left-0 w-full h-20" viewBox="0 0 1440 80" preserveAspectRatio="none" fill="none">
-          <path d="M0,40 C360,80 720,0 1080,40 C1260,60 1380,50 1440,40 L1440,80 L0,80 Z" fill="#F0F7F4" />
-          <path d="M0,50 C360,70 720,20 1080,50 C1260,65 1380,55 1440,50 L1440,80 L0,80 Z" fill="#F0F7F4" opacity="0.5" />
+      <div className="relative h-40 -mt-1 overflow-hidden">
+        {/* Clean gradient from dark hero to light ambassadors */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-[#2D3B2D]/40 via-50% to-[#F0F7F4]" />
+        {/* Layered organic wave dividers for depth */}
+        <svg className="absolute bottom-0 left-0 w-full h-28" viewBox="0 0 1440 112" preserveAspectRatio="none" fill="none">
+          <path d="M0,56 C240,90 480,20 720,56 C960,90 1200,20 1440,56 L1440,112 L0,112 Z" fill="#F0F7F4" opacity="0.3" />
+          <path d="M0,70 C360,100 720,35 1080,70 C1260,85 1380,75 1440,70 L1440,112 L0,112 Z" fill="#F0F7F4" opacity="0.6" />
+          <path d="M0,85 C480,112 960,60 1440,85 L1440,112 L0,112 Z" fill="#F0F7F4" />
         </svg>
+        {/* Decorative floating leaf accent */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-16 h-16 rounded-full bg-[#6BAF8D]/10 flex items-center justify-center animate-[float_3s_ease-in-out_infinite]">
+          <svg className="w-6 h-6 text-[#6BAF8D]/60" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/>
+          </svg>
+        </div>
       </div>
 
       {/* ═══ INSPIRADOS POR LOS MEJORES — PROFESSIONAL AMBASSADORS ═══ */}
@@ -1353,7 +1410,7 @@ export default function Saludable() {
           </p>
 
           {/* Bienestar Integral Context Block */}
-          <div data-bienestar-block className="max-w-4xl mx-auto mb-20 p-8 rounded-2xl bg-white/50 backdrop-blur-sm border border-[#66BB6A]/30 shadow-lg relative overflow-hidden hover:shadow-xl hover:shadow-[#43A047]/15 hover:border-[#66BB6A]/50 transition-all duration-700">
+          <div data-bienestar-block className="max-w-4xl mx-auto mb-20 p-8 rounded-2xl bg-white/50 backdrop-blur-sm border border-[#66BB6A]/30 shadow-lg relative overflow-hidden hover:shadow-2xl hover:shadow-[#43A047]/20 hover:border-[#66BB6A]/60 hover:scale-[1.04] hover:-translate-y-2 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] cursor-default">
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#43A047] via-[#66BB6A] to-[#81C784]" />
             <div className="flex flex-col md:flex-row items-center gap-6">
               <div className="flex-shrink-0 w-20 h-20 rounded-full bg-gradient-to-br from-[#43A047] to-[#66BB6A] flex items-center justify-center shadow-lg shadow-[#43A047]/30">
@@ -1573,7 +1630,7 @@ export default function Saludable() {
             {TESTIMONIALS.map((testimonial, i) => (
               <div
                 key={i}
-                className="flex-shrink-0 w-[340px] md:w-[380px] snap-center p-8 rounded-2xl bg-white/80 backdrop-blur-xl border border-[#66BB6A]/30 shadow-xl hover:shadow-[0_20px_60px_rgba(67,160,71,0.2)] hover:-translate-y-3 hover:scale-[1.02] transition-all duration-700 group"
+                className="flex-shrink-0 w-[340px] md:w-[380px] snap-center p-8 rounded-2xl bg-white/55 backdrop-blur-md border border-[#66BB6A]/20 shadow-xl hover:shadow-[0_20px_60px_rgba(67,160,71,0.2)] hover:-translate-y-3 hover:scale-[1.02] hover:bg-white/75 transition-all duration-700 group"
               >
                 <svg className="w-8 h-8 text-[#43A047]/50 mb-4 group-hover:text-[#2E7D32] group-hover:scale-110 transition-all duration-500" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983z" />

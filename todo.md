@@ -93,3 +93,8 @@
 - [x] Plan cards: scroll-reveal stagger animation (back.out easing + feature list stagger)
 - [x] FAQ: smooth accordion open/close with scroll-reveal entrance + ring highlight on active
 - [x] Contact buttons: shimmer sweep on hover + glow pulse on focus fields + scale microinteraction
+- [x] Testimonial cards: make white background more transparent (bg-white/55 + backdrop-blur-md)
+- [x] Navbar logo: improve legibility (contrast chip bg-white/80 + darker text + stronger green subtitle)
+- [x] Hero→Ambassadors transition: cleaner 3-layer wave, floating leaf accent, no blur
+- [x] Bienestar Integral: hover scale-[1.04] + translate-y-2 + shadow-2xl effect
+- [x] Enhanced GSAP scroll animations: stats (rotateX/scale), compliance (alternating sides), ambassadors (3D flip + parallax depth), contact (field stagger), map (scale)
