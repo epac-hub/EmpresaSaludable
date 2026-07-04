@@ -1171,7 +1171,7 @@ export default function Saludable() {
               {"Empresa".split("").map((char, i) => (
                 <span
                   key={i}
-                  className="empresa-letter inline-block text-7xl md:text-9xl lg:text-[11rem] font-black leading-[0.85] tracking-tight text-white"
+                  className="empresa-letter inline-block text-5xl md:text-7xl lg:text-[8rem] font-black leading-[0.9] tracking-tight text-white"
                   style={{ fontFamily: "'Playfair Display', serif", textShadow: '0 6px 40px rgba(0,0,0,0.6)' }}
                 >
                   {char}
@@ -1180,7 +1180,7 @@ export default function Saludable() {
             </span>
             {/* SALUDABLE — animated flowing gradient */}
             <span
-              className="saludable-word block text-7xl md:text-9xl lg:text-[11rem] font-black leading-[0.85] tracking-tight"
+              className="saludable-word block text-5xl md:text-7xl lg:text-[8rem] font-black leading-[0.9] tracking-tight"
               style={{
                 fontFamily: "'Playfair Display', serif",
                 backgroundImage: 'linear-gradient(90deg, #81C784, #43A047, #2E7D32, #66BB6A, #A5D6A7, #43A047, #81C784)',
