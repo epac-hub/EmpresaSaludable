@@ -277,18 +277,21 @@ export default function Saludable() {
         delay: 1.2,
       });
 
-      // Celebrity cards
+      // Celebrity cards — WOW 3D entrance animation
       if (celebsRef.current) {
         gsap.from(".celeb-card", {
           scrollTrigger: {
             trigger: celebsRef.current,
             start: "top 80%",
           },
-          y: 80,
+          y: 120,
           opacity: 0,
-          duration: 0.9,
-          stagger: 0.2,
-          ease: "power3.out",
+          rotateX: 15,
+          rotateY: -10,
+          scale: 0.85,
+          duration: 1.2,
+          stagger: 0.15,
+          ease: "power4.out",
         });
       }
 
@@ -515,8 +518,8 @@ export default function Saludable() {
         </div>
       </section>
 
-      {/* ═══ CELEBRITY FITNESS SECTION ═══ */}
-      <section ref={celebsRef} className="py-32 px-6 bg-white">
+      {/* ═══ CELEBRITY FITNESS SECTION — WOW 3D TILT + GSAP ═══ */}
+      <section ref={celebsRef} className="py-32 px-6 bg-white overflow-hidden">
         <div className="max-w-6xl mx-auto">
           <h2
             className="text-4xl md:text-5xl font-bold text-center mb-4 text-[#2D3B2D]"
@@ -528,32 +531,84 @@ export default function Saludable() {
             Nuestros programas están inspirados en el compromiso con la salud de los más grandes de Puerto Rico.
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" style={{ perspective: '1200px' }}>
             {CELEBRITIES.map((celeb, i) => (
               <div
                 key={i}
-                className="celeb-card group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
+                className="celeb-card group relative rounded-2xl overflow-hidden shadow-lg transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] cursor-pointer"
+                style={{ transformStyle: 'preserve-3d' }}
                 data-hover
+                onMouseMove={(e) => {
+                  const card = e.currentTarget;
+                  const rect = card.getBoundingClientRect();
+                  const x = (e.clientX - rect.left) / rect.width - 0.5;
+                  const y = (e.clientY - rect.top) / rect.height - 0.5;
+                  card.style.transform = `perspective(800px) rotateY(${x * 12}deg) rotateX(${-y * 12}deg) translateZ(20px) scale(1.03)`;
+                  // Move glow to cursor position
+                  const glow = card.querySelector('.celeb-glow') as HTMLElement;
+                  if (glow) {
+                    glow.style.left = `${e.clientX - rect.left}px`;
+                    glow.style.top = `${e.clientY - rect.top}px`;
+                    glow.style.opacity = '1';
+                  }
+                  // Parallax on image
+                  const img = card.querySelector('.celeb-img') as HTMLElement;
+                  if (img) {
+                    img.style.transform = `scale(1.15) translate(${x * -15}px, ${y * -15}px)`;
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  const card = e.currentTarget;
+                  card.style.transform = 'perspective(800px) rotateY(0deg) rotateX(0deg) translateZ(0px) scale(1)';
+                  const glow = card.querySelector('.celeb-glow') as HTMLElement;
+                  if (glow) glow.style.opacity = '0';
+                  const img = card.querySelector('.celeb-img') as HTMLElement;
+                  if (img) img.style.transform = 'scale(1) translate(0px, 0px)';
+                }}
               >
+                {/* Cursor-following glow */}
+                <div
+                  className="celeb-glow absolute w-40 h-40 rounded-full pointer-events-none -translate-x-1/2 -translate-y-1/2 z-20 transition-opacity duration-300"
+                  style={{
+                    background: 'radial-gradient(circle, rgba(107,175,141,0.5) 0%, transparent 70%)',
+                    opacity: 0,
+                    filter: 'blur(20px)',
+                  }}
+                />
+
+                {/* Image with parallax */}
                 <div className="aspect-[3/4] overflow-hidden">
                   <img
                     src={celeb.image}
                     alt={celeb.name}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    className="celeb-img w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)]"
                   />
                 </div>
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#2D3B2D]/90 via-[#2D3B2D]/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
-                {/* Content */}
-                <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                  <h3 className="text-xl font-bold mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>
+
+                {/* Animated gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#1a2e1a]/95 via-[#2D3B2D]/40 to-transparent opacity-70 group-hover:opacity-100 transition-opacity duration-500" />
+
+                {/* Shine sweep on hover */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none overflow-hidden">
+                  <div className="absolute -inset-full bg-gradient-to-r from-transparent via-white/10 to-transparent rotate-12 translate-x-[-100%] group-hover:translate-x-[200%] transition-transform duration-1000 ease-out" />
+                </div>
+
+                {/* Content with 3D depth */}
+                <div className="absolute bottom-0 left-0 right-0 p-6 text-white" style={{ transform: 'translateZ(30px)' }}>
+                  <h3 className="text-xl font-bold mb-1 group-hover:text-[#A8C5A0] transition-colors duration-300" style={{ fontFamily: "'Playfair Display', serif" }}>
                     {celeb.name}
                   </h3>
-                  <p className="text-[#A8C5A0] text-sm font-medium mb-3">{celeb.role}</p>
-                  <p className="text-white/70 text-sm italic opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-500">
+                  <p className="text-[#A8C5A0] text-sm font-medium mb-3 group-hover:tracking-wider transition-all duration-500">{celeb.role}</p>
+                  <p className="text-white/70 text-sm italic opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 delay-100">
                     "{celeb.quote}"
                   </p>
+                  {/* Animated underline */}
+                  <div className="h-[2px] bg-gradient-to-r from-[#6BAF8D] to-[#A8C5A0] mt-3 w-0 group-hover:w-full transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)]" />
                 </div>
+
+                {/* Corner accent */}
+                <div className="absolute top-4 right-4 w-8 h-8 border-t-2 border-r-2 border-[#6BAF8D]/0 group-hover:border-[#6BAF8D]/60 transition-all duration-500 rounded-tr-lg" />
+                <div className="absolute bottom-4 left-4 w-8 h-8 border-b-2 border-l-2 border-[#6BAF8D]/0 group-hover:border-[#6BAF8D]/60 transition-all duration-500 rounded-bl-lg" />
               </div>
             ))}
           </div>
