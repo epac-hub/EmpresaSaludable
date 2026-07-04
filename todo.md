@@ -112,3 +112,5 @@
 - [x] Particle trail effect on custom cursor for immersive scrolling experience
 - [x] GLSL shader backgrounds interactive: organic flowing colors react to mouse movements
 - [x] Beneficiarios section: category filter to sort through testimonials
+- [x] Hero text WOW effect: split-text reveal with GSAP (letter-by-letter stagger + 3D rotation) + animated gradient on "Saludable"
+- [x] Add Farmacia Isla Verde (Isla Verde, Carolina) to the pharmacy/farmacias listing

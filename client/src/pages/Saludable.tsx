@@ -515,30 +515,38 @@ export default function Saludable() {
   // ─── GSAP Animations (FIXED: immediateRender:false on all from() calls) ──
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Kinetic Typography — staggered word reveal with motion
+      // Split-letter WOW reveal — dramatic letter-by-letter entrance
       const kineticTl = gsap.timeline({ delay: 0 });
       kineticTl
-        .from(".hero-title", {
-          y: 60,
+        // BIENVENIDO A — letters cascade in from below with rotation
+        .from(".hero-letter", {
+          y: 80,
+          rotateX: -90,
           opacity: 0,
-          duration: 0.8,
-          ease: "power3.out",
+          stagger: 0.04,
+          duration: 0.6,
+          ease: "back.out(2)",
         })
-        .from(".kinetic-word", {
-          y: 120,
+        // EMPRESA — letters slam in from above with elastic bounce
+        .from(".empresa-letter", {
+          y: -150,
+          rotateY: 90,
           rotateX: -45,
           opacity: 0,
-          scale: 0.8,
-          stagger: 0.2,
-          duration: 1.4,
+          scale: 0.3,
+          stagger: 0.06,
+          duration: 1,
+          ease: "elastic.out(1, 0.5)",
+        }, "-=0.2")
+        // SALUDABLE — scales up from nothing with glow
+        .from(".saludable-word", {
+          scale: 0.3,
+          opacity: 0,
+          rotateX: -30,
+          y: 60,
+          duration: 1.2,
           ease: "power4.out",
-        }, "-=0.3")
-        .to(".kinetic-word", {
-          letterSpacing: "0.02em",
-          duration: 2,
-          ease: "power1.inOut",
-          stagger: 0.15,
-        }, "-=0.8")
+        }, "-=0.6")
         .from(".hero-cta", {
           y: 40,
           opacity: 0,
@@ -1141,21 +1149,48 @@ export default function Saludable() {
         {/* Dark overlay for text readability — people still visible through it */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/25 to-black/50" />
 
-        {/* Kinetic Typography — Empresa Saludable */}
+        {/* Kinetic Typography — Split-letter WOW reveal */}
         <div className="relative z-10 text-center px-6">
-          <span className="hero-title block text-3xl md:text-5xl lg:text-6xl tracking-[0.3em] uppercase text-white font-bold mb-8" style={{ fontFamily: "'Space Grotesk', sans-serif", textShadow: '0 4px 20px rgba(0,0,0,0.6)' }}>
-            Bienvenido a
-          </span>
-          <h1 className="hero-title overflow-hidden">
-            <span
-              className="kinetic-word block text-7xl md:text-9xl lg:text-[11rem] font-black leading-[0.85] tracking-tight text-white drop-shadow-[0_6px_40px_rgba(0,0,0,0.6)]"
-              style={{ fontFamily: "'Playfair Display', serif" }}
-            >
-              Empresa
+          {/* BIENVENIDO A — letter-by-letter reveal */}
+          <div className="hero-title overflow-hidden mb-8">
+            <span className="inline-block">
+              {"BIENVENIDO A".split("").map((char, i) => (
+                <span
+                  key={i}
+                  className="hero-letter inline-block text-3xl md:text-5xl lg:text-6xl tracking-[0.3em] uppercase text-white font-bold"
+                  style={{ fontFamily: "'Space Grotesk', sans-serif", textShadow: '0 4px 20px rgba(0,0,0,0.6)' }}
+                >
+                  {char === " " ? "\u00A0" : char}
+                </span>
+              ))}
             </span>
+          </div>
+          <h1 className="hero-title overflow-hidden">
+            {/* EMPRESA — letter split with 3D rotation */}
+            <span className="block overflow-hidden">
+              {"Empresa".split("").map((char, i) => (
+                <span
+                  key={i}
+                  className="empresa-letter inline-block text-7xl md:text-9xl lg:text-[11rem] font-black leading-[0.85] tracking-tight text-white"
+                  style={{ fontFamily: "'Playfair Display', serif", textShadow: '0 6px 40px rgba(0,0,0,0.6)' }}
+                >
+                  {char}
+                </span>
+              ))}
+            </span>
+            {/* SALUDABLE — animated flowing gradient */}
             <span
-              className="kinetic-word block text-7xl md:text-9xl lg:text-[11rem] font-black leading-[0.85] tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#81C784] via-[#66BB6A] to-[#43A047] drop-shadow-[0_6px_40px_rgba(76,175,80,0.6)]"
-              style={{ fontFamily: "'Playfair Display', serif" }}
+              className="saludable-word block text-7xl md:text-9xl lg:text-[11rem] font-black leading-[0.85] tracking-tight"
+              style={{
+                fontFamily: "'Playfair Display', serif",
+                backgroundImage: 'linear-gradient(90deg, #81C784, #43A047, #2E7D32, #66BB6A, #A5D6A7, #43A047, #81C784)',
+                backgroundSize: '300% 100%',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                animation: 'gradientFlow 4s ease-in-out infinite',
+                filter: 'drop-shadow(0 6px 40px rgba(76,175,80,0.5))',
+              }}
             >
               Saludable
             </span>

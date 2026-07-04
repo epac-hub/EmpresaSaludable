@@ -113,6 +113,7 @@ export const PHARMACIES: Pharmacy[] = [
   { name: "Farmacia Benquil Inc", municipality: "Carolina", address: "CALLE MILAGROS CABEZAS B 8 URB CAROLINA ALTA", phone: "+1-787-768-1835" },
   { name: "Farmacia Caridad #37", municipality: "Carolina", address: "830 CARR. 857, CAROLINA, PR 00987 (COLOBOS)", phone: "+1-787-701-2190" },
   { name: "Super Farmacia Isla Verde", municipality: "Carolina", address: "1035 #AO-16 MARGINAL VILLAMAR ISLA VERDE", phone: "+1-787-200-0380" },
+  { name: "Farmacia Isla Verde", municipality: "Carolina", address: "ISLA VERDE, CAROLINA, PR", phone: "" },
   { name: "Sams Pharmacy", municipality: "Carolina", address: "PARQUE ESCORIAL CARR #3 BO. SAN ANTON", phone: "+1-787-769-2038" },
   { name: "Walmart Pharmacy", municipality: "Carolina", address: "PARQUE ESCORIAL CARR #3 BO. SAN ANTON", phone: "+1-787-625-0697" },
   { name: "Super Farmacia Arzuaga", municipality: "Carolina", address: "CAROLINA SHOPPING COURT CARR. #3 LOCAL 103-B", phone: "+1-787-767-2626" },
