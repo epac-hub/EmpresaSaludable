@@ -127,7 +127,7 @@ const COMPLIANCE_STEPS = [
   {
     step: 4,
     title: "Monitoreo Continuo",
-    desc: "Seguimiento en tiempo real de métricas de bienestar, ajustes basados en datos, reportes de cumplimiento regulatorio OSHA/HIPAA y alertas proactivas.",
+    desc: "Seguimiento en tiempo real de métricas de bienestar, ajustes basados en datos, reportes de cumplimiento regulatorio del Depto. de Salud y Depto. del Trabajo de PR, y alertas proactivas.",
     icon: "📊",
     deliverable: "Dashboard en vivo + reportes mensuales",
   },
@@ -318,17 +318,29 @@ export default function Saludable() {
         });
       }
 
-      // Pillars entrance
+      // Pillars WOW entrance — 3D flip + stagger + glow burst
       if (pillarsRef.current) {
         gsap.from(".pillar-card", {
-          scrollTrigger: { trigger: pillarsRef.current, start: "top 85%" },
-          y: 50,
+          scrollTrigger: { trigger: pillarsRef.current, start: "top 80%" },
+          y: 120,
           opacity: 0,
-          scale: 0.95,
-          duration: 0.7,
-          stagger: 0.1,
-          ease: "power3.out",
+          scale: 0.7,
+          rotateX: -25,
+          rotateY: 15,
+          duration: 1.2,
+          stagger: 0.15,
+          ease: "elastic.out(1, 0.6)",
           immediateRender: false,
+        });
+
+        // Floating continuous animation on pillar icons
+        gsap.to(".pillar-icon-float", {
+          y: -8,
+          duration: 2,
+          ease: "sine.inOut",
+          yoyo: true,
+          repeat: -1,
+          stagger: 0.3,
         });
       }
 
@@ -588,132 +600,187 @@ export default function Saludable() {
         </div>
       </section>
 
-      {/* ═══ LOS 5 PILARES DEL BIENESTAR — VIBRANT GRID ═══ */}
-      <section ref={pillarsRef} id="pilares" className="py-28 px-6 bg-gradient-to-br from-[#F0F7ED] via-[#E8F5E0] to-[#DFF0D8] relative overflow-hidden">
-        {/* Decorative background elements */}
-        <div className="absolute top-0 left-0 w-96 h-96 rounded-full bg-[#6BAF8D]/5 blur-[120px] -translate-x-1/2 -translate-y-1/2" />
-        <div className="absolute bottom-0 right-0 w-80 h-80 rounded-full bg-[#7C6DC8]/5 blur-[100px] translate-x-1/3 translate-y-1/3" />
+      {/* ═══ LOS 5 PILARES DEL BIENESTAR — WOW INTERACTIVE 3D CARDS ═══ */}
+      <section ref={pillarsRef} id="pilares" className="py-32 px-6 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #0a1f14 0%, #1a3a2a 30%, #0d2818 70%, #061510 100%)' }}>
+        {/* Animated background orbs */}
+        <div className="absolute top-20 left-10 w-[500px] h-[500px] rounded-full bg-[#6BAF8D]/8 blur-[150px] animate-pulse" />
+        <div className="absolute bottom-20 right-10 w-[400px] h-[400px] rounded-full bg-[#7C6DC8]/8 blur-[120px] animate-pulse" style={{ animationDelay: '1s' }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[#E07B4C]/5 blur-[180px] animate-pulse" style={{ animationDelay: '2s' }} />
+
+        {/* Floating particles */}
+        {[...Array(12)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-1 h-1 rounded-full bg-[#6BAF8D]/40 animate-ping"
+            style={{
+              top: `${10 + (i * 7) % 80}%`,
+              left: `${5 + (i * 11) % 90}%`,
+              animationDuration: `${2 + i * 0.5}s`,
+              animationDelay: `${i * 0.3}s`,
+            }}
+          />
+        ))}
 
         <div className="max-w-7xl mx-auto relative z-10">
-          <div className="text-center mb-6">
-            <span className="inline-block px-4 py-1.5 rounded-full bg-[#6BAF8D]/10 text-[#6BAF8D] text-xs font-bold uppercase tracking-wider mb-4 border border-[#6BAF8D]/20">
+          <div className="text-center mb-8">
+            <span className="inline-block px-5 py-2 rounded-full bg-[#6BAF8D]/15 text-[#6BAF8D] text-xs font-bold uppercase tracking-[0.25em] mb-6 border border-[#6BAF8D]/30 backdrop-blur-sm">
               Nuestro Enfoque Integral
             </span>
           </div>
           <h2
-            className="text-4xl md:text-6xl font-bold text-center mb-5 text-[#2D3B2D]"
+            className="text-5xl md:text-7xl font-bold text-center mb-6 text-white"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            Los 5 Pilares del <span className="text-[#6BAF8D]">Bienestar</span>
+            Los 5 Pilares del <span className="text-[#6BAF8D] drop-shadow-[0_0_30px_rgba(107,175,141,0.5)]">Bienestar</span>
           </h2>
-          <p className="text-center text-[#2D3B2D]/60 mb-20 max-w-3xl mx-auto text-lg leading-relaxed">
+          <p className="text-center text-white/50 mb-24 max-w-3xl mx-auto text-lg leading-relaxed">
             Un enfoque holístico que integra todas las dimensiones de la salud — mental, física, nutricional, financiera y corporativa — para resultados sostenibles y medibles en tu organización.
           </p>
 
           {/* Top row: 3 pillars */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8" style={{ perspective: '1200px' }}>
             {PILLARS.slice(0, 3).map((pillar) => (
               <div
                 key={pillar.id}
-                className="pillar-card group relative p-7 rounded-3xl border-2 bg-white/90 backdrop-blur-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:scale-[1.02]"
-                style={{ borderColor: `${pillar.color}30`, boxShadow: `0 4px 20px ${pillar.color}10` }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = pillar.color; (e.currentTarget as HTMLElement).style.boxShadow = `0 12px 40px ${pillar.color}25`; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = `${pillar.color}30`; (e.currentTarget as HTMLElement).style.boxShadow = `0 4px 20px ${pillar.color}10`; }}
+                className="pillar-card group relative p-8 rounded-3xl border bg-white/5 backdrop-blur-md transition-all duration-700 hover:-translate-y-4 hover:scale-[1.03] cursor-pointer"
+                style={{
+                  borderColor: `${pillar.color}25`,
+                  boxShadow: `0 4px 30px ${pillar.color}08, inset 0 1px 0 ${pillar.color}15`,
+                  transformStyle: 'preserve-3d',
+                }}
+                onMouseEnter={(e) => {
+                  const el = e.currentTarget as HTMLElement;
+                  el.style.borderColor = `${pillar.color}80`;
+                  el.style.boxShadow = `0 20px 60px ${pillar.color}30, 0 0 80px ${pillar.color}15, inset 0 1px 0 ${pillar.color}40`;
+                  el.style.background = `linear-gradient(135deg, rgba(255,255,255,0.08), ${pillar.color}10)`;
+                }}
+                onMouseLeave={(e) => {
+                  const el = e.currentTarget as HTMLElement;
+                  el.style.borderColor = `${pillar.color}25`;
+                  el.style.boxShadow = `0 4px 30px ${pillar.color}08, inset 0 1px 0 ${pillar.color}15`;
+                  el.style.background = 'rgba(255,255,255,0.05)';
+                }}
               >
-                {/* Glow orb */}
+                {/* Animated glow orb */}
                 <div
-                  className="absolute -top-8 -right-8 w-36 h-36 rounded-full opacity-15 blur-3xl group-hover:opacity-35 transition-opacity duration-700"
-                  style={{ background: pillar.color }}
+                  className="absolute -top-12 -right-12 w-48 h-48 rounded-full opacity-10 blur-[60px] group-hover:opacity-40 group-hover:scale-125 transition-all duration-1000"
+                  style={{ background: `radial-gradient(circle, ${pillar.color}, transparent)` }}
                 />
 
-                {/* Icon */}
+                {/* Floating Icon */}
                 <div
-                  className="relative z-10 w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-5 shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-500"
+                  className="pillar-icon-float relative z-10 w-20 h-20 rounded-2xl flex items-center justify-center text-4xl mb-6 shadow-2xl group-hover:scale-125 group-hover:rotate-6 transition-all duration-700"
                   style={{
-                    background: `linear-gradient(135deg, ${pillar.color}, ${pillar.color}90)`,
-                    boxShadow: `0 8px 24px ${pillar.color}40`,
+                    background: `linear-gradient(135deg, ${pillar.color}, ${pillar.color}CC)`,
+                    boxShadow: `0 12px 40px ${pillar.color}50, 0 0 20px ${pillar.color}20`,
                   }}
                 >
-                  <span className="drop-shadow-sm">{pillar.icon}</span>
+                  <span className="drop-shadow-lg">{pillar.icon}</span>
                 </div>
 
                 {/* Content */}
                 <div className="relative z-10">
                   <h3
-                    className="text-xl font-bold text-[#2D3B2D] mb-3"
+                    className="text-2xl font-bold text-white mb-3 group-hover:text-[#6BAF8D] transition-colors duration-500"
                     style={{ fontFamily: "'Playfair Display', serif" }}
                   >
                     {pillar.title}
                   </h3>
-                  <p className="text-[#2D3B2D]/65 leading-relaxed mb-5 text-sm">{pillar.description}</p>
+                  <p className="text-white/50 leading-relaxed mb-6 text-sm group-hover:text-white/70 transition-colors duration-500">{pillar.description}</p>
 
-                  {/* Stats */}
-                  <div className="pt-4 border-t border-[#A8C5A0]/20 space-y-2.5">
+                  {/* Stats with animated bullets */}
+                  <div className="pt-5 border-t border-white/10 space-y-3">
                     {pillar.stats.map((stat, i) => (
-                      <div key={i} className="flex items-center gap-2.5 text-xs text-[#2D3B2D]/75">
+                      <div key={i} className="flex items-center gap-3 text-xs text-white/60 group-hover:text-white/80 transition-all duration-500" style={{ transitionDelay: `${i * 50}ms` }}>
                         <div
-                          className="w-2 h-2 rounded-full flex-shrink-0"
-                          style={{ background: pillar.color, boxShadow: `0 0 6px ${pillar.color}` }}
+                          className="w-2.5 h-2.5 rounded-full flex-shrink-0 group-hover:scale-150 transition-transform duration-500"
+                          style={{ background: pillar.color, boxShadow: `0 0 10px ${pillar.color}, 0 0 20px ${pillar.color}50` }}
                         />
                         <span className="font-medium">{stat}</span>
                       </div>
                     ))}
                   </div>
                 </div>
+
+                {/* Corner accent */}
+                <div
+                  className="absolute bottom-0 right-0 w-24 h-24 opacity-0 group-hover:opacity-20 transition-opacity duration-700 rounded-br-3xl"
+                  style={{ background: `linear-gradient(135deg, transparent, ${pillar.color})` }}
+                />
               </div>
             ))}
           </div>
 
           {/* Bottom row: 2 pillars centered */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto" style={{ perspective: '1200px' }}>
             {PILLARS.slice(3).map((pillar) => (
               <div
                 key={pillar.id}
-                className="pillar-card group relative p-7 rounded-3xl border-2 bg-white/90 backdrop-blur-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:scale-[1.02]"
-                style={{ borderColor: `${pillar.color}30`, boxShadow: `0 4px 20px ${pillar.color}10` }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = pillar.color; (e.currentTarget as HTMLElement).style.boxShadow = `0 12px 40px ${pillar.color}25`; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = `${pillar.color}30`; (e.currentTarget as HTMLElement).style.boxShadow = `0 4px 20px ${pillar.color}10`; }}
+                className="pillar-card group relative p-8 rounded-3xl border bg-white/5 backdrop-blur-md transition-all duration-700 hover:-translate-y-4 hover:scale-[1.03] cursor-pointer"
+                style={{
+                  borderColor: `${pillar.color}25`,
+                  boxShadow: `0 4px 30px ${pillar.color}08, inset 0 1px 0 ${pillar.color}15`,
+                  transformStyle: 'preserve-3d',
+                }}
+                onMouseEnter={(e) => {
+                  const el = e.currentTarget as HTMLElement;
+                  el.style.borderColor = `${pillar.color}80`;
+                  el.style.boxShadow = `0 20px 60px ${pillar.color}30, 0 0 80px ${pillar.color}15, inset 0 1px 0 ${pillar.color}40`;
+                  el.style.background = `linear-gradient(135deg, rgba(255,255,255,0.08), ${pillar.color}10)`;
+                }}
+                onMouseLeave={(e) => {
+                  const el = e.currentTarget as HTMLElement;
+                  el.style.borderColor = `${pillar.color}25`;
+                  el.style.boxShadow = `0 4px 30px ${pillar.color}08, inset 0 1px 0 ${pillar.color}15`;
+                  el.style.background = 'rgba(255,255,255,0.05)';
+                }}
               >
-                {/* Glow orb */}
+                {/* Animated glow orb */}
                 <div
-                  className="absolute -top-8 -right-8 w-36 h-36 rounded-full opacity-15 blur-3xl group-hover:opacity-35 transition-opacity duration-700"
-                  style={{ background: pillar.color }}
+                  className="absolute -top-12 -right-12 w-48 h-48 rounded-full opacity-10 blur-[60px] group-hover:opacity-40 group-hover:scale-125 transition-all duration-1000"
+                  style={{ background: `radial-gradient(circle, ${pillar.color}, transparent)` }}
                 />
 
-                {/* Icon */}
+                {/* Floating Icon */}
                 <div
-                  className="relative z-10 w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-5 shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-500"
+                  className="pillar-icon-float relative z-10 w-20 h-20 rounded-2xl flex items-center justify-center text-4xl mb-6 shadow-2xl group-hover:scale-125 group-hover:rotate-6 transition-all duration-700"
                   style={{
-                    background: `linear-gradient(135deg, ${pillar.color}, ${pillar.color}90)`,
-                    boxShadow: `0 8px 24px ${pillar.color}40`,
+                    background: `linear-gradient(135deg, ${pillar.color}, ${pillar.color}CC)`,
+                    boxShadow: `0 12px 40px ${pillar.color}50, 0 0 20px ${pillar.color}20`,
                   }}
                 >
-                  <span className="drop-shadow-sm">{pillar.icon}</span>
+                  <span className="drop-shadow-lg">{pillar.icon}</span>
                 </div>
 
                 {/* Content */}
                 <div className="relative z-10">
                   <h3
-                    className="text-xl font-bold text-[#2D3B2D] mb-3"
+                    className="text-2xl font-bold text-white mb-3 group-hover:text-[#6BAF8D] transition-colors duration-500"
                     style={{ fontFamily: "'Playfair Display', serif" }}
                   >
                     {pillar.title}
                   </h3>
-                  <p className="text-[#2D3B2D]/65 leading-relaxed mb-5 text-sm">{pillar.description}</p>
+                  <p className="text-white/50 leading-relaxed mb-6 text-sm group-hover:text-white/70 transition-colors duration-500">{pillar.description}</p>
 
-                  {/* Stats */}
-                  <div className="pt-4 border-t border-[#A8C5A0]/20 space-y-2.5">
+                  {/* Stats with animated bullets */}
+                  <div className="pt-5 border-t border-white/10 space-y-3">
                     {pillar.stats.map((stat, i) => (
-                      <div key={i} className="flex items-center gap-2.5 text-xs text-[#2D3B2D]/75">
+                      <div key={i} className="flex items-center gap-3 text-xs text-white/60 group-hover:text-white/80 transition-all duration-500" style={{ transitionDelay: `${i * 50}ms` }}>
                         <div
-                          className="w-2 h-2 rounded-full flex-shrink-0"
-                          style={{ background: pillar.color, boxShadow: `0 0 6px ${pillar.color}` }}
+                          className="w-2.5 h-2.5 rounded-full flex-shrink-0 group-hover:scale-150 transition-transform duration-500"
+                          style={{ background: pillar.color, boxShadow: `0 0 10px ${pillar.color}, 0 0 20px ${pillar.color}50` }}
                         />
                         <span className="font-medium">{stat}</span>
                       </div>
                     ))}
                   </div>
                 </div>
+
+                {/* Corner accent */}
+                <div
+                  className="absolute bottom-0 right-0 w-24 h-24 opacity-0 group-hover:opacity-20 transition-opacity duration-700 rounded-br-3xl"
+                  style={{ background: `linear-gradient(135deg, transparent, ${pillar.color})` }}
+                />
               </div>
             ))}
           </div>
@@ -862,10 +929,7 @@ export default function Saludable() {
                 <h3 className="text-2xl font-bold mb-2 text-[#2D3B2D]" style={{ fontFamily: "'Playfair Display', serif" }}>
                   {plan.name}
                 </h3>
-                <div className="mb-3">
-                  <span className="text-3xl font-bold text-[#6BAF8D]">{plan.price}</span>
-                  <span className="text-sm text-[#2D3B2D]/50">{plan.period}</span>
-                </div>
+
                 <p className="text-sm text-[#2D3B2D]/60 mb-6 leading-relaxed">{plan.description}</p>
 
                 <ul className="space-y-3 mb-8">
