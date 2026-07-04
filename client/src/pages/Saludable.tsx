@@ -57,33 +57,41 @@ const PILLARS = [
     id: "mental",
     title: "Salud Mental",
     icon: "🧠",
-    color: "#A8C5A0",
-    description: "Programas de bienestar emocional, manejo del estrés y apoyo psicológico para empleados y comunidades.",
-    stats: ["85% reducción en ausentismo", "Talleres semanales", "Línea de apoyo 24/7"],
+    color: "#7C6DC8",
+    description: "Programas integrales de bienestar emocional que incluyen manejo del estrés laboral, apoyo psicológico profesional, mindfulness corporativo y prevención del burnout. Cada programa se adapta a la cultura organizacional de tu empresa.",
+    stats: ["85% reducción en ausentismo por estrés", "Talleres semanales con psicólogos certificados", "Línea de apoyo emocional 24/7", "Evaluaciones de clima laboral trimestrales"],
   },
   {
     id: "fisica",
     title: "Salud Física",
     icon: "💪",
-    color: "#7EB89A",
-    description: "Actividad física, nutrición personalizada y prevención de enfermedades crónicas para una vida activa.",
-    stats: ["112+ farmacias aliadas", "Planes nutricionales", "Evaluaciones periódicas"],
+    color: "#E07B4C",
+    description: "Actividad física estructurada, ergonomía activa y prevención de enfermedades crónicas. Nuestros programas incluyen clases grupales, evaluaciones físicas periódicas y planes de ejercicio adaptados al entorno laboral.",
+    stats: ["112+ farmacias aliadas con servicios de salud", "Clases grupales 3x por semana", "Evaluaciones físicas semestrales", "Programas de ergonomía en oficina"],
+  },
+  {
+    id: "nutricional",
+    title: "Salud Nutricional",
+    icon: "🥗",
+    color: "#4CAF50",
+    description: "Nutrición basada en evidencia científica con enfoque tropical puertorriqueño. Planes alimentarios personalizados, talleres de cocina saludable, evaluaciones metabólicas y asesoría para comedores corporativos.",
+    stats: ["Planes nutricionales individualizados", "Talleres de cocina saludable mensual", "Evaluaciones metabólicas completas", "Menús corporativos balanceados"],
   },
   {
     id: "financiera",
     title: "Salud Financiera",
     icon: "📊",
-    color: "#B8D4A8",
-    description: "Educación financiera, planificación de retiro y gestión de beneficios para estabilidad económica.",
-    stats: ["ROI 3:1 comprobado", "Asesoría personalizada", "Planes de ahorro"],
+    color: "#2196F3",
+    description: "Educación financiera práctica, planificación de retiro, gestión de beneficios y herramientas para la estabilidad económica de cada empleado. Reducimos el estrés financiero que impacta la productividad.",
+    stats: ["ROI 3:1 comprobado en productividad", "Asesoría financiera personalizada", "Planes de ahorro y retiro", "Talleres de presupuesto familiar"],
   },
   {
     id: "corporativa",
     title: "Salud Corporativa",
     icon: "🏢",
-    color: "#6BAF8D",
-    description: "Cultura organizacional saludable, cumplimiento regulatorio y programas de bienestar empresarial.",
-    stats: ["Depto. de Salud de PR", "Depto. del Trabajo de PR", "Clima laboral óptimo"],
+    color: "#FF9800",
+    description: "Cultura organizacional saludable, cumplimiento regulatorio con el Depto. de Salud y Depto. del Trabajo de PR, y programas de bienestar empresarial que mejoran retención y productividad.",
+    stats: ["Cumplimiento Depto. de Salud de PR", "Cumplimiento Depto. del Trabajo de PR", "Certificación Empresa Saludable", "Clima laboral óptimo medible"],
   },
 ];
 
@@ -155,10 +163,10 @@ const PLANS = [
     name: "Profesional",
     price: "$5,800",
     period: "/mes",
-    description: "Para organizaciones medianas (50-200 empleados) que buscan integrar los 4 pilares del bienestar de forma completa.",
+    description: "Para organizaciones medianas (50-200 empleados) que buscan integrar los 5 pilares del bienestar de forma completa.",
     features: [
       "Todo lo incluido en Esencial",
-      "4 Pilares integrados (Mental, Física, Financiera, Corporativa)",
+      "5 Pilares integrados (Mental, Física, Nutricional, Financiera, Corporativa)",
       "Dashboard en tiempo real con KPIs",
       "4 talleres mensuales especializados",
       "Soporte prioritario 24/7",
@@ -580,59 +588,126 @@ export default function Saludable() {
         </div>
       </section>
 
-      {/* ═══ 4 PILLARS — ALWAYS VISIBLE GRID ═══ */}
-      <section ref={pillarsRef} id="pilares" className="py-24 px-6 bg-gradient-to-b from-[#F4F9F2] to-[#EDF5EA]">
-        <div className="max-w-6xl mx-auto">
+      {/* ═══ LOS 5 PILARES DEL BIENESTAR — VIBRANT GRID ═══ */}
+      <section ref={pillarsRef} id="pilares" className="py-28 px-6 bg-gradient-to-br from-[#F0F7ED] via-[#E8F5E0] to-[#DFF0D8] relative overflow-hidden">
+        {/* Decorative background elements */}
+        <div className="absolute top-0 left-0 w-96 h-96 rounded-full bg-[#6BAF8D]/5 blur-[120px] -translate-x-1/2 -translate-y-1/2" />
+        <div className="absolute bottom-0 right-0 w-80 h-80 rounded-full bg-[#7C6DC8]/5 blur-[100px] translate-x-1/3 translate-y-1/3" />
+
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="text-center mb-6">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-[#6BAF8D]/10 text-[#6BAF8D] text-xs font-bold uppercase tracking-wider mb-4 border border-[#6BAF8D]/20">
+              Nuestro Enfoque Integral
+            </span>
+          </div>
           <h2
-            className="text-4xl md:text-5xl font-bold text-center mb-4 text-[#2D3B2D]"
+            className="text-4xl md:text-6xl font-bold text-center mb-5 text-[#2D3B2D]"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            Los 4 Pilares del <span className="text-[#6BAF8D]">Bienestar</span>
+            Los 5 Pilares del <span className="text-[#6BAF8D]">Bienestar</span>
           </h2>
-          <p className="text-center text-[#2D3B2D]/60 mb-16 max-w-2xl mx-auto">
-            Un enfoque holístico que integra todas las dimensiones de la salud para resultados sostenibles.
+          <p className="text-center text-[#2D3B2D]/60 mb-20 max-w-3xl mx-auto text-lg leading-relaxed">
+            Un enfoque holístico que integra todas las dimensiones de la salud — mental, física, nutricional, financiera y corporativa — para resultados sostenibles y medibles en tu organización.
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {PILLARS.map((pillar) => (
+          {/* Top row: 3 pillars */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            {PILLARS.slice(0, 3).map((pillar) => (
               <div
                 key={pillar.id}
-                className="pillar-card group relative p-8 rounded-3xl border-2 border-[#A8C5A0]/30 bg-white hover:border-[#6BAF8D] hover:shadow-2xl hover:shadow-[#6BAF8D]/10 transition-all duration-500 hover:-translate-y-1"
+                className="pillar-card group relative p-7 rounded-3xl border-2 bg-white/90 backdrop-blur-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:scale-[1.02]"
+                style={{ borderColor: `${pillar.color}30`, boxShadow: `0 4px 20px ${pillar.color}10` }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = pillar.color; (e.currentTarget as HTMLElement).style.boxShadow = `0 12px 40px ${pillar.color}25`; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = `${pillar.color}30`; (e.currentTarget as HTMLElement).style.boxShadow = `0 4px 20px ${pillar.color}10`; }}
               >
                 {/* Glow orb */}
                 <div
-                  className="absolute -top-10 -right-10 w-40 h-40 rounded-full opacity-20 blur-3xl group-hover:opacity-40 transition-opacity duration-500"
+                  className="absolute -top-8 -right-8 w-36 h-36 rounded-full opacity-15 blur-3xl group-hover:opacity-35 transition-opacity duration-700"
                   style={{ background: pillar.color }}
                 />
 
                 {/* Icon */}
                 <div
-                  className="relative z-10 w-20 h-20 rounded-2xl flex items-center justify-center text-4xl mb-6 shadow-md group-hover:scale-110 group-hover:-translate-y-1 transition-all duration-500"
+                  className="relative z-10 w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-5 shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-500"
                   style={{
-                    background: `linear-gradient(135deg, ${pillar.color}40, ${pillar.color}20)`,
-                    border: `2px solid ${pillar.color}50`,
+                    background: `linear-gradient(135deg, ${pillar.color}, ${pillar.color}90)`,
+                    boxShadow: `0 8px 24px ${pillar.color}40`,
                   }}
                 >
-                  {pillar.icon}
+                  <span className="drop-shadow-sm">{pillar.icon}</span>
                 </div>
 
-                {/* Content — ALWAYS VISIBLE */}
+                {/* Content */}
                 <div className="relative z-10">
                   <h3
-                    className="text-2xl font-bold text-[#2D3B2D] mb-3"
+                    className="text-xl font-bold text-[#2D3B2D] mb-3"
                     style={{ fontFamily: "'Playfair Display', serif" }}
                   >
                     {pillar.title}
                   </h3>
-                  <p className="text-[#2D3B2D]/70 leading-relaxed mb-5 text-sm">{pillar.description}</p>
+                  <p className="text-[#2D3B2D]/65 leading-relaxed mb-5 text-sm">{pillar.description}</p>
 
-                  {/* Stats — ALWAYS VISIBLE */}
-                  <div className="pt-4 border-t border-[#A8C5A0]/30 space-y-3">
+                  {/* Stats */}
+                  <div className="pt-4 border-t border-[#A8C5A0]/20 space-y-2.5">
                     {pillar.stats.map((stat, i) => (
-                      <div key={i} className="flex items-center gap-3 text-sm text-[#2D3B2D]/80">
+                      <div key={i} className="flex items-center gap-2.5 text-xs text-[#2D3B2D]/75">
                         <div
-                          className="w-2.5 h-2.5 rounded-full flex-shrink-0"
-                          style={{ background: pillar.color, boxShadow: `0 0 8px ${pillar.color}` }}
+                          className="w-2 h-2 rounded-full flex-shrink-0"
+                          style={{ background: pillar.color, boxShadow: `0 0 6px ${pillar.color}` }}
+                        />
+                        <span className="font-medium">{stat}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Bottom row: 2 pillars centered */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+            {PILLARS.slice(3).map((pillar) => (
+              <div
+                key={pillar.id}
+                className="pillar-card group relative p-7 rounded-3xl border-2 bg-white/90 backdrop-blur-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:scale-[1.02]"
+                style={{ borderColor: `${pillar.color}30`, boxShadow: `0 4px 20px ${pillar.color}10` }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = pillar.color; (e.currentTarget as HTMLElement).style.boxShadow = `0 12px 40px ${pillar.color}25`; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = `${pillar.color}30`; (e.currentTarget as HTMLElement).style.boxShadow = `0 4px 20px ${pillar.color}10`; }}
+              >
+                {/* Glow orb */}
+                <div
+                  className="absolute -top-8 -right-8 w-36 h-36 rounded-full opacity-15 blur-3xl group-hover:opacity-35 transition-opacity duration-700"
+                  style={{ background: pillar.color }}
+                />
+
+                {/* Icon */}
+                <div
+                  className="relative z-10 w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-5 shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-500"
+                  style={{
+                    background: `linear-gradient(135deg, ${pillar.color}, ${pillar.color}90)`,
+                    boxShadow: `0 8px 24px ${pillar.color}40`,
+                  }}
+                >
+                  <span className="drop-shadow-sm">{pillar.icon}</span>
+                </div>
+
+                {/* Content */}
+                <div className="relative z-10">
+                  <h3
+                    className="text-xl font-bold text-[#2D3B2D] mb-3"
+                    style={{ fontFamily: "'Playfair Display', serif" }}
+                  >
+                    {pillar.title}
+                  </h3>
+                  <p className="text-[#2D3B2D]/65 leading-relaxed mb-5 text-sm">{pillar.description}</p>
+
+                  {/* Stats */}
+                  <div className="pt-4 border-t border-[#A8C5A0]/20 space-y-2.5">
+                    {pillar.stats.map((stat, i) => (
+                      <div key={i} className="flex items-center gap-2.5 text-xs text-[#2D3B2D]/75">
+                        <div
+                          className="w-2 h-2 rounded-full flex-shrink-0"
+                          style={{ background: pillar.color, boxShadow: `0 0 6px ${pillar.color}` }}
                         />
                         <span className="font-medium">{stat}</span>
                       </div>
@@ -815,6 +890,94 @@ export default function Saludable() {
                   {plan.cta}
                 </a>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ LOGOS INSTITUCIONALES — CARRUSEL INTERACTIVO ═══ */}
+      <section className="py-16 px-6 bg-white border-y border-[#A8C5A0]/10">
+        <div className="max-w-5xl mx-auto">
+          <p className="text-center text-sm text-[#2D3B2D]/50 mb-8 uppercase tracking-wider font-medium">
+            Alineados con las regulaciones de
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-12 md:gap-20">
+            <div className="group flex flex-col items-center gap-3 transition-all duration-500 hover:scale-110">
+              <img
+                src="/manus-storage/logo-depto-salud_962431fe.png"
+                alt="Departamento de Salud de Puerto Rico"
+                className="h-20 md:h-24 w-auto object-contain opacity-80 group-hover:opacity-100 transition-opacity duration-500"
+              />
+              <span className="text-xs text-[#2D3B2D]/50 font-medium">Depto. de Salud de PR</span>
+            </div>
+            <div className="group flex flex-col items-center gap-3 transition-all duration-500 hover:scale-110">
+              <img
+                src="/manus-storage/logo-depto-trabajo_d62964d2.png"
+                alt="Departamento del Trabajo y Recursos Humanos"
+                className="h-20 md:h-24 w-auto object-contain opacity-80 group-hover:opacity-100 transition-opacity duration-500"
+              />
+              <span className="text-xs text-[#2D3B2D]/50 font-medium">Depto. del Trabajo y RRHH</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ FAQ — PREGUNTAS FRECUENTES ═══ */}
+      <section className="py-24 px-6 bg-[#F4F9F2]">
+        <div className="max-w-4xl mx-auto">
+          <h2
+            className="text-3xl md:text-4xl font-bold text-center mb-4 text-[#2D3B2D]"
+            style={{ fontFamily: "'Playfair Display', serif" }}
+          >
+            Preguntas <span className="text-[#6BAF8D]">Frecuentes</span>
+          </h2>
+          <p className="text-center text-[#2D3B2D]/60 mb-12 max-w-xl mx-auto">
+            Resolvemos las dudas más comunes sobre nuestros programas de bienestar corporativo.
+          </p>
+
+          <div className="space-y-4">
+            {[
+              {
+                q: "¿Cuánto tiempo toma implementar un programa de bienestar?",
+                a: "La implementación básica toma entre 4-6 semanas. Comenzamos con la evaluación inicial, diseñamos el plan estratégico personalizado, y lanzamos los primeros programas piloto. El programa completo con certificación se logra en 6-12 meses dependiendo del tamaño de la organización."
+              },
+              {
+                q: "¿Qué incluye la red de farmacias aliadas?",
+                a: "Acceso a más de 112 farmacias en 70 municipios de Puerto Rico con servicios de salud preventiva, consultas nutricionales, monitoreo de presión arterial, vacunaciones, y descuentos en medicamentos y suplementos para todos los beneficiarios del programa."
+              },
+              {
+                q: "¿Cómo se mide el ROI del programa?",
+                a: "Medimos el retorno de inversión a través de métricas verificables: reducción en ausentismo, disminución de reclamaciones de salud, mejora en productividad medida por KPIs departamentales, retención de talento, y encuestas de satisfacción. Nuestros clientes reportan un ROI promedio de 3:1."
+              },
+              {
+                q: "¿El programa cumple con las regulaciones del Depto. de Salud y Depto. del Trabajo?",
+                a: "Sí. Todos nuestros programas están diseñados para cumplir con las regulaciones del Departamento de Salud de Puerto Rico y el Departamento del Trabajo y Recursos Humanos. Incluimos auditorías de cumplimiento regulatorio como parte del servicio."
+              },
+              {
+                q: "¿Puedo personalizar el programa para mi industria específica?",
+                a: "Absolutamente. Cada programa se adapta a la industria, tamaño y cultura de tu organización. Tenemos experiencia en manufactura, servicios financieros, tecnología, salud, gobierno y retail. El Plan Empresarial incluye personalización completa."
+              },
+              {
+                q: "¿Qué diferencia a Empresa Saludable de otros programas de bienestar?",
+                a: "Nuestro enfoque integra los 5 pilares del bienestar (mental, físico, nutricional, financiero y corporativo) en un solo programa coordinado. Además, contamos con una red física de farmacias aliadas en toda la isla, embajadores profesionales certificados, y un sistema de cumplimiento regulatorio integrado."
+              },
+            ].map((faq, i) => (
+              <details
+                key={i}
+                className="group bg-white rounded-2xl border border-[#A8C5A0]/20 hover:border-[#6BAF8D]/40 transition-all duration-300 hover:shadow-md"
+              >
+                <summary className="flex items-center justify-between p-6 cursor-pointer list-none">
+                  <span className="font-semibold text-[#2D3B2D] text-sm md:text-base pr-4">{faq.q}</span>
+                  <span className="flex-shrink-0 w-8 h-8 rounded-full bg-[#6BAF8D]/10 flex items-center justify-center text-[#6BAF8D] group-open:rotate-45 transition-transform duration-300">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                    </svg>
+                  </span>
+                </summary>
+                <div className="px-6 pb-6 pt-0">
+                  <p className="text-sm text-[#2D3B2D]/70 leading-relaxed">{faq.a}</p>
+                </div>
+              </details>
             ))}
           </div>
         </div>
