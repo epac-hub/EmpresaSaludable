@@ -73,3 +73,4 @@
 - [x] Admin panel: Protected route /admin with password gate (EmpresaSaludable2026), list/expand/delete submissions, reply via mailto
 - [x] SEO meta tags: Open Graph (og:title, og:description, og:image), Twitter Card (summary_large_image), meta description, keywords, robots, locale es_PR
 - [x] Fix Dra. Valeria Santiago info: Updated to "Dra. Valeria Santiago, PharmD, CPT, CES" with correct role (Bienestar Corporativo) and full bio (farmacéutica + NASM certified, entrenamiento funcional, movilidad, prevención de lesiones, programas dentro del ambiente laboral)
+- [x] Specialists section: Enhanced with cinematic rotateY entrance (back.out easing), 3D tilt on mousemove, role badge glow, staggered expertise tag transitions, and elastic snap-back on mouse leave

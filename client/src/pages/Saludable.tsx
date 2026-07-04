@@ -465,14 +465,27 @@ export default function Saludable() {
 
       // Ambassador cards entrance
       if (celebsRef.current) {
+        // Specialist cards — cinematic entrance with rotateY + stagger
         gsap.from(".celeb-card", {
-          scrollTrigger: { trigger: celebsRef.current, start: "top 85%" },
-          y: 60,
+          scrollTrigger: { trigger: celebsRef.current, start: "top 80%" },
+          y: 80,
           opacity: 0,
-          scale: 0.95,
+          scale: 0.9,
+          rotateY: 15,
+          duration: 1,
+          stagger: 0.2,
+          ease: "back.out(1.4)",
+          immediateRender: false,
+        });
+
+        // Animate the section header
+        gsap.from(celebsRef.current.querySelectorAll("h2, p"), {
+          scrollTrigger: { trigger: celebsRef.current, start: "top 85%" },
+          y: 40,
+          opacity: 0,
           duration: 0.8,
-          stagger: 0.12,
-          ease: "power3.out",
+          stagger: 0.1,
+          ease: "power2.out",
           immediateRender: false,
         });
       }
@@ -844,8 +857,20 @@ export default function Saludable() {
             {AMBASSADORS.map((amb, i) => (
               <div
                 key={i}
-                className="celeb-card group relative flex flex-col md:flex-row rounded-3xl overflow-hidden bg-white border border-[#A8C5A0]/20 shadow-md hover:shadow-2xl hover:shadow-[#6BAF8D]/10 transition-all duration-500 hover:-translate-y-2 hover:rotate-[0.5deg]"
-                style={{ transformStyle: 'preserve-3d', perspective: '1000px' }}
+                className="celeb-card group relative flex flex-col md:flex-row rounded-3xl overflow-hidden bg-white border border-[#A8C5A0]/20 shadow-md hover:shadow-2xl hover:shadow-[#6BAF8D]/20 transition-all duration-500 hover:-translate-y-3 hover:border-[#6BAF8D]/40"
+                style={{ transformStyle: 'preserve-3d', perspective: '1200px' }}
+                onMouseMove={(e) => {
+                  const card = e.currentTarget;
+                  const rect = card.getBoundingClientRect();
+                  const x = (e.clientX - rect.left) / rect.width - 0.5;
+                  const y = (e.clientY - rect.top) / rect.height - 0.5;
+                  card.style.transform = `translateY(-12px) rotateX(${-y * 8}deg) rotateY(${x * 8}deg)`;
+                }}
+                onMouseLeave={(e) => {
+                  const card = e.currentTarget;
+                  card.style.transform = 'translateY(0) rotateX(0) rotateY(0)';
+                  card.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
+                }}
               >
                 {/* Photo */}
                 <div className="w-full md:w-[220px] h-[280px] md:h-auto flex-shrink-0 overflow-hidden relative">
@@ -861,7 +886,7 @@ export default function Saludable() {
                 <div className="flex-1 p-6 flex flex-col justify-between">
                   <div>
                     <div className="flex items-center gap-2 mb-2">
-                      <span className="px-3 py-1 text-xs font-semibold rounded-full bg-[#6BAF8D]/10 text-[#6BAF8D] border border-[#6BAF8D]/20">
+                      <span className="px-3 py-1 text-xs font-semibold rounded-full bg-[#6BAF8D]/10 text-[#6BAF8D] border border-[#6BAF8D]/20 group-hover:bg-[#6BAF8D]/20 group-hover:border-[#6BAF8D]/40 group-hover:shadow-[0_0_12px_rgba(107,175,141,0.3)] transition-all duration-500">
                         {amb.role}
                       </span>
                     </div>
@@ -873,7 +898,7 @@ export default function Saludable() {
                     {/* Expertise tags */}
                     <div className="flex flex-wrap gap-2 mb-4">
                       {amb.expertise.map((exp, j) => (
-                        <span key={j} className="px-2.5 py-1 text-[11px] font-medium rounded-lg bg-[#F4F9F2] text-[#2D3B2D]/70 border border-[#A8C5A0]/20">
+                        <span key={j} className="px-2.5 py-1 text-[11px] font-medium rounded-lg bg-[#F4F9F2] text-[#2D3B2D]/70 border border-[#A8C5A0]/20 group-hover:bg-[#6BAF8D]/10 group-hover:border-[#6BAF8D]/30 group-hover:text-[#2D3B2D]/90 transition-all duration-300" style={{ transitionDelay: `${j * 80}ms` }}>
                           {exp}
                         </span>
                       ))}
