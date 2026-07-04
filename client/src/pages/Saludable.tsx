@@ -1813,8 +1813,8 @@ export default function Saludable() {
             alt=""
           />
         )}
-        {/* Light summer green overlay for readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#E8F5E0]/75 via-[#C8E6C9]/70 to-[#A5D6A7]/80" />
+        {/* Light summer green overlay — reduced for more visible photo */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#E8F5E0]/50 via-[#C8E6C9]/45 to-[#A5D6A7]/55" />
 
         <div className="relative z-10 max-w-6xl mx-auto">
           <h2
@@ -1850,7 +1850,7 @@ export default function Saludable() {
               {filteredTestimonials.map((testimonial, i) => (
                 <div
                   key={i}
-                  className="beneficiary-panel flex-shrink-0 w-[340px] md:w-[380px] p-8 rounded-2xl bg-white/55 backdrop-blur-md border border-[#66BB6A]/20 shadow-xl hover:shadow-[0_20px_60px_rgba(67,160,71,0.35)] hover:-translate-y-4 hover:scale-[1.06] hover:bg-white/80 hover:border-[#43A047]/40 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group cursor-pointer"
+                  className="beneficiary-panel flex-shrink-0 w-[340px] md:w-[380px] p-8 rounded-2xl bg-white/35 backdrop-blur-sm border border-[#66BB6A]/20 shadow-xl hover:shadow-[0_20px_60px_rgba(67,160,71,0.35)] hover:-translate-y-4 hover:scale-[1.06] hover:bg-white/55 hover:border-[#43A047]/40 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group cursor-pointer"
                 >
                   <svg className="w-8 h-8 text-[#43A047]/50 mb-4 group-hover:text-[#2E7D32] group-hover:scale-125 group-hover:rotate-6 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983z" />
