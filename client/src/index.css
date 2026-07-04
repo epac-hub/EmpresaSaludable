@@ -123,6 +123,23 @@ body::after {
   100% { background-position: 0% 50%; }
 }
 
+/* Hide native cursor on hover-capable devices */
+@media (hover: hover) {
+  * { cursor: none !important; }
+}
+@media (hover: none) {
+  * { cursor: auto !important; }
+}
+
+/* Scrollbar for Saludable (green theme) */
+::-webkit-scrollbar-track {
+  background: #F4F9F2;
+}
+::-webkit-scrollbar-thumb {
+  background: #6BAF8D;
+  border-radius: 3px;
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

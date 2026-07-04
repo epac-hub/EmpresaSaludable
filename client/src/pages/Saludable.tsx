@@ -10,6 +10,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
 import MusicPlayer from "@/components/saludable/MusicPlayer";
+import FuturisticCursor from "@/components/saludable/FuturisticCursor";
+import MagneticButton from "@/components/saludable/MagneticButton";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -246,8 +248,6 @@ export default function Saludable() {
   const plansRef = useRef<HTMLElement>(null);
   const mapRef = useRef<HTMLElement>(null);
   const contactRef = useRef<HTMLElement>(null);
-  const cursorRef = useRef<HTMLDivElement>(null);
-  const cursorRingRef = useRef<HTMLDivElement>(null);
 
   const [formData, setFormData] = useState({ name: "", email: "", company: "", message: "" });
 
@@ -268,20 +268,6 @@ export default function Saludable() {
     };
   }, []);
 
-  // ─── Custom Cursor ────────────────────────────────────────────────────────
-  useEffect(() => {
-    const cursor = cursorRef.current;
-    const ring = cursorRingRef.current;
-    if (!cursor || !ring) return;
-
-    const moveCursor = (e: MouseEvent) => {
-      gsap.to(cursor, { x: e.clientX - 4, y: e.clientY - 4, duration: 0.1 });
-      gsap.to(ring, { x: e.clientX - 20, y: e.clientY - 20, duration: 0.3 });
-    };
-
-    window.addEventListener("mousemove", moveCursor);
-    return () => { window.removeEventListener("mousemove", moveCursor); };
-  }, []);
 
   // ─── GSAP Animations (FIXED: immediateRender:false on all from() calls) ──
   useEffect(() => {
@@ -331,6 +317,20 @@ export default function Saludable() {
           stagger: 0.15,
           ease: "elastic.out(1, 0.6)",
           immediateRender: false,
+        });
+
+        // Scroll-driven parallax on pillar cards
+        gsap.utils.toArray<HTMLElement>(".pillar-card").forEach((card, i) => {
+          gsap.to(card, {
+            scrollTrigger: {
+              trigger: pillarsRef.current,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 1,
+            },
+            y: -30 - (i * 10),
+            ease: "none",
+          });
         });
 
         // Floating continuous animation on pillar icons
@@ -448,15 +448,8 @@ export default function Saludable() {
 
   return (
     <div ref={containerRef} className="relative bg-[#F4F9F2] text-[#2D3B2D] overflow-hidden">
-      {/* Custom Cursor */}
-      <div
-        ref={cursorRef}
-        className="fixed w-2 h-2 rounded-full bg-[#6BAF8D] pointer-events-none z-[9999] mix-blend-difference hidden md:block"
-      />
-      <div
-        ref={cursorRingRef}
-        className="fixed w-10 h-10 rounded-full border border-[#A8C5A0]/50 pointer-events-none z-[9998] hidden md:block"
-      />
+      {/* Futuristic Custom Cursor */}
+      <FuturisticCursor />
 
       {/* Music Player */}
       <MusicPlayer />
@@ -608,40 +601,40 @@ export default function Saludable() {
         </div>
       </section>
 
-      {/* ═══ LOS 5 PILARES DEL BIENESTAR — WOW INTERACTIVE 3D CARDS ═══ */}
-      <section ref={pillarsRef} id="pilares" className="py-32 px-6 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #0a1f14 0%, #1a3a2a 30%, #0d2818 70%, #061510 100%)' }}>
-        {/* Animated background orbs */}
-        <div className="absolute top-20 left-10 w-[500px] h-[500px] rounded-full bg-[#6BAF8D]/8 blur-[150px] animate-pulse" />
-        <div className="absolute bottom-20 right-10 w-[400px] h-[400px] rounded-full bg-[#7C6DC8]/8 blur-[120px] animate-pulse" style={{ animationDelay: '1s' }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[#E07B4C]/5 blur-[180px] animate-pulse" style={{ animationDelay: '2s' }} />
+      {/* ═══ LOS 5 PILARES DEL BIENESTAR — SUMMER GREEN PARALLAX ═══ */}
+      <section ref={pillarsRef} id="pilares" className="py-32 px-6 relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #E8F5E0 0%, #C8E6C9 30%, #A5D6A7 60%, #C8E6C9 100%)' }}>
+        {/* Soft animated orbs */}
+        <div className="absolute top-20 left-10 w-[400px] h-[400px] rounded-full bg-[#66BB6A]/20 blur-[120px] animate-pulse" />
+        <div className="absolute bottom-20 right-10 w-[350px] h-[350px] rounded-full bg-[#81C784]/25 blur-[100px] animate-pulse" style={{ animationDelay: '1.5s' }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-[#4CAF50]/10 blur-[150px] animate-pulse" style={{ animationDelay: '3s' }} />
 
-        {/* Floating particles */}
-        {[...Array(12)].map((_, i) => (
+        {/* Floating leaf particles */}
+        {[...Array(8)].map((_, i) => (
           <div
             key={i}
-            className="absolute w-1 h-1 rounded-full bg-[#6BAF8D]/40 animate-ping"
+            className="absolute w-2 h-2 rounded-full bg-[#388E3C]/25 animate-bounce"
             style={{
-              top: `${10 + (i * 7) % 80}%`,
-              left: `${5 + (i * 11) % 90}%`,
-              animationDuration: `${2 + i * 0.5}s`,
-              animationDelay: `${i * 0.3}s`,
+              top: `${15 + (i * 9) % 70}%`,
+              left: `${8 + (i * 13) % 85}%`,
+              animationDuration: `${3 + i * 0.7}s`,
+              animationDelay: `${i * 0.4}s`,
             }}
           />
         ))}
 
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-8">
-            <span className="inline-block px-5 py-2 rounded-full bg-[#6BAF8D]/15 text-[#6BAF8D] text-xs font-bold uppercase tracking-[0.25em] mb-6 border border-[#6BAF8D]/30 backdrop-blur-sm">
+            <span className="inline-block px-5 py-2 rounded-full bg-white/60 text-[#2E7D32] text-xs font-bold uppercase tracking-[0.25em] mb-6 border border-[#66BB6A]/40 backdrop-blur-sm shadow-sm">
               Nuestro Enfoque Integral
             </span>
           </div>
           <h2
-            className="text-5xl md:text-7xl font-bold text-center mb-6 text-white"
+            className="text-5xl md:text-7xl font-bold text-center mb-6 text-[#1B5E20]"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            Los 5 Pilares del <span className="text-[#6BAF8D] drop-shadow-[0_0_30px_rgba(107,175,141,0.5)]">Bienestar</span>
+            Los 5 Pilares del <span className="text-[#43A047] drop-shadow-[0_0_20px_rgba(67,160,71,0.4)]">Bienestar</span>
           </h2>
-          <p className="text-center text-white/50 mb-24 max-w-3xl mx-auto text-lg leading-relaxed">
+          <p className="text-center text-[#2E7D32]/70 mb-24 max-w-3xl mx-auto text-lg leading-relaxed">
             Un enfoque holístico que integra todas las dimensiones de la salud — mental, física, nutricional, financiera y corporativa — para resultados sostenibles y medibles en tu organización.
           </p>
 
@@ -650,37 +643,35 @@ export default function Saludable() {
             {PILLARS.slice(0, 3).map((pillar) => (
               <div
                 key={pillar.id}
-                className="pillar-card group relative p-8 rounded-3xl border bg-white/5 backdrop-blur-md transition-all duration-700 hover:-translate-y-4 hover:scale-[1.03] cursor-pointer"
+                className="pillar-card group relative p-8 rounded-3xl border bg-white/70 backdrop-blur-md transition-all duration-700 hover:-translate-y-5 hover:scale-[1.04] shadow-lg hover:shadow-2xl"
                 style={{
-                  borderColor: `${pillar.color}25`,
-                  boxShadow: `0 4px 30px ${pillar.color}08, inset 0 1px 0 ${pillar.color}15`,
+                  borderColor: `${pillar.color}30`,
                   transformStyle: 'preserve-3d',
                 }}
+                data-cursor-hover
                 onMouseEnter={(e) => {
                   const el = e.currentTarget as HTMLElement;
                   el.style.borderColor = `${pillar.color}80`;
-                  el.style.boxShadow = `0 20px 60px ${pillar.color}30, 0 0 80px ${pillar.color}15, inset 0 1px 0 ${pillar.color}40`;
-                  el.style.background = `linear-gradient(135deg, rgba(255,255,255,0.08), ${pillar.color}10)`;
+                  el.style.boxShadow = `0 25px 60px ${pillar.color}25, 0 0 40px ${pillar.color}10`;
                 }}
                 onMouseLeave={(e) => {
                   const el = e.currentTarget as HTMLElement;
-                  el.style.borderColor = `${pillar.color}25`;
-                  el.style.boxShadow = `0 4px 30px ${pillar.color}08, inset 0 1px 0 ${pillar.color}15`;
-                  el.style.background = 'rgba(255,255,255,0.05)';
+                  el.style.borderColor = `${pillar.color}30`;
+                  el.style.boxShadow = '';
                 }}
               >
-                {/* Animated glow orb */}
+                {/* Soft glow */}
                 <div
-                  className="absolute -top-12 -right-12 w-48 h-48 rounded-full opacity-10 blur-[60px] group-hover:opacity-40 group-hover:scale-125 transition-all duration-1000"
+                  className="absolute -top-8 -right-8 w-36 h-36 rounded-full opacity-15 blur-[50px] group-hover:opacity-40 group-hover:scale-150 transition-all duration-1000"
                   style={{ background: `radial-gradient(circle, ${pillar.color}, transparent)` }}
                 />
 
                 {/* Floating Icon */}
                 <div
-                  className="pillar-icon-float relative z-10 w-20 h-20 rounded-2xl flex items-center justify-center text-4xl mb-6 shadow-2xl group-hover:scale-125 group-hover:rotate-6 transition-all duration-700"
+                  className="pillar-icon-float relative z-10 w-20 h-20 rounded-2xl flex items-center justify-center text-4xl mb-6 shadow-xl group-hover:scale-125 group-hover:rotate-6 transition-all duration-700"
                   style={{
-                    background: `linear-gradient(135deg, ${pillar.color}, ${pillar.color}CC)`,
-                    boxShadow: `0 12px 40px ${pillar.color}50, 0 0 20px ${pillar.color}20`,
+                    background: `linear-gradient(135deg, ${pillar.color}, ${pillar.color}DD)`,
+                    boxShadow: `0 10px 30px ${pillar.color}40`,
                   }}
                 >
                   <span className="drop-shadow-lg">{pillar.icon}</span>
@@ -689,32 +680,26 @@ export default function Saludable() {
                 {/* Content */}
                 <div className="relative z-10">
                   <h3
-                    className="text-2xl font-bold text-white mb-3 group-hover:text-[#6BAF8D] transition-colors duration-500"
+                    className="text-2xl font-bold text-[#1B5E20] mb-3 group-hover:text-[#2E7D32] transition-colors duration-500"
                     style={{ fontFamily: "'Playfair Display', serif" }}
                   >
                     {pillar.title}
                   </h3>
-                  <p className="text-white/50 leading-relaxed mb-6 text-sm group-hover:text-white/70 transition-colors duration-500">{pillar.description}</p>
+                  <p className="text-[#2D3B2D]/60 leading-relaxed mb-6 text-sm group-hover:text-[#2D3B2D]/80 transition-colors duration-500">{pillar.description}</p>
 
-                  {/* Stats with animated bullets */}
-                  <div className="pt-5 border-t border-white/10 space-y-3">
+                  {/* Stats */}
+                  <div className="pt-5 border-t border-[#66BB6A]/20 space-y-3">
                     {pillar.stats.map((stat, i) => (
-                      <div key={i} className="flex items-center gap-3 text-xs text-white/60 group-hover:text-white/80 transition-all duration-500" style={{ transitionDelay: `${i * 50}ms` }}>
+                      <div key={i} className="flex items-center gap-3 text-xs text-[#2D3B2D]/60 group-hover:text-[#2D3B2D]/80 transition-all duration-500" style={{ transitionDelay: `${i * 50}ms` }}>
                         <div
                           className="w-2.5 h-2.5 rounded-full flex-shrink-0 group-hover:scale-150 transition-transform duration-500"
-                          style={{ background: pillar.color, boxShadow: `0 0 10px ${pillar.color}, 0 0 20px ${pillar.color}50` }}
+                          style={{ background: pillar.color, boxShadow: `0 0 8px ${pillar.color}80` }}
                         />
                         <span className="font-medium">{stat}</span>
                       </div>
                     ))}
                   </div>
                 </div>
-
-                {/* Corner accent */}
-                <div
-                  className="absolute bottom-0 right-0 w-24 h-24 opacity-0 group-hover:opacity-20 transition-opacity duration-700 rounded-br-3xl"
-                  style={{ background: `linear-gradient(135deg, transparent, ${pillar.color})` }}
-                />
               </div>
             ))}
           </div>
@@ -724,71 +709,59 @@ export default function Saludable() {
             {PILLARS.slice(3).map((pillar) => (
               <div
                 key={pillar.id}
-                className="pillar-card group relative p-8 rounded-3xl border bg-white/5 backdrop-blur-md transition-all duration-700 hover:-translate-y-4 hover:scale-[1.03] cursor-pointer"
+                className="pillar-card group relative p-8 rounded-3xl border bg-white/70 backdrop-blur-md transition-all duration-700 hover:-translate-y-5 hover:scale-[1.04] shadow-lg hover:shadow-2xl"
                 style={{
-                  borderColor: `${pillar.color}25`,
-                  boxShadow: `0 4px 30px ${pillar.color}08, inset 0 1px 0 ${pillar.color}15`,
+                  borderColor: `${pillar.color}30`,
                   transformStyle: 'preserve-3d',
                 }}
+                data-cursor-hover
                 onMouseEnter={(e) => {
                   const el = e.currentTarget as HTMLElement;
                   el.style.borderColor = `${pillar.color}80`;
-                  el.style.boxShadow = `0 20px 60px ${pillar.color}30, 0 0 80px ${pillar.color}15, inset 0 1px 0 ${pillar.color}40`;
-                  el.style.background = `linear-gradient(135deg, rgba(255,255,255,0.08), ${pillar.color}10)`;
+                  el.style.boxShadow = `0 25px 60px ${pillar.color}25, 0 0 40px ${pillar.color}10`;
                 }}
                 onMouseLeave={(e) => {
                   const el = e.currentTarget as HTMLElement;
-                  el.style.borderColor = `${pillar.color}25`;
-                  el.style.boxShadow = `0 4px 30px ${pillar.color}08, inset 0 1px 0 ${pillar.color}15`;
-                  el.style.background = 'rgba(255,255,255,0.05)';
+                  el.style.borderColor = `${pillar.color}30`;
+                  el.style.boxShadow = '';
                 }}
               >
-                {/* Animated glow orb */}
                 <div
-                  className="absolute -top-12 -right-12 w-48 h-48 rounded-full opacity-10 blur-[60px] group-hover:opacity-40 group-hover:scale-125 transition-all duration-1000"
+                  className="absolute -top-8 -right-8 w-36 h-36 rounded-full opacity-15 blur-[50px] group-hover:opacity-40 group-hover:scale-150 transition-all duration-1000"
                   style={{ background: `radial-gradient(circle, ${pillar.color}, transparent)` }}
                 />
 
-                {/* Floating Icon */}
                 <div
-                  className="pillar-icon-float relative z-10 w-20 h-20 rounded-2xl flex items-center justify-center text-4xl mb-6 shadow-2xl group-hover:scale-125 group-hover:rotate-6 transition-all duration-700"
+                  className="pillar-icon-float relative z-10 w-20 h-20 rounded-2xl flex items-center justify-center text-4xl mb-6 shadow-xl group-hover:scale-125 group-hover:rotate-6 transition-all duration-700"
                   style={{
-                    background: `linear-gradient(135deg, ${pillar.color}, ${pillar.color}CC)`,
-                    boxShadow: `0 12px 40px ${pillar.color}50, 0 0 20px ${pillar.color}20`,
+                    background: `linear-gradient(135deg, ${pillar.color}, ${pillar.color}DD)`,
+                    boxShadow: `0 10px 30px ${pillar.color}40`,
                   }}
                 >
                   <span className="drop-shadow-lg">{pillar.icon}</span>
                 </div>
 
-                {/* Content */}
                 <div className="relative z-10">
                   <h3
-                    className="text-2xl font-bold text-white mb-3 group-hover:text-[#6BAF8D] transition-colors duration-500"
+                    className="text-2xl font-bold text-[#1B5E20] mb-3 group-hover:text-[#2E7D32] transition-colors duration-500"
                     style={{ fontFamily: "'Playfair Display', serif" }}
                   >
                     {pillar.title}
                   </h3>
-                  <p className="text-white/50 leading-relaxed mb-6 text-sm group-hover:text-white/70 transition-colors duration-500">{pillar.description}</p>
+                  <p className="text-[#2D3B2D]/60 leading-relaxed mb-6 text-sm group-hover:text-[#2D3B2D]/80 transition-colors duration-500">{pillar.description}</p>
 
-                  {/* Stats with animated bullets */}
-                  <div className="pt-5 border-t border-white/10 space-y-3">
+                  <div className="pt-5 border-t border-[#66BB6A]/20 space-y-3">
                     {pillar.stats.map((stat, i) => (
-                      <div key={i} className="flex items-center gap-3 text-xs text-white/60 group-hover:text-white/80 transition-all duration-500" style={{ transitionDelay: `${i * 50}ms` }}>
+                      <div key={i} className="flex items-center gap-3 text-xs text-[#2D3B2D]/60 group-hover:text-[#2D3B2D]/80 transition-all duration-500" style={{ transitionDelay: `${i * 50}ms` }}>
                         <div
                           className="w-2.5 h-2.5 rounded-full flex-shrink-0 group-hover:scale-150 transition-transform duration-500"
-                          style={{ background: pillar.color, boxShadow: `0 0 10px ${pillar.color}, 0 0 20px ${pillar.color}50` }}
+                          style={{ background: pillar.color, boxShadow: `0 0 8px ${pillar.color}80` }}
                         />
                         <span className="font-medium">{stat}</span>
                       </div>
                     ))}
                   </div>
                 </div>
-
-                {/* Corner accent */}
-                <div
-                  className="absolute bottom-0 right-0 w-24 h-24 opacity-0 group-hover:opacity-20 transition-opacity duration-700 rounded-br-3xl"
-                  style={{ background: `linear-gradient(135deg, transparent, ${pillar.color})` }}
-                />
               </div>
             ))}
           </div>
@@ -796,15 +769,15 @@ export default function Saludable() {
       </section>
 
       {/* ═══ STATS DASHBOARD ═══ */}
-      <section ref={statsRef} className="py-20 px-6 bg-[#2D3B2D]">
+      <section ref={statsRef} className="py-20 px-6 bg-gradient-to-r from-[#43A047] via-[#66BB6A] to-[#43A047]">
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {STATS.map((stat, i) => (
               <div key={i} className="stat-item text-center">
-                <div className="text-4xl md:text-5xl font-bold mb-2 text-white">
+                <div className="text-4xl md:text-5xl font-bold mb-2 text-white drop-shadow-lg">
                   <AnimatedCounter value={stat.value} suffix={stat.suffix} />
                 </div>
-                <p className="text-sm text-[#A8C5A0]">{stat.label}</p>
+                <p className="text-sm text-white/80">{stat.label}</p>
               </div>
             ))}
           </div>
@@ -824,17 +797,17 @@ export default function Saludable() {
         >
           <source src="/manus-storage/testimonial-bg-video_0077eed0.mp4" type="video/mp4" />
         </video>
-        {/* Dark overlay for readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0a1f14]/85 via-[#0a1f14]/80 to-[#0a1f14]/90" />
+        {/* Light summer green overlay for readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#E8F5E0]/75 via-[#C8E6C9]/70 to-[#A5D6A7]/80" />
 
         <div className="relative z-10 max-w-6xl mx-auto">
           <h2
-            className="text-4xl md:text-5xl font-bold text-center mb-4 text-white"
+            className="text-4xl md:text-5xl font-bold text-center mb-4 text-[#1B5E20]"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            Lo Que Dicen Nuestros <span className="text-[#6BAF8D] drop-shadow-[0_0_20px_rgba(107,175,141,0.5)]">Beneficiarios</span>
+            Lo Que Dicen Nuestros <span className="text-[#43A047] drop-shadow-[0_0_15px_rgba(67,160,71,0.3)]">Beneficiarios</span>
           </h2>
-          <p className="text-center text-white/60 mb-16 max-w-xl mx-auto">
+          <p className="text-center text-[#2E7D32]/70 mb-16 max-w-xl mx-auto">
             Historias reales de transformación y bienestar en toda la isla.
           </p>
 
@@ -842,98 +815,101 @@ export default function Saludable() {
             {TESTIMONIALS.map((testimonial, i) => (
               <div
                 key={i}
-                className="flex-shrink-0 w-[340px] md:w-[380px] snap-center p-8 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl hover:shadow-[0_20px_60px_rgba(107,175,141,0.3)] hover:-translate-y-3 hover:scale-[1.02] transition-all duration-700 group"
+                className="flex-shrink-0 w-[340px] md:w-[380px] snap-center p-8 rounded-2xl bg-white/80 backdrop-blur-xl border border-[#66BB6A]/30 shadow-xl hover:shadow-[0_20px_60px_rgba(67,160,71,0.2)] hover:-translate-y-3 hover:scale-[1.02] transition-all duration-700 group"
               >
-                <svg className="w-8 h-8 text-[#6BAF8D]/60 mb-4 group-hover:text-[#6BAF8D] group-hover:scale-110 transition-all duration-500" fill="currentColor" viewBox="0 0 24 24">
+                <svg className="w-8 h-8 text-[#43A047]/50 mb-4 group-hover:text-[#2E7D32] group-hover:scale-110 transition-all duration-500" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983z" />
                 </svg>
-                <p className="text-white/90 text-sm leading-relaxed mb-6 italic">
+                <p className="text-[#2D3B2D]/80 text-sm leading-relaxed mb-6 italic">
                   "{testimonial.quote}"
                 </p>
-                <div className="border-t border-white/20 pt-4">
-                  <p className="font-semibold text-white text-sm">{testimonial.name}</p>
-                  <p className="text-xs text-[#6BAF8D] mt-0.5">{testimonial.role}</p>
-                  <p className="text-xs text-white/40 mt-0.5">{testimonial.municipality}, PR</p>
+                <div className="border-t border-[#66BB6A]/20 pt-4">
+                  <p className="font-semibold text-[#1B5E20] text-sm">{testimonial.name}</p>
+                  <p className="text-xs text-[#43A047] mt-0.5">{testimonial.role}</p>
+                  <p className="text-xs text-[#2D3B2D]/50 mt-0.5">{testimonial.municipality}, PR</p>
                 </div>
               </div>
             ))}
           </div>
           <div className="flex justify-center mt-6">
-            <span className="text-xs text-white/30">← Desliza para ver más →</span>
+            <span className="text-xs text-[#2E7D32]/50">← Desliza para ver más →</span>
           </div>
         </div>
       </section>
 
       {/* ═══ PLANIFICACIÓN Y CUMPLIMIENTO — WOW INTERACTIVE TIMELINE ═══ */}
-      <section ref={complianceRef} id="cumplimiento" className="py-32 px-6 relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #0d2818 0%, #1a3a2a 50%, #0a1f14 100%)' }}>
+      <section ref={complianceRef} id="cumplimiento" className="py-32 px-6 relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #E8F5E0 0%, #C8E6C9 40%, #B9DEB5 70%, #E8F5E0 100%)' }}>
         {/* Animated background elements */}
         <div className="absolute top-0 left-0 w-full h-full">
-          <div className="absolute top-10 left-[20%] w-[300px] h-[300px] rounded-full bg-[#6BAF8D]/5 blur-[100px] animate-pulse" />
-          <div className="absolute bottom-10 right-[20%] w-[400px] h-[400px] rounded-full bg-[#4CAF50]/5 blur-[120px] animate-pulse" style={{ animationDelay: '1.5s' }} />
-          {/* Grid lines */}
-          <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'linear-gradient(rgba(107,175,141,1) 1px, transparent 1px), linear-gradient(90deg, rgba(107,175,141,1) 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
+          <div className="absolute top-10 left-[20%] w-[300px] h-[300px] rounded-full bg-[#66BB6A]/15 blur-[100px] animate-pulse" />
+          <div className="absolute bottom-10 right-[20%] w-[400px] h-[400px] rounded-full bg-[#81C784]/15 blur-[120px] animate-pulse" style={{ animationDelay: '1.5s' }} />
+          {/* Subtle grid lines */}
+          <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'linear-gradient(rgba(46,125,50,1) 1px, transparent 1px), linear-gradient(90deg, rgba(46,125,50,1) 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
         </div>
 
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-6">
-            <span className="inline-block px-5 py-2 rounded-full bg-[#6BAF8D]/15 text-[#6BAF8D] text-xs font-bold uppercase tracking-[0.25em] mb-6 border border-[#6BAF8D]/30 backdrop-blur-sm">
+            <span className="inline-block px-5 py-2 rounded-full bg-white/60 text-[#2E7D32] text-xs font-bold uppercase tracking-[0.25em] mb-6 border border-[#66BB6A]/40 backdrop-blur-sm shadow-sm">
               Proceso Certificado
             </span>
           </div>
           <h2
-            className="text-5xl md:text-7xl font-bold text-center mb-6 text-white"
+            className="text-5xl md:text-7xl font-bold text-center mb-6 text-[#1B5E20]"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            Planificación y <span className="text-[#6BAF8D] drop-shadow-[0_0_30px_rgba(107,175,141,0.5)]">Cumplimiento</span>
+            Planificación y <span className="text-[#43A047] drop-shadow-[0_0_20px_rgba(67,160,71,0.4)]">Cumplimiento</span>
           </h2>
-          <p className="text-center text-white/50 mb-20 max-w-3xl mx-auto text-lg leading-relaxed">
+          <p className="text-center text-[#2E7D32]/70 mb-20 max-w-3xl mx-auto text-lg leading-relaxed">
             Un proceso estructurado en 5 pasos para garantizar resultados medibles y cumplimiento regulatorio completo con el Depto. de Salud y Depto. del Trabajo de PR.
           </p>
 
           {/* Animated connecting line */}
           <div className="hidden md:block absolute top-[calc(50%+80px)] left-[8%] right-[8%] h-[2px] z-0">
-            <div className="w-full h-full bg-gradient-to-r from-[#6BAF8D]/20 via-[#6BAF8D]/60 to-[#6BAF8D]/20 rounded-full" />
-            <div className="absolute top-0 left-0 h-full w-1/3 bg-gradient-to-r from-[#6BAF8D] to-transparent rounded-full animate-pulse" style={{ animationDuration: '3s' }} />
+            <div className="w-full h-full bg-gradient-to-r from-[#43A047]/20 via-[#43A047]/60 to-[#43A047]/20 rounded-full" />
+            <div className="absolute top-0 left-0 h-full w-1/3 bg-gradient-to-r from-[#43A047] to-transparent rounded-full animate-pulse" style={{ animationDuration: '3s' }} />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-5 relative z-10">
             {COMPLIANCE_STEPS.map((step, i) => (
               <div key={step.step} className="compliance-step relative flex flex-col items-center text-center group" style={{ perspective: '800px' }}>
-                {/* Step circle with glow */}
-                <div
-                  className="relative z-10 w-[80px] h-[80px] rounded-full flex items-center justify-center text-3xl mb-6 group-hover:scale-125 group-hover:rotate-12 transition-all duration-700"
-                  style={{
-                    background: 'linear-gradient(135deg, #1a3a2a, #2D4F3C)',
-                    border: '3px solid rgba(107,175,141,0.5)',
-                    boxShadow: '0 0 30px rgba(107,175,141,0.2), inset 0 0 20px rgba(107,175,141,0.1)',
-                  }}
-                >
-                  <span className="drop-shadow-[0_0_10px_rgba(107,175,141,0.8)]">{step.icon}</span>
-                  {/* Orbiting ring */}
-                  <div className="absolute inset-[-6px] rounded-full border border-[#6BAF8D]/30 animate-spin" style={{ animationDuration: `${8 + i * 2}s` }} />
-                </div>
+                {/* Step circle with magnetic hover */}
+                <MagneticButton strength={0.4} className="mb-6">
+                  <div
+                    className="relative z-10 w-[80px] h-[80px] rounded-full flex items-center justify-center text-3xl group-hover:scale-125 group-hover:rotate-12 transition-all duration-700"
+                    data-cursor-hover
+                    style={{
+                      background: 'linear-gradient(135deg, #66BB6A, #43A047)',
+                      border: '3px solid rgba(67,160,71,0.5)',
+                      boxShadow: '0 8px 25px rgba(67,160,71,0.3), inset 0 0 15px rgba(255,255,255,0.1)',
+                    }}
+                  >
+                    <span className="drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]">{step.icon}</span>
+                    {/* Orbiting ring */}
+                    <div className="absolute inset-[-6px] rounded-full border border-[#43A047]/30 animate-spin" style={{ animationDuration: `${8 + i * 2}s` }} />
+                  </div>
+                </MagneticButton>
 
                 {/* Step number */}
-                <div className="absolute top-0 right-[calc(50%-56px)] w-7 h-7 rounded-full bg-gradient-to-br from-[#6BAF8D] to-[#4A9070] text-white text-xs font-bold flex items-center justify-center shadow-lg shadow-[#6BAF8D]/40 z-20">
+                <div className="absolute top-0 right-[calc(50%-56px)] w-7 h-7 rounded-full bg-gradient-to-br from-[#43A047] to-[#2E7D32] text-white text-xs font-bold flex items-center justify-center shadow-lg shadow-[#43A047]/40 z-20">
                   {step.step}
                 </div>
 
-                {/* Content card with 3D hover */}
+                {/* Content card */}
                 <div
-                  className="bg-white/5 backdrop-blur-md rounded-2xl p-6 border border-[#6BAF8D]/20 w-full transition-all duration-700 group-hover:-translate-y-3 group-hover:border-[#6BAF8D]/60 group-hover:shadow-[0_20px_60px_rgba(107,175,141,0.2)]"
+                  className="bg-white/80 backdrop-blur-md rounded-2xl p-6 border border-[#66BB6A]/25 w-full transition-all duration-700 group-hover:-translate-y-3 group-hover:border-[#43A047]/60 group-hover:shadow-[0_20px_50px_rgba(67,160,71,0.15)]"
                   style={{ transformStyle: 'preserve-3d' }}
                 >
-                  <h3 className="text-lg font-bold text-white mb-3 group-hover:text-[#6BAF8D] transition-colors duration-500" style={{ fontFamily: "'Playfair Display', serif" }}>
+                  <h3 className="text-lg font-bold text-[#1B5E20] mb-3 group-hover:text-[#2E7D32] transition-colors duration-500" style={{ fontFamily: "'Playfair Display', serif" }}>
                     {step.title}
                   </h3>
-                  <p className="text-white/50 text-xs leading-relaxed mb-4 group-hover:text-white/70 transition-colors duration-500">
+                  <p className="text-[#2D3B2D]/60 text-xs leading-relaxed mb-4 group-hover:text-[#2D3B2D]/80 transition-colors duration-500">
                     {step.desc}
                   </p>
-                  <div className="pt-3 border-t border-[#6BAF8D]/20">
-                    <p className="text-[10px] font-bold text-[#6BAF8D] uppercase tracking-wider mb-1">
+                  <div className="pt-3 border-t border-[#66BB6A]/20">
+                    <p className="text-[10px] font-bold text-[#43A047] uppercase tracking-wider mb-1">
                       Entregable
                     </p>
-                    <p className="text-xs text-white/60 font-medium group-hover:text-white/80 transition-colors duration-500">
+                    <p className="text-xs text-[#2D3B2D]/60 font-medium group-hover:text-[#2D3B2D]/80 transition-colors duration-500">
                       {step.deliverable}
                     </p>
                   </div>

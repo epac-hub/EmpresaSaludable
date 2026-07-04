@@ -1,0 +1,22 @@
+# Project TODO — Empresa Saludable
+
+- [x] Hero section with tropical wellness garden background
+- [x] Brand name "Empresa Saludable" large, animated gradient
+- [x] Navigation bar with smooth scroll links
+- [x] Ambassadors section with 4 PR health professionals
+- [x] 5 Pilares del Bienestar (dark cinematic design)
+- [x] Stats dashboard with animated counters
+- [x] Testimonials section with video background
+- [x] Compliance section (dark WOW design)
+- [x] Service Plans (3 plans, no prices, Solicitar Cotización CTA)
+- [x] Institutional logos (Depto Salud + Depto Trabajo)
+- [x] FAQ section with 6 expandable questions
+- [x] Pharmacy Map with municipality dropdown
+- [x] Contact form "Hablemos de Bienestar" (mailto)
+- [x] Bossa Nova Latin Jazz music autoplay
+- [x] Backend upgrade (web-db-user)
+- [x] Pilares: LIGHTER summer greens (not dark), scroll-driven parallax interactive
+- [x] Testimonios: LIGHTER sexier greens (not dark overlay)
+- [x] Cumplimiento: LIGHTER greens with magnetic buttons
+- [x] Futuristic custom cursor (dot + follower, state changes on hover)
+- [x] All dark sections → lighter summer/peace green tones
