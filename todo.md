@@ -77,3 +77,6 @@
 - [x] Specialist cards: Add "Agendar Cita" button (green gradient, calendar icon, scrolls to #contacto)
 - [x] Specialist cards: Popup modal with full bio, certifications, quote, and CTA on photo click ("Ver Perfil Completo" overlay hint)
 - [x] New section: "Lo Que Dicen Nuestros Clientes" testimonios with 3 cards (stars, quotes, company names) below specialists
+- [x] Testimonios: Auto-rotating carousel (5s interval, pause on hover, arrows + dots, 5 testimonials)
+- [x] Agendar Cita: Opens quick popup form with name/email/phone/date/message fields (saves via tRPC)
+- [x] Specialist modal: LinkedIn icons added (real URLs where available, placeholder badge otherwise)

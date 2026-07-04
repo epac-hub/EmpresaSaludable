@@ -13,6 +13,7 @@ import MusicPlayer from "@/components/saludable/MusicPlayer";
 import FuturisticCursor from "@/components/saludable/FuturisticCursor";
 import MagneticButton from "@/components/saludable/MagneticButton";
 import { trpc } from "@/lib/trpc";
+import TestimonialCarousel from "@/components/saludable/TestimonialCarousel";
 // GreenParticles removed from hero (video background now)
 // Interactive3DParticles removed — replaced with lightweight CSS floating dots
 
@@ -47,6 +48,7 @@ const AMBASSADORS = [
     quote: "Una alimentación consciente es la base de toda transformación corporativa.",
     specialty: "Nutricionista clínica certificada con 12 años de experiencia diseñando planes alimentarios para empresas. Especialista en nutrición tropical y prevención de enfermedades metabólicas.",
     expertise: ["Planes nutricionales corporativos", "Talleres de cocina saludable", "Evaluaciones metabólicas"],
+    linkedin: "#", // ← Reemplazar con URL real de LinkedIn
   },
   {
     id: "rafael-mendez", // ← PLACEHOLDER: Reemplazar image con foto real
@@ -56,6 +58,7 @@ const AMBASSADORS = [
     quote: "Prevenir es la inversión más inteligente que una empresa puede hacer en su capital humano.",
     specialty: "Médico internista con maestría en Salud Pública. 15 años en medicina preventiva y salud ocupacional. Consultor para programas de bienestar en empresas Fortune 500 en PR.",
     expertise: ["Evaluaciones preventivas", "Protocolos de salud ocupacional", "Gestión de riesgos clínicos"],
+    linkedin: "#", // ← Reemplazar con URL real de LinkedIn
   },
   {
     id: "valeria-santiago", // ← PLACEHOLDER: Reemplazar image con foto real
@@ -65,6 +68,7 @@ const AMBASSADORS = [
     quote: "El movimiento diario transforma equipos completos — física, mental y emocionalmente.",
     specialty: "Farmacéutica y entrenadora personal certificada por la National Academy of Sports Medicine (NASM), con especialización en entrenamiento funcional, movilidad y prevención de lesiones. Diseña programas integrales de bienestar, prevención y actividad física, adaptados a las necesidades de los empleados dentro de su ambiente laboral.",
     expertise: ["Programas integrales de bienestar", "Entrenamiento funcional y movilidad", "Prevención de lesiones en ambiente laboral"],
+    linkedin: "#", // ← Reemplazar con URL real de LinkedIn
   },
   {
     id: "carlos-rivera", // ← PLACEHOLDER: Reemplazar image con foto real
@@ -74,6 +78,7 @@ const AMBASSADORS = [
     quote: "Una empresa saludable es una empresa rentable — los datos lo demuestran consistentemente.",
     specialty: "Consultor certificado en bienestar corporativo con MBA en Gestión Estratégica. Implementa programas de cultura organizacional saludable y cumplimiento regulatorio en toda la isla.",
     expertise: ["Cultura organizacional", "Cumplimiento Depto. de Salud", "ROI de bienestar"],
+    linkedin: "#", // ← Reemplazar con URL real de LinkedIn
   },
 ];
 
@@ -279,6 +284,12 @@ export default function Saludable() {
 
   // Specialist bio modal state
   const [selectedSpecialist, setSelectedSpecialist] = useState<typeof AMBASSADORS[number] | null>(null);
+
+  // Quick appointment popup state
+  const [appointmentFor, setAppointmentFor] = useState<string | null>(null);
+  const [apptForm, setApptForm] = useState({ name: '', email: '', phone: '', date: '', message: '' });
+  const [apptSubmitting, setApptSubmitting] = useState(false);
+  const [apptSuccess, setApptSuccess] = useState(false);
 
   // Scroll-proximity lazy loading: mount heavy components only when near viewport
   const [showParticles3D, setShowParticles3D] = useState(false);
@@ -940,17 +951,13 @@ export default function Saludable() {
                       "{amb.quote}"
                     </p>
                     {/* Agendar Cita button */}
-                    <a
-                      href="#contacto"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' });
-                      }}
+                    <button
+                      onClick={() => { setAppointmentFor(amb.name.split(',')[0]); setApptSuccess(false); setApptForm({ name: '', email: '', phone: '', date: '', message: '' }); }}
                       className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#6BAF8D] to-[#4A9B6F] text-white text-sm font-semibold shadow-md hover:shadow-lg hover:shadow-[#6BAF8D]/30 hover:scale-105 active:scale-95 transition-all duration-300"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                       Agendar Cita
-                    </a>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -1013,85 +1020,166 @@ export default function Saludable() {
               </div>
 
               {/* Quote */}
-              <div className="p-4 rounded-xl bg-[#F4F9F2] border border-[#A8C5A0]/20 mb-6">
+              <div className="p-4 rounded-xl bg-[#F4F9F2] border border-[#A8C5A0]/20 mb-4">
                 <p className="text-[#2D3B2D]/70 text-sm italic">"​{selectedSpecialist.quote}​"</p>
               </div>
 
+              {/* LinkedIn */}
+              {selectedSpecialist.linkedin && selectedSpecialist.linkedin !== '#' && (
+                <a
+                  href={selectedSpecialist.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#0A66C2]/10 text-[#0A66C2] text-sm font-medium hover:bg-[#0A66C2]/20 transition-colors mb-4"
+                >
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                  Ver perfil en LinkedIn
+                </a>
+              )}
+              {selectedSpecialist.linkedin === '#' && (
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-100 text-gray-400 text-sm mb-4">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                  LinkedIn (próximamente)
+                </div>
+              )}
+
               {/* CTA */}
-              <a
-                href="#contacto"
-                onClick={(e) => {
-                  e.preventDefault();
+              <button
+                onClick={() => {
+                  const name = selectedSpecialist.name.split(',')[0];
                   setSelectedSpecialist(null);
-                  setTimeout(() => document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' }), 300);
+                  setTimeout(() => { setAppointmentFor(name); setApptSuccess(false); setApptForm({ name: '', email: '', phone: '', date: '', message: '' }); }, 300);
                 }}
                 className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-[#6BAF8D] to-[#4A9B6F] text-white font-semibold shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all duration-300"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                 Agendar Cita con {selectedSpecialist.name.split(',')[0]}
-              </a>
+              </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* ═══ TESTIMONIOS DE CLIENTES ═══ */}
-      <section className="py-24 px-6" style={{ background: 'linear-gradient(180deg, #FDFCFB 0%, #F0F7F4 100%)' }}>
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-16">
-            <span className="inline-block px-4 py-1.5 rounded-full bg-[#6BAF8D]/10 text-[#6BAF8D] text-xs font-bold uppercase tracking-[0.2em] mb-4 border border-[#6BAF8D]/20">
-              Experiencias Reales
-            </span>
-            <h2 className="text-4xl md:text-5xl font-bold text-[#2D3B2D] mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>
-              Lo Que Dicen Nuestros <span className="text-[#6BAF8D]">Clientes</span>
-            </h2>
-            <p className="text-[#2D3B2D]/60 max-w-2xl mx-auto">
-              Empresas de toda la isla confían en nuestro equipo para transformar la salud y productividad de sus empleados.
-            </p>
-          </div>
+      {/* ═══ QUICK APPOINTMENT POPUP ═══ */}
+      {appointmentFor && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4" onClick={() => setAppointmentFor(null)}>
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" style={{ animation: 'fadeIn 0.2s ease-out' }} />
+          <div
+            className="relative bg-white rounded-3xl shadow-2xl max-w-md w-full p-8 max-h-[90vh] overflow-y-auto"
+            style={{ animation: 'scaleIn 0.3s cubic-bezier(0.23,1,0.32,1)' }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close */}
+            <button onClick={() => setAppointmentFor(null)} className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8" data-reveal>
-            {[
-              {
-                quote: "Desde que implementamos el programa, el ausentismo bajó un 40%. El equipo está más motivado y productivo que nunca.",
-                name: "Carmen L. Torres",
-                role: "VP Recursos Humanos",
-                company: "Grupo Farmacéutico del Caribe",
-              },
-              {
-                quote: "La Dra. Santiago diseñó un programa de movilidad que eliminó las quejas de dolor de espalda en nuestra oficina. Increíble resultado.",
-                name: "Roberto A. Velázquez",
-                role: "Gerente de Operaciones",
-                company: "TechPR Solutions",
-              },
-              {
-                quote: "Los talleres de nutrición cambiaron la cultura de nuestra empresa. Ahora todos almuerzan mejor y la energía de la tarde es otra.",
-                name: "Marta I. Figueroa",
-                role: "Directora Ejecutiva",
-                company: "Cooperativa de Salud Integral",
-              },
-            ].map((testimonial, i) => (
-              <div
-                key={i}
-                className="p-6 rounded-2xl bg-white border border-[#A8C5A0]/20 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-400"
-              >
-                {/* Stars */}
-                <div className="flex gap-1 mb-4">
-                  {[...Array(5)].map((_, s) => (
-                    <svg key={s} className="w-4 h-4 text-[#F59E0B]" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-                  ))}
+            {apptSuccess ? (
+              <div className="text-center py-8">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[#6BAF8D]/10 flex items-center justify-center">
+                  <svg className="w-8 h-8 text-[#6BAF8D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
                 </div>
-                <p className="text-[#2D3B2D]/70 text-sm leading-relaxed mb-6 italic">"​{testimonial.quote}​"</p>
-                <div className="border-t border-[#A8C5A0]/15 pt-4">
-                  <p className="text-[#2D3B2D] font-semibold text-sm">{testimonial.name}</p>
-                  <p className="text-[#2D3B2D]/50 text-xs">{testimonial.role}</p>
-                  <p className="text-[#6BAF8D] text-xs font-medium">{testimonial.company}</p>
-                </div>
+                <h3 className="text-xl font-bold text-[#2D3B2D] mb-2">Solicitud Enviada</h3>
+                <p className="text-[#2D3B2D]/60 text-sm">Nos comunicaremos contigo pronto para confirmar tu cita con {appointmentFor}.</p>
+                <button onClick={() => setAppointmentFor(null)} className="mt-6 px-6 py-2 rounded-full bg-[#6BAF8D] text-white font-medium hover:bg-[#5A9E7C] transition-colors">Cerrar</button>
               </div>
-            ))}
+            ) : (
+              <>
+                <div className="text-center mb-6">
+                  <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-[#6BAF8D]/10 flex items-center justify-center">
+                    <svg className="w-6 h-6 text-[#6BAF8D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                  </div>
+                  <h3 className="text-xl font-bold text-[#2D3B2D]">Agendar Cita</h3>
+                  <p className="text-[#2D3B2D]/60 text-sm mt-1">con {appointmentFor}</p>
+                </div>
+
+                <form
+                  onSubmit={async (e) => {
+                    e.preventDefault();
+                    setApptSubmitting(true);
+                    try {
+                      await contactMutation.mutateAsync({
+                        name: apptForm.name,
+                        email: apptForm.email,
+                        company: `Cita: ${appointmentFor} | Tel: ${apptForm.phone} | Fecha: ${apptForm.date}`,
+                        message: apptForm.message || `Solicitud de cita con ${appointmentFor}`,
+                      });
+                      setApptSuccess(true);
+                    } catch {
+                      alert('Error al enviar. Intente de nuevo.');
+                    } finally {
+                      setApptSubmitting(false);
+                    }
+                  }}
+                  className="space-y-4"
+                >
+                  <div>
+                    <label className="block text-xs font-medium text-[#2D3B2D]/70 mb-1">Nombre completo *</label>
+                    <input
+                      required
+                      value={apptForm.name}
+                      onChange={(e) => setApptForm(p => ({ ...p, name: e.target.value }))}
+                      className="w-full px-4 py-2.5 rounded-xl border border-[#A8C5A0]/30 bg-[#F9FBF9] text-sm focus:ring-2 focus:ring-[#6BAF8D]/30 focus:border-[#6BAF8D] outline-none transition-all"
+                      placeholder="Su nombre"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-[#2D3B2D]/70 mb-1">Email *</label>
+                    <input
+                      required
+                      type="email"
+                      value={apptForm.email}
+                      onChange={(e) => setApptForm(p => ({ ...p, email: e.target.value }))}
+                      className="w-full px-4 py-2.5 rounded-xl border border-[#A8C5A0]/30 bg-[#F9FBF9] text-sm focus:ring-2 focus:ring-[#6BAF8D]/30 focus:border-[#6BAF8D] outline-none transition-all"
+                      placeholder="su@email.com"
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-medium text-[#2D3B2D]/70 mb-1">Teléfono</label>
+                      <input
+                        value={apptForm.phone}
+                        onChange={(e) => setApptForm(p => ({ ...p, phone: e.target.value }))}
+                        className="w-full px-4 py-2.5 rounded-xl border border-[#A8C5A0]/30 bg-[#F9FBF9] text-sm focus:ring-2 focus:ring-[#6BAF8D]/30 focus:border-[#6BAF8D] outline-none transition-all"
+                        placeholder="787-000-0000"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-[#2D3B2D]/70 mb-1">Fecha preferida</label>
+                      <input
+                        type="date"
+                        value={apptForm.date}
+                        onChange={(e) => setApptForm(p => ({ ...p, date: e.target.value }))}
+                        className="w-full px-4 py-2.5 rounded-xl border border-[#A8C5A0]/30 bg-[#F9FBF9] text-sm focus:ring-2 focus:ring-[#6BAF8D]/30 focus:border-[#6BAF8D] outline-none transition-all"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-[#2D3B2D]/70 mb-1">Mensaje (opcional)</label>
+                    <textarea
+                      value={apptForm.message}
+                      onChange={(e) => setApptForm(p => ({ ...p, message: e.target.value }))}
+                      rows={3}
+                      className="w-full px-4 py-2.5 rounded-xl border border-[#A8C5A0]/30 bg-[#F9FBF9] text-sm focus:ring-2 focus:ring-[#6BAF8D]/30 focus:border-[#6BAF8D] outline-none transition-all resize-none"
+                      placeholder="Detalles adicionales..."
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    disabled={apptSubmitting}
+                    className="w-full py-3 rounded-full bg-gradient-to-r from-[#6BAF8D] to-[#4A9B6F] text-white font-semibold shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {apptSubmitting ? 'Enviando...' : 'Solicitar Cita'}
+                  </button>
+                </form>
+              </>
+            )}
           </div>
         </div>
-      </section>
+      )}
+
+      {/* ═══ TESTIMONIOS DE CLIENTES — AUTO-ROTATING CAROUSEL ═══ */}
+      <TestimonialCarousel />
 
       {/* ═══ LOS 5 PILARES DEL BIENESTAR — SUMMER GREEN PARALLAX ═══ */}
 
