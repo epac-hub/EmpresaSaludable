@@ -42,7 +42,7 @@ const AMBASSADORS = [
   },
   {
     name: "Dra. Valeria Santiago, PharmD, CPT, CES",
-    role: "Bienestar Corporativo",
+    role: "Salud Integral",
     image: "/manus-storage/valeria-boricua_0889189c.jpg",
     quote: "El movimiento diario transforma equipos completos — física, mental y emocionalmente.",
     specialty: "Farmacéutica y entrenadora personal certificada por la National Academy of Sports Medicine (NASM), con especialización en entrenamiento funcional, movilidad y prevención de lesiones. Diseña programas integrales de bienestar, prevención y actividad física, adaptados a las necesidades de los empleados dentro de su ambiente laboral.",
