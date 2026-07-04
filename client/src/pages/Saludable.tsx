@@ -467,11 +467,14 @@ export default function Saludable() {
           <img
             src="/manus-storage/saludable-logo_630e22f3.png"
             alt="Empresa Saludable"
-            className="w-10 h-10 object-contain"
+            className="w-12 h-12 object-contain drop-shadow-md"
           />
-          <span className="text-lg font-semibold tracking-tight text-[#2D3B2D]" style={{ fontFamily: "'Playfair Display', serif" }}>
-            Empresa Saludable
-          </span>
+          <div className="flex flex-col">
+            <span className="text-xl font-black tracking-tight text-[#2D3B2D]" style={{ fontFamily: "'Playfair Display', serif" }}>
+              Empresa <span className="text-[#6BAF8D]">Saludable</span>
+            </span>
+            <span className="text-[10px] tracking-[0.2em] uppercase text-[#6BAF8D]/70 font-medium -mt-0.5">Bienestar Corporativo PR</span>
+          </div>
         </div>
         <div className="hidden md:flex items-center gap-8 text-sm text-[#2D3B2D]/70">
           <a href="#pilares" className="hover:text-[#6BAF8D] transition-colors">Pilares</a>
@@ -498,15 +501,20 @@ export default function Saludable() {
         <div className="absolute inset-0 bg-gradient-to-br from-[#E8F5E0]/85 via-[#F4F9F2]/75 to-[#DFF0D8]/80" />
 
         <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
-          <h1
-            className="hero-title text-5xl md:text-7xl lg:text-8xl font-bold leading-[0.9] mb-8"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
-            <span className="block text-[#2D3B2D]">Tu bienestar</span>
-            <span className="block text-[#6BAF8D]">comienza</span>
-            <span className="block text-[#2D3B2D]">aquí</span>
-          </h1>
-          <p className="hero-subtitle text-lg md:text-xl text-[#2D3B2D]/70 max-w-xl mx-auto leading-relaxed">
+          {/* Brand Name — Dynamic & Prominent */}
+          <div className="hero-title mb-6">
+            <span className="block text-lg md:text-xl tracking-[0.3em] uppercase text-[#6BAF8D] font-semibold mb-4 animate-pulse" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+              Bienvenido a
+            </span>
+            <h1
+              className="text-6xl md:text-8xl lg:text-[10rem] font-black leading-[0.85] tracking-tight"
+              style={{ fontFamily: "'Playfair Display', serif" }}
+            >
+              <span className="block text-[#2D3B2D] drop-shadow-[0_4px_20px_rgba(107,175,141,0.3)]">Empresa</span>
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#6BAF8D] via-[#4CAF50] to-[#2E7D32] animate-[gradient_4s_ease_infinite] bg-[length:200%_200%]">Saludable</span>
+            </h1>
+          </div>
+          <p className="hero-subtitle text-xl md:text-2xl text-[#2D3B2D]/70 max-w-2xl mx-auto leading-relaxed font-light">
             Red integral de bienestar conectando comunidades, farmacias y servicios de salud en todo Puerto Rico.
           </p>
           <div className="hero-subtitle mt-10 flex flex-col sm:flex-row gap-4 justify-center">
@@ -812,9 +820,25 @@ export default function Saludable() {
           >
             Lo Que Dicen Nuestros <span className="text-[#6BAF8D]">Beneficiarios</span>
           </h2>
-          <p className="text-center text-[#2D3B2D]/60 mb-16 max-w-xl mx-auto">
+          <p className="text-center text-[#2D3B2D]/60 mb-8 max-w-xl mx-auto">
             Historias reales de transformación y bienestar en toda la isla.
           </p>
+
+          {/* Testimonial Video */}
+          <div className="relative max-w-3xl mx-auto mb-16 rounded-2xl overflow-hidden shadow-2xl shadow-[#6BAF8D]/20 group">
+            <video
+              className="w-full aspect-video object-cover rounded-2xl"
+              controls
+              poster="/manus-storage/testimonial-keyframe1_81929664.png"
+              preload="metadata"
+            >
+              <source src="/manus-storage/testimonial-video_e49cb23e.mp4" type="video/mp4" />
+            </video>
+            <div className="absolute inset-0 bg-gradient-to-t from-[#2D3B2D]/40 to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl" />
+            <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between pointer-events-none">
+              <span className="text-white/80 text-sm font-medium drop-shadow-lg">Bienestar en acción — Empresa Saludable</span>
+            </div>
+          </div>
 
           <div className="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-6" style={{ scrollbarWidth: 'none' }}>
             {TESTIMONIALS.map((testimonial, i) => (
@@ -951,7 +975,7 @@ export default function Saludable() {
                       : "border-2 border-[#6BAF8D] text-[#6BAF8D] hover:bg-[#6BAF8D]/10"
                   }`}
                 >
-                  {plan.cta}
+                  Solicitar Cotización
                 </a>
               </div>
             ))}
