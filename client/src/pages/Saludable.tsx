@@ -692,18 +692,33 @@ export default function Saludable() {
         });
       }
 
-      // Plans — dramatic staggered entrance with rotation
+      // Plans — dramatic staggered entrance with rotation (one-by-one reveal)
       if (plansRef.current) {
         gsap.from(".plan-card", {
           scrollTrigger: { trigger: plansRef.current, start: "top 80%" },
-          y: 80,
+          y: 100,
           opacity: 0,
-          rotateY: 15,
-          scale: 0.9,
-          duration: 0.9,
-          stagger: 0.2,
-          ease: "power4.out",
+          rotateY: 20,
+          scale: 0.85,
+          duration: 1.1,
+          stagger: 0.3,
+          ease: "back.out(1.4)",
           immediateRender: false,
+        });
+
+        // Feature list items stagger within each card
+        plansRef.current.querySelectorAll('.plan-card').forEach((card, cardIdx) => {
+          const items = card.querySelectorAll('li');
+          gsap.from(items, {
+            scrollTrigger: { trigger: card, start: "top 75%" },
+            x: -20,
+            opacity: 0,
+            duration: 0.4,
+            stagger: 0.08,
+            delay: 0.3 + cardIdx * 0.3,
+            ease: "power2.out",
+            immediateRender: false,
+          });
         });
 
         // Add 3D tilt effect to plan cards on mouse move
@@ -1893,7 +1908,21 @@ export default function Saludable() {
             ].map((faq, i) => (
               <div
                 key={i}
-                className="faq-item bg-white rounded-2xl border border-[#A8C5A0]/20 hover:border-[#6BAF8D]/40 transition-all duration-300 hover:shadow-lg overflow-hidden"
+                className="faq-item bg-white rounded-2xl border border-[#A8C5A0]/20 hover:border-[#6BAF8D]/40 transition-all duration-300 hover:shadow-lg hover:shadow-[#6BAF8D]/10 overflow-hidden"
+                style={{ opacity: 0, transform: 'translateY(20px)' }}
+                ref={(el) => {
+                  if (el && !el.dataset.revealed) {
+                    el.dataset.revealed = 'true';
+                    gsap.to(el, {
+                      scrollTrigger: { trigger: el, start: 'top 90%' },
+                      opacity: 1,
+                      y: 0,
+                      duration: 0.6,
+                      delay: i * 0.1,
+                      ease: 'power3.out',
+                    });
+                  }
+                }}
               >
                 <button
                   className="w-full flex items-center justify-between p-6 cursor-pointer text-left"
@@ -1907,28 +1936,33 @@ export default function Saludable() {
                     
                     if (isOpen) {
                       btn.setAttribute('aria-expanded', 'false');
-                      gsap.to(content, { maxHeight: 0, opacity: 0, duration: 0.4, ease: 'power2.inOut' });
-                      gsap.to(icon, { rotation: 0, duration: 0.3, ease: 'back.out(2)' });
+                      gsap.to(content, { maxHeight: 0, opacity: 0, paddingTop: 0, duration: 0.4, ease: 'power3.inOut' });
+                      gsap.to(icon, { rotation: 0, scale: 1, duration: 0.3, ease: 'back.out(2)' });
+                      item.classList.remove('ring-2', 'ring-[#6BAF8D]/20');
                     } else {
-                      // Close all others first
+                      // Close all others first with smooth collapse
                       document.querySelectorAll('.faq-item .faq-content').forEach((el) => {
                         if (el !== content) {
-                          gsap.to(el, { maxHeight: 0, opacity: 0, duration: 0.3, ease: 'power2.inOut' });
+                          gsap.to(el, { maxHeight: 0, opacity: 0, paddingTop: 0, duration: 0.35, ease: 'power3.inOut' });
                         }
                       });
                       document.querySelectorAll('.faq-item .faq-icon').forEach((el) => {
                         if (el !== icon) {
-                          gsap.to(el, { rotation: 0, duration: 0.3, ease: 'back.out(2)' });
+                          gsap.to(el, { rotation: 0, scale: 1, duration: 0.3, ease: 'back.out(2)' });
                         }
+                      });
+                      document.querySelectorAll('.faq-item').forEach((el) => {
+                        if (el !== item) el.classList.remove('ring-2', 'ring-[#6BAF8D]/20');
                       });
                       document.querySelectorAll('.faq-item button').forEach((el) => {
                         if (el !== btn) el.setAttribute('aria-expanded', 'false');
                       });
                       btn.setAttribute('aria-expanded', 'true');
+                      item.classList.add('ring-2', 'ring-[#6BAF8D]/20');
                       // Use scrollHeight for dynamic content height
                       const targetHeight = content.scrollHeight || 500;
                       gsap.to(content, { maxHeight: targetHeight, opacity: 1, duration: 0.5, ease: 'power2.out' });
-                      gsap.to(icon, { rotation: 135, duration: 0.4, ease: 'back.out(2)' });
+                      gsap.to(icon, { rotation: 135, scale: 1.1, duration: 0.4, ease: 'back.out(2)' });
                     }
                   }}
                 >
@@ -2127,7 +2161,7 @@ export default function Saludable() {
               <button
                 type="submit"
                 disabled={contactMutation.isPending}
-                className="w-full py-4 rounded-full bg-gradient-to-r from-[#66BB6A] to-[#43A047] text-white font-semibold text-lg hover:shadow-lg hover:shadow-[#43A047]/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
+                className="w-full py-4 rounded-full bg-gradient-to-r from-[#66BB6A] to-[#43A047] text-white font-semibold text-lg hover:shadow-[0_0_30px_rgba(67,160,71,0.5)] transition-all duration-300 hover:scale-[1.03] active:scale-[0.95] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100 relative overflow-hidden group/btn"
               >
                 {contactMutation.isPending ? (
                   <span className="flex items-center justify-center gap-2">
@@ -2137,7 +2171,12 @@ export default function Saludable() {
                     </svg>
                     Enviando...
                   </span>
-                ) : "Enviar Mensaje"}
+                ) : (
+                  <>
+                    <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700 ease-out" />
+                    Enviar Mensaje
+                  </>
+                )}
               </button>
             </MagneticButton>
           </form>

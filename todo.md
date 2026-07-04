@@ -90,3 +90,6 @@
 - [x] Add slow rotation animation to the sun/wellness icon in Bienestar Integral block
 - [x] Add enhanced hover effect on specialist cards (glow, scale, translate)
 - [x] Add parallax effect with ScrollTrigger on Bienestar Integral block
+- [x] Plan cards: scroll-reveal stagger animation (back.out easing + feature list stagger)
+- [x] FAQ: smooth accordion open/close with scroll-reveal entrance + ring highlight on active
+- [x] Contact buttons: shimmer sweep on hover + glow pulse on focus fields + scale microinteraction

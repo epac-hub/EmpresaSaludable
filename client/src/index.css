@@ -267,3 +267,29 @@ body::after {
     animation: none;
   }
 }
+
+/* Contact form field glow pulse on focus */
+.glow-field:focus {
+  animation: field-glow-pulse 2s ease-in-out infinite;
+}
+
+@keyframes field-glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(107, 175, 141, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(107, 175, 141, 0.5), 0 0 40px rgba(107, 175, 141, 0.15);
+  }
+}
+
+/* Confetti particle animation */
+@keyframes confetti-particle {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--tx), var(--ty)) scale(0);
+    opacity: 0;
+  }
+}
