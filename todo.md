@@ -53,3 +53,8 @@
 - [x] Planificación: Three.js 3D particles and shader background (WebGL)
 - [x] Add Lenis smooth scroll (120fps, momentum, inertia)
 - [x] Planes de Servicio: Popup on mouse hover (info expands out)
+- [x] Hero: Replace heavy video with optimized image + CSS Ken Burns for faster loading
+- [x] Inspirados: Replace Lcdo. Carlos Rivera photo with boricua fit sexy saludable man
+- [x] Inspirados: Replace Dr. Rafael Méndez photo with boricua fit sexy saludable man
+- [x] Music player: Add pause/play/volume controls (minimalista flotante with hover expand)
+- [x] FAQ: Implement interactive accordion with GSAP animation (open/close with rotation)

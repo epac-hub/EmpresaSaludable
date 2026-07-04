@@ -34,7 +34,7 @@ const AMBASSADORS = [
   {
     name: "Dr. Rafael Méndez, MD, MPH",
     role: "Medicina Preventiva",
-    image: "/manus-storage/amb-medico_a51cfbb9.png",
+    image: "/manus-storage/dr-rafael-mendez-boricua_62f6369a.jpg",
     quote: "Prevenir es la inversión más inteligente que una empresa puede hacer en su capital humano.",
     specialty: "Médico internista con maestría en Salud Pública. 15 años en medicina preventiva y salud ocupacional. Consultor para programas de bienestar en empresas Fortune 500 en PR.",
     expertise: ["Evaluaciones preventivas", "Protocolos de salud ocupacional", "Gestión de riesgos clínicos"],
@@ -50,7 +50,7 @@ const AMBASSADORS = [
   {
     name: "Lcdo. Carlos Rivera, MBA, CWPC",
     role: "Bienestar Corporativo",
-    image: "/manus-storage/amb-bienestar_9cde3ade.png",
+    image: "/manus-storage/carlos-rivera-boricua_fb656031.jpg",
     quote: "Una empresa saludable es una empresa rentable — los datos lo demuestran consistentemente.",
     specialty: "Consultor certificado en bienestar corporativo con MBA en Gestión Estratégica. Implementa programas de cultura organizacional saludable y cumplimiento regulatorio en toda la isla.",
     expertise: ["Cultura organizacional", "Cumplimiento Depto. de Salud", "ROI de bienestar"],
@@ -588,18 +588,17 @@ export default function Saludable() {
 
       {/* ═══ HERO SECTION ═══ */}
       <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="hero-video absolute inset-0 w-full h-full object-cover"
-          style={{ filter: 'brightness(1.05) saturate(1.2)' }}
-        >
-          <source src="/manus-storage/hero-pr-people-beach_5d838a15.mp4" type="video/mp4" />
-        </video>
+        {/* Optimized hero image with CSS Ken Burns animation for fast loading */}
+        <div className="absolute inset-0 overflow-hidden">
+          <img
+            src="/manus-storage/hero-pr-beach-optimized_891fef9e.jpg"
+            alt=""
+            className="hero-video absolute inset-0 w-full h-full object-cover animate-[kenBurns_20s_ease-in-out_infinite_alternate]"
+            style={{ filter: 'brightness(1.05) saturate(1.2)' }}
+          />
+        </div>
         {/* Very light overlay — let the people show clearly */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/30" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/15 via-transparent to-black/25" />
 
         {/* Kinetic Typography — Empresa Saludable */}
         <div className="relative z-10 text-center px-6">
@@ -1146,7 +1145,7 @@ export default function Saludable() {
         </div>
       </section>
 
-      {/* ═══ FAQ — PREGUNTAS FRECUENTES ═══ */}
+      {/* ═══ FAQ — PREGUNTAS FRECUENTES (GSAP Accordion) ═══ */}
       <section className="py-24 px-6 bg-[#F4F9F2]">
         <div className="max-w-4xl mx-auto">
           <h2
@@ -1159,7 +1158,7 @@ export default function Saludable() {
             Resolvemos las dudas más comunes sobre nuestros programas de bienestar corporativo.
           </p>
 
-          <div className="space-y-4">
+          <div className="space-y-3" data-faq-accordion>
             {[
               {
                 q: "¿Cuánto tiempo toma implementar un programa de bienestar?",
@@ -1186,22 +1185,60 @@ export default function Saludable() {
                 a: "Nuestro enfoque integra los 5 pilares del bienestar (mental, físico, nutricional, financiero y corporativo) en un solo programa coordinado. Además, contamos con una red física de Farmacias de Comunidad en toda la isla, embajadores profesionales certificados, y un sistema de cumplimiento regulatorio integrado."
               },
             ].map((faq, i) => (
-              <details
+              <div
                 key={i}
-                className="group bg-white rounded-2xl border border-[#A8C5A0]/20 hover:border-[#6BAF8D]/40 transition-all duration-300 hover:shadow-md"
+                className="faq-item bg-white rounded-2xl border border-[#A8C5A0]/20 hover:border-[#6BAF8D]/40 transition-all duration-300 hover:shadow-lg overflow-hidden"
               >
-                <summary className="flex items-center justify-between p-6 cursor-pointer list-none">
+                <button
+                  className="w-full flex items-center justify-between p-6 cursor-pointer text-left"
+                  aria-expanded="false"
+                  onClick={(e) => {
+                    const btn = e.currentTarget;
+                    const item = btn.parentElement!;
+                    const content = item.querySelector('.faq-content') as HTMLElement;
+                    const icon = item.querySelector('.faq-icon') as HTMLElement;
+                    const isOpen = content.style.maxHeight && content.style.maxHeight !== '0px';
+                    
+                    if (isOpen) {
+                      btn.setAttribute('aria-expanded', 'false');
+                      gsap.to(content, { maxHeight: 0, opacity: 0, duration: 0.4, ease: 'power2.inOut' });
+                      gsap.to(icon, { rotation: 0, duration: 0.3, ease: 'back.out(2)' });
+                    } else {
+                      // Close all others first
+                      document.querySelectorAll('.faq-item .faq-content').forEach((el) => {
+                        if (el !== content) {
+                          gsap.to(el, { maxHeight: 0, opacity: 0, duration: 0.3, ease: 'power2.inOut' });
+                        }
+                      });
+                      document.querySelectorAll('.faq-item .faq-icon').forEach((el) => {
+                        if (el !== icon) {
+                          gsap.to(el, { rotation: 0, duration: 0.3, ease: 'back.out(2)' });
+                        }
+                      });
+                      document.querySelectorAll('.faq-item button').forEach((el) => {
+                        if (el !== btn) el.setAttribute('aria-expanded', 'false');
+                      });
+                      btn.setAttribute('aria-expanded', 'true');
+                      // Use scrollHeight for dynamic content height
+                      const targetHeight = content.scrollHeight || 500;
+                      gsap.to(content, { maxHeight: targetHeight, opacity: 1, duration: 0.5, ease: 'power2.out' });
+                      gsap.to(icon, { rotation: 135, duration: 0.4, ease: 'back.out(2)' });
+                    }
+                  }}
+                >
                   <span className="font-semibold text-[#2D3B2D] text-sm md:text-base pr-4">{faq.q}</span>
-                  <span className="flex-shrink-0 w-8 h-8 rounded-full bg-[#6BAF8D]/10 flex items-center justify-center text-[#6BAF8D] group-open:rotate-45 transition-transform duration-300">
+                  <span className="faq-icon flex-shrink-0 w-9 h-9 rounded-full bg-gradient-to-br from-[#6BAF8D]/20 to-[#81C784]/10 flex items-center justify-center text-[#6BAF8D] transition-colors">
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
                     </svg>
                   </span>
-                </summary>
-                <div className="px-6 pb-6 pt-0">
-                  <p className="text-sm text-[#2D3B2D]/70 leading-relaxed">{faq.a}</p>
+                </button>
+                <div className="faq-content overflow-hidden" style={{ maxHeight: '0px', opacity: 0 }}>
+                  <div className="px-6 pb-6 pt-0">
+                    <p className="text-sm text-[#2D3B2D]/70 leading-relaxed">{faq.a}</p>
+                  </div>
                 </div>
-              </details>
+              </div>
             ))}
           </div>
         </div>
