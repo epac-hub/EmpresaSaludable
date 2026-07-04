@@ -84,3 +84,4 @@
 - [x] Agendar Cita popup: Add specialist dropdown selector
 - [x] Agendar Cita popup: Animated thank-you message after form submission (confetti burst + gradient checkmark + staggered fadeIn)
 - [x] Specialist modals: Add specific services description for each specialist (5 services per specialist)
+- [x] Bienestar Integral: Remove graduation cap (birrete) icon and replace with sun/radiance wellness icon
