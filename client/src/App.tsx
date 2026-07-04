@@ -6,7 +6,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import Earth from "./pages/Earth";
-import Saludable from "./pages/Saludable";
+import Saludable from "@/pages/Saludable";
 
 function Router() {
   return (

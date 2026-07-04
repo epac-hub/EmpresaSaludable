@@ -114,10 +114,11 @@ const PLANS = [
   },
 ];
 
-// ─── Floating Particles Component ───────────────────────────────────────────
+// ─── Interactive Mouse-Reactive Floating Particles ──────────────────────────
 
 function FloatingParticles() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const mouseRef = useRef({ x: -1000, y: -1000 });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -126,45 +127,124 @@ function FloatingParticles() {
     if (!ctx) return;
 
     let animationId: number;
-    let particles: { x: number; y: number; vx: number; vy: number; size: number; opacity: number; hue: number }[] = [];
+    const PARTICLE_COUNT = 60;
+    const MOUSE_RADIUS = 150;
+    const MOUSE_FORCE = 3;
+
+    interface Particle {
+      x: number; y: number;
+      baseX: number; baseY: number;
+      vx: number; vy: number;
+      size: number; baseSize: number;
+      opacity: number; baseOpacity: number;
+      hue: number; angle: number; speed: number;
+    }
+
+    let particles: Particle[] = [];
 
     const resize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
+      initParticles();
     };
+
+    const initParticles = () => {
+      particles = [];
+      for (let i = 0; i < PARTICLE_COUNT; i++) {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
+        const size = Math.random() * 4 + 1.5;
+        particles.push({
+          x, y, baseX: x, baseY: y,
+          vx: 0, vy: 0,
+          size, baseSize: size,
+          opacity: Math.random() * 0.5 + 0.15,
+          baseOpacity: Math.random() * 0.5 + 0.15,
+          hue: 120 + Math.random() * 50,
+          angle: Math.random() * Math.PI * 2,
+          speed: Math.random() * 0.4 + 0.1,
+        });
+      }
+    };
+
     resize();
     window.addEventListener("resize", resize);
 
-    // Create particles
-    for (let i = 0; i < 40; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.3,
-        vy: (Math.random() - 0.5) * 0.3 - 0.1,
-        size: Math.random() * 3 + 1,
-        opacity: Math.random() * 0.4 + 0.1,
-        hue: 130 + Math.random() * 30, // green hues
-      });
-    }
+    // Track mouse position relative to canvas
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      mouseRef.current = {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+      };
+    };
+    window.addEventListener("mousemove", handleMouseMove);
 
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const mouse = mouseRef.current;
 
       particles.forEach((p) => {
-        p.x += p.vx;
-        p.y += p.vy;
+        // Organic floating motion
+        p.angle += p.speed * 0.02;
+        const floatX = Math.cos(p.angle) * 0.3;
+        const floatY = Math.sin(p.angle * 0.7) * 0.2 - 0.05;
 
-        // Wrap around
-        if (p.x < 0) p.x = canvas.width;
-        if (p.x > canvas.width) p.x = 0;
-        if (p.y < 0) p.y = canvas.height;
-        if (p.y > canvas.height) p.y = 0;
+        // Mouse repulsion
+        const dx = p.x - mouse.x;
+        const dy = p.y - mouse.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
 
+        if (dist < MOUSE_RADIUS && dist > 0) {
+          const force = (MOUSE_RADIUS - dist) / MOUSE_RADIUS;
+          const angle = Math.atan2(dy, dx);
+          p.vx += Math.cos(angle) * force * MOUSE_FORCE;
+          p.vy += Math.sin(angle) * force * MOUSE_FORCE;
+          // Grow and brighten near cursor
+          p.size = p.baseSize + force * 3;
+          p.opacity = Math.min(0.9, p.baseOpacity + force * 0.5);
+        } else {
+          // Return to base size
+          p.size += (p.baseSize - p.size) * 0.05;
+          p.opacity += (p.baseOpacity - p.opacity) * 0.05;
+        }
+
+        // Apply velocity with damping
+        p.vx *= 0.92;
+        p.vy *= 0.92;
+        p.x += p.vx + floatX;
+        p.y += p.vy + floatY;
+
+        // Wrap around edges
+        if (p.x < -20) p.x = canvas.width + 20;
+        if (p.x > canvas.width + 20) p.x = -20;
+        if (p.y < -20) p.y = canvas.height + 20;
+        if (p.y > canvas.height + 20) p.y = -20;
+
+        // Draw particle with glow
+        ctx.save();
+        ctx.globalAlpha = p.opacity;
+        ctx.shadowBlur = p.size * 3;
+        ctx.shadowColor = `hsla(${p.hue}, 50%, 65%, 0.6)`;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `hsla(${p.hue}, 40%, 70%, ${p.opacity})`;
+        ctx.fillStyle = `hsla(${p.hue}, 45%, 72%, 1)`;
         ctx.fill();
+        ctx.restore();
+
+        // Draw connections between nearby particles
+        particles.forEach((p2) => {
+          if (p === p2) return;
+          const d = Math.sqrt((p.x - p2.x) ** 2 + (p.y - p2.y) ** 2);
+          if (d < 100) {
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.strokeStyle = `hsla(140, 40%, 70%, ${(1 - d / 100) * 0.15})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        });
       });
 
       animationId = requestAnimationFrame(animate);
@@ -174,14 +254,15 @@ function FloatingParticles() {
     return () => {
       cancelAnimationFrame(animationId);
       window.removeEventListener("resize", resize);
+      window.removeEventListener("mousemove", handleMouseMove);
     };
   }, []);
 
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 pointer-events-none z-[1]"
-      style={{ mixBlendMode: "screen" }}
+      className="absolute inset-0 z-[2]"
+      style={{ mixBlendMode: "screen", pointerEvents: "none" }}
     />
   );
 }
@@ -259,6 +340,21 @@ export default function Saludable() {
   // ─── GSAP Animations ─────────────────────────────────────────────────────
   useEffect(() => {
     const ctx = gsap.context(() => {
+      // Hero video parallax scroll — zooms and shifts as user scrolls
+      if (heroRef.current) {
+        gsap.to(".hero-video", {
+          scrollTrigger: {
+            trigger: heroRef.current,
+            start: "top top",
+            end: "bottom top",
+            scrub: 1,
+          },
+          scale: 1.2,
+          y: 100,
+          ease: "none",
+        });
+      }
+
       // Hero text reveal
       gsap.from(".hero-title span", {
         y: 100,
@@ -472,10 +568,10 @@ export default function Saludable() {
           muted
           loop
           playsInline
-          className="absolute inset-0 w-full h-full object-cover"
+          className="hero-video absolute inset-0 w-full h-full object-cover"
           style={{ filter: 'brightness(1.1) saturate(0.9)' }}
         >
-          <source src="/manus-storage/tropical-hero_10de25f6.mp4" type="video/mp4" />
+          <source src="/manus-storage/tropical-pr-beach_72dca1ca.mp4" type="video/mp4" />
         </video>
         {/* Soft gradient overlay for text readability */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#E8F5E0]/85 via-[#F4F9F2]/75 to-[#DFF0D8]/80" />
