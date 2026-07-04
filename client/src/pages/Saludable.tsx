@@ -14,11 +14,11 @@ import FuturisticCursor from "@/components/saludable/FuturisticCursor";
 import MagneticButton from "@/components/saludable/MagneticButton";
 // GreenParticles removed from hero (video background now)
 // Interactive3DParticles removed — replaced with lightweight CSS floating dots
-import ComplianceParticles3D from "@/components/saludable/ComplianceParticles3D";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const PharmacyMap = lazy(() => import("@/components/saludable/PharmacyMap"));
+const ComplianceParticles3D = lazy(() => import("@/components/saludable/ComplianceParticles3D"));
 
 // ─── Data ───────────────────────────────────────────────────────────────────
 
@@ -256,6 +256,36 @@ export default function Saludable() {
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [formTouched, setFormTouched] = useState<Record<string, boolean>>({});
   const [formSubmitted, setFormSubmitted] = useState(false);
+
+  // Scroll-proximity lazy loading: mount heavy components only when near viewport
+  const [showParticles3D, setShowParticles3D] = useState(false);
+  const [showTestimonialVideo, setShowTestimonialVideo] = useState(false);
+  const testimonialSectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observerOptions = { rootMargin: '400px 0px', threshold: 0 };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = (entry.target as HTMLElement).dataset.lazyId;
+          if (id === 'particles3d') setShowParticles3D(true);
+          if (id === 'testimonial-video') setShowTestimonialVideo(true);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    if (complianceRef.current) {
+      complianceRef.current.dataset.lazyId = 'particles3d';
+      observer.observe(complianceRef.current);
+    }
+    if (testimonialSectionRef.current) {
+      testimonialSectionRef.current.dataset.lazyId = 'testimonial-video';
+      observer.observe(testimonialSectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   const validateField = (field: string, value: string) => {
     if (field === "name" && !value.trim()) return "Nombre es requerido";
@@ -588,14 +618,19 @@ export default function Saludable() {
 
       {/* ═══ HERO SECTION ═══ */}
       <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Optimized hero image with CSS Ken Burns animation for fast loading */}
+        {/* Hero video — people moving, with poster for instant first frame */}
         <div className="absolute inset-0 overflow-hidden">
-          <img
-            src="/manus-storage/hero-pr-beach-optimized_891fef9e.jpg"
-            alt=""
-            className="hero-video absolute inset-0 w-full h-full object-cover animate-[kenBurns_20s_ease-in-out_infinite_alternate]"
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            poster="/manus-storage/hero-pr-beach-optimized_891fef9e.jpg"
+            className="hero-video absolute inset-0 w-full h-full object-cover"
             style={{ filter: 'brightness(1.05) saturate(1.2)' }}
-          />
+          >
+            <source src="/manus-storage/hero-pr-people-beach_1f7e8e9b.mp4" type="video/mp4" />
+          </video>
         </div>
         {/* Very light overlay — let the people show clearly */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/15 via-transparent to-black/25" />
@@ -864,18 +899,27 @@ export default function Saludable() {
       </section>
 
       {/* ═══ TESTIMONIALS — VIDEO BACKGROUND ═══ */}
-      <section className="relative py-32 px-6 overflow-hidden">
-        {/* Full-section background video — always running */}
-        <video
-          className="absolute inset-0 w-full h-full object-cover"
-          autoPlay
-          loop
-          muted
-          playsInline
-          poster="/manus-storage/testimonial-bg-keyframe_dae63de5.png"
-        >
-          <source src="/manus-storage/testimonial-bg-video_0077eed0.mp4" type="video/mp4" />
-        </video>
+      <section ref={testimonialSectionRef} className="relative py-32 px-6 overflow-hidden">
+        {/* Full-section background video — scroll-proximity lazy loaded */}
+        {showTestimonialVideo ? (
+          <video
+            className="absolute inset-0 w-full h-full object-cover"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="none"
+            poster="/manus-storage/testimonial-bg-keyframe_dae63de5.png"
+          >
+            <source src="/manus-storage/testimonial-bg-video_0077eed0.mp4" type="video/mp4" />
+          </video>
+        ) : (
+          <img
+            className="absolute inset-0 w-full h-full object-cover"
+            src="/manus-storage/testimonial-bg-keyframe_dae63de5.png"
+            alt=""
+          />
+        )}
         {/* Light summer green overlay for readability */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#E8F5E0]/75 via-[#C8E6C9]/70 to-[#A5D6A7]/80" />
 
@@ -929,8 +973,12 @@ export default function Saludable() {
         {/* NOISE GRAIN animated overlay — cinematic texture */}
         <div className="absolute inset-0 pointer-events-none z-[1] opacity-[0.08] mix-blend-overlay" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`, animation: 'grain 0.5s steps(8) infinite' }} />
 
-        {/* Three.js 3D Particles + Wireframe Mesh Background */}
-        <ComplianceParticles3D />
+        {/* Three.js 3D Particles + Wireframe Mesh Background (scroll-proximity lazy loaded) */}
+        {showParticles3D && (
+          <Suspense fallback={null}>
+            <ComplianceParticles3D />
+          </Suspense>
+        )}
 
         {/* Subtle floating dots — lightweight CSS */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -1292,8 +1340,32 @@ export default function Saludable() {
           </p>
 
           {formSubmitted ? (
-            <div className="contact-form text-center py-16 animate-[fadeIn_0.6s_ease-out]">
-              <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-[#66BB6A] to-[#43A047] flex items-center justify-center animate-[bounceIn_0.6s_ease-out]">
+            <div className="contact-form text-center py-16 animate-[fadeIn_0.6s_ease-out] relative">
+              {/* Confetti burst particles */}
+              <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                {[...Array(20)].map((_, i) => {
+                  const angle = (i * 18) * (Math.PI / 180);
+                  const radius = 80 + Math.random() * 60;
+                  const tx = Math.cos(angle) * radius;
+                  const ty = Math.sin(angle) * radius - 40;
+                  return (
+                    <div
+                      key={i}
+                      className="absolute w-2 h-2 rounded-full"
+                      style={{
+                        background: ['#66BB6A', '#43A047', '#81C784', '#A5D6A7', '#FFD54F', '#4FC3F7'][i % 6],
+                        left: '50%',
+                        top: '40%',
+                        '--tx': `${tx}px`,
+                        '--ty': `${ty}px`,
+                        animation: `confetti-particle 1s cubic-bezier(0.23,1,0.32,1) ${i * 0.04}s forwards`,
+                        opacity: 0,
+                      } as React.CSSProperties}
+                    />
+                  );
+                })}
+              </div>
+              <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-[#66BB6A] to-[#43A047] flex items-center justify-center animate-[bounceIn_0.6s_ease-out] shadow-lg shadow-[#43A047]/30">
                 <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                 </svg>

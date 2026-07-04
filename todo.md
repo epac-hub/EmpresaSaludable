@@ -58,3 +58,6 @@
 - [x] Inspirados: Replace Dr. Rafael Méndez photo with boricua fit sexy saludable man
 - [x] Music player: Add pause/play/volume controls (minimalista flotante with hover expand)
 - [x] FAQ: Implement interactive accordion with GSAP animation (open/close with rotation)
+- [x] Hero: Restore video background (people moving) with poster for instant first frame
+- [x] Lazy loading: Planificación (Three.js lazy import + IntersectionObserver scroll-proximity) and Testimonios (video scroll-proximity mount with poster fallback)
+- [x] Contact form: Enhanced with confetti burst animation on success submit
