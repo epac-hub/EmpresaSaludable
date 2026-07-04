@@ -52,8 +52,8 @@ export default function TestimonialCarousel() {
           <span className="inline-block px-4 py-1.5 rounded-full bg-[#6BAF8D]/10 text-[#6BAF8D] text-xs font-bold uppercase tracking-[0.2em] mb-4 border border-[#6BAF8D]/20">
             Experiencias Reales
           </span>
-          <h2 className="text-4xl md:text-5xl font-bold text-[#2D3B2D] mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>
-            Lo Que Dicen Nuestros <span className="text-[#6BAF8D]">Clientes</span>
+          <h2 className="wow-title text-3xl md:text-4xl font-bold text-[#2D3B2D] mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>
+            Lo Que Dicen Nuestros <span className="emphasis">Clientes</span>
           </h2>
           <p className="text-[#2D3B2D]/60 max-w-2xl mx-auto">
             Empresas de toda la isla confían en nuestro equipo para transformar la salud y productividad de sus empleados.

@@ -126,3 +126,8 @@
 - [x] Fix: Section headers not centered (Inspirados was left-aligned, Farmacias was right-aligned) — all now mx-auto text-center
 - [x] Fix: Beneficiarios "Historias reales" glass container too large — reduced max-width, increased subtitle text size
 - [x] Fix: .glass-header CSS updated with overflow:visible, text-align:center, margin auto, max-width:fit-content
+- [x] Fix: ALL section titles have letters cut off (descenders clipped) — complete CSS overhaul: removed overflow:hidden, word-level animation instead of char-level
+- [x] Fix: WOW split-text GSAP effect not visually triggering — rewrote to word-level slide-up with stagger (0.08s per word, power3.out)
+- [x] Fix: Font sizes too large on section titles — reduced all from 5xl-7xl to 3xl-5xl range
+- [x] Fix: Glass containers too large relative to content — reduced max-w-4xl to max-w-3xl, reduced padding
+- [x] Fix: Beneficiarios title visible — reduced to text-3xl md:text-4xl, glass container max-w-2xl

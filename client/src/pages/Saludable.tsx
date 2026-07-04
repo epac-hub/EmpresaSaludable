@@ -529,15 +529,15 @@ export default function Saludable() {
           ease: "back.out(1.7)",
         });
 
-      // ═══ WOW SPLIT-TEXT SCROLL REVEAL ON ALL SECTION TITLES ═══
-      // Dynamically split .wow-title h2 text into words/chars and animate on scroll
+      // ═══ WOW SCROLL REVEAL ON ALL SECTION TITLES ═══
+      // Split .wow-title text into word spans and animate them on scroll
       const wowTitles = containerRef.current?.querySelectorAll('.wow-title') || [];
       wowTitles.forEach((title) => {
         const h2 = title as HTMLElement;
         const section = h2.closest('section') || h2.parentElement?.parentElement;
         if (!section) return;
 
-        // Split text into words and chars (preserve existing spans like .emphasis)
+        // Split text into word spans (preserve .emphasis spans as whole words)
         const childNodes = Array.from(h2.childNodes);
         h2.innerHTML = '';
         childNodes.forEach((node) => {
@@ -546,42 +546,29 @@ export default function Saludable() {
             words.forEach((word) => {
               const wordSpan = document.createElement('span');
               wordSpan.className = 'word';
-              word.split('').forEach((char) => {
-                const charSpan = document.createElement('span');
-                charSpan.className = 'char';
-                charSpan.textContent = char;
-                wordSpan.appendChild(charSpan);
-              });
+              wordSpan.textContent = word;
               h2.appendChild(wordSpan);
-              h2.appendChild(document.createTextNode(' '));
             });
           } else if (node.nodeType === Node.ELEMENT_NODE) {
             const el = node as HTMLElement;
-            const text = el.textContent || '';
             const wordSpan = document.createElement('span');
-            wordSpan.className = 'word';
-            text.split('').forEach((char) => {
-              const charSpan = document.createElement('span');
-              charSpan.className = 'char ' + el.className;
-              charSpan.textContent = char;
-              wordSpan.appendChild(charSpan);
-            });
+            wordSpan.className = 'word ' + el.className;
+            wordSpan.textContent = el.textContent || '';
             h2.appendChild(wordSpan);
-            h2.appendChild(document.createTextNode(' '));
           }
         });
 
-        // Animate chars on scroll
-        const chars = h2.querySelectorAll('.char');
-        gsap.set(chars, { y: 120, opacity: 0, rotateX: -40 });
-        gsap.to(chars, {
-          scrollTrigger: { trigger: section, start: "top 78%" },
+        // Animate words on scroll — slide up with fade and slight rotation
+        const words = h2.querySelectorAll('.word');
+        gsap.set(words, { y: 60, opacity: 0, rotateX: -15 });
+        gsap.to(words, {
+          scrollTrigger: { trigger: section, start: "top 80%" },
           y: 0,
           opacity: 1,
           rotateX: 0,
-          duration: 0.8,
-          stagger: 0.02,
-          ease: "back.out(1.7)",
+          duration: 0.7,
+          stagger: 0.08,
+          ease: "power3.out",
         });
       });
 
@@ -589,12 +576,12 @@ export default function Saludable() {
       gsap.utils.toArray<HTMLElement>('.glass-header').forEach((glass) => {
         const section = glass.closest('section') || glass.parentElement;
         gsap.from(glass, {
-          scrollTrigger: { trigger: section || glass, start: "top 82%" },
-          y: 40,
+          scrollTrigger: { trigger: section || glass, start: "top 85%" },
+          y: 30,
           opacity: 0,
-          scale: 0.96,
-          duration: 1,
-          ease: "power3.out",
+          scale: 0.97,
+          duration: 0.8,
+          ease: "power2.out",
           immediateRender: false,
         });
       });
@@ -614,41 +601,50 @@ export default function Saludable() {
       // Ambassador cards entrance — cinematic 3D with depth
       if (celebsRef.current) {
         // Section header — clip-path reveal from left
-        gsap.from(celebsRef.current.querySelector("h2"), {
-          scrollTrigger: { trigger: celebsRef.current, start: "top 82%" },
-          x: -100,
-          opacity: 0,
-          clipPath: 'inset(0 100% 0 0)',
-          duration: 1.2,
-          ease: "power3.out",
-          clearProps: 'clipPath',
-          immediateRender: false,
-        });
+        const celebH2 = celebsRef.current.querySelector("h2");
+        if (celebH2) {
+          gsap.from(celebH2, {
+            scrollTrigger: { trigger: celebsRef.current, start: "top 82%" },
+            x: -100,
+            opacity: 0,
+            clipPath: 'inset(0 100% 0 0)',
+            duration: 1.2,
+            ease: "power3.out",
+            clearProps: 'clipPath',
+            immediateRender: false,
+          });
+        }
 
-        gsap.from(celebsRef.current.querySelectorAll("p"), {
-          scrollTrigger: { trigger: celebsRef.current, start: "top 82%" },
-          y: 30,
-          opacity: 0,
-          duration: 0.8,
-          stagger: 0.1,
-          delay: 0.3,
-          ease: "power2.out",
-          immediateRender: false,
-        });
+        const celebPs = celebsRef.current.querySelectorAll("p");
+        if (celebPs.length > 0) {
+          gsap.from(celebPs, {
+            scrollTrigger: { trigger: celebsRef.current, start: "top 82%" },
+            y: 30,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.1,
+            delay: 0.3,
+            ease: "power2.out",
+            immediateRender: false,
+          });
+        }
 
         // Specialist cards — dramatic 3D flip entrance with stagger
-        gsap.from(".celeb-card", {
-          scrollTrigger: { trigger: celebsRef.current, start: "top 75%" },
-          y: 100,
-          opacity: 0,
-          scale: 0.85,
-          rotateY: 25,
-          rotateX: 10,
-          duration: 1.2,
-          stagger: 0.25,
-          ease: "back.out(1.2)",
-          immediateRender: false,
-        });
+        const celebCards = document.querySelectorAll(".celeb-card");
+        if (celebCards.length > 0) {
+          gsap.from(celebCards, {
+            scrollTrigger: { trigger: celebsRef.current, start: "top 75%" },
+            y: 100,
+            opacity: 0,
+            scale: 0.85,
+            rotateY: 25,
+            rotateX: 10,
+            duration: 1.2,
+            stagger: 0.25,
+            ease: "back.out(1.2)",
+            immediateRender: false,
+          });
+        }
 
         // Parallax depth on ambassador cards while scrolling
         gsap.utils.toArray<HTMLElement>(".celeb-card").forEach((card, i) => {
@@ -681,28 +677,34 @@ export default function Saludable() {
         });
 
         // Entrance animation for pillar nodes
-        gsap.from(".pillar-node", {
-          scrollTrigger: { trigger: pillarsRef.current, start: "top 75%" },
-          scale: 0,
-          opacity: 0,
-          duration: 0.8,
-          stagger: 0.15,
-          ease: "back.out(1.7)",
-          immediateRender: false,
-        });
+        const pillarNodes = pillarsRef.current?.querySelectorAll(".pillar-node");
+        if (pillarNodes && pillarNodes.length > 0) {
+          gsap.from(pillarNodes, {
+            scrollTrigger: { trigger: pillarsRef.current, start: "top 75%" },
+            scale: 0,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.15,
+            ease: "back.out(1.7)",
+            immediateRender: false,
+          });
+        }
 
         // Scroll-driven parallax — elements at DIFFERENT speeds for depth
         // Background orbs move slowly (far away)
-        gsap.to(pillarsRef.current.querySelectorAll(".absolute.rounded-full"), {
-          scrollTrigger: {
-            trigger: pillarsRef.current,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: 1.5,
-          },
-          y: -60,
-          ease: "none",
-        });
+        const bgOrbs = pillarsRef.current.querySelectorAll(".absolute.rounded-full");
+        if (bgOrbs.length > 0) {
+          gsap.to(bgOrbs, {
+            scrollTrigger: {
+              trigger: pillarsRef.current,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 1.5,
+            },
+            y: -60,
+            ease: "none",
+          });
+        }
 
         // Center hub moves at medium speed
         const centerHub = pillarsRef.current.querySelector(".absolute.inset-0.flex");
@@ -795,17 +797,20 @@ export default function Saludable() {
 
       // Stats counter — dramatic scale + rotate entrance
       if (statsRef.current) {
-        gsap.from(".stat-item", {
-          scrollTrigger: { trigger: statsRef.current, start: "top 80%" },
-          y: 60,
-          opacity: 0,
-          scale: 0.8,
-          rotateX: 20,
-          duration: 0.9,
-          stagger: 0.12,
-          ease: "back.out(1.4)",
-          immediateRender: false,
-        });
+        const statItems = statsRef.current.querySelectorAll(".stat-item");
+        if (statItems.length > 0) {
+          gsap.from(statItems, {
+            scrollTrigger: { trigger: statsRef.current, start: "top 80%" },
+            y: 60,
+            opacity: 0,
+            scale: 0.8,
+            rotateX: 20,
+            duration: 0.9,
+            stagger: 0.12,
+            ease: "back.out(1.4)",
+            immediateRender: false,
+          });
+        }
       }
 
       // Compliance steps — cinematic stagger with slide from alternating sides
@@ -828,17 +833,20 @@ export default function Saludable() {
 
       // Plans — dramatic staggered entrance with rotation (one-by-one reveal)
       if (plansRef.current) {
-        gsap.from(".plan-card", {
-          scrollTrigger: { trigger: plansRef.current, start: "top 80%" },
-          y: 100,
-          opacity: 0,
-          rotateY: 20,
-          scale: 0.85,
-          duration: 1.1,
-          stagger: 0.3,
-          ease: "back.out(1.4)",
-          immediateRender: false,
-        });
+        const planCardEls = plansRef.current.querySelectorAll(".plan-card");
+        if (planCardEls.length > 0) {
+          gsap.from(planCardEls, {
+            scrollTrigger: { trigger: plansRef.current, start: "top 80%" },
+            y: 100,
+            opacity: 0,
+            rotateY: 20,
+            scale: 0.85,
+            duration: 1.1,
+            stagger: 0.3,
+            ease: "back.out(1.4)",
+            immediateRender: false,
+          });
+        }
 
         // Feature list items stagger within each card
         plansRef.current.querySelectorAll('.plan-card').forEach((card, cardIdx) => {
@@ -887,15 +895,18 @@ export default function Saludable() {
 
       // Contact — cinematic scale + blur entrance
       if (contactRef.current) {
-        gsap.from(".contact-form", {
-          scrollTrigger: { trigger: contactRef.current, start: "top 80%" },
-          y: 60,
-          opacity: 0,
-          scale: 0.95,
-          duration: 1,
-          ease: "power3.out",
-          immediateRender: false,
-        });
+        const contactFormEl = contactRef.current.querySelector(".contact-form");
+        if (contactFormEl) {
+          gsap.from(contactFormEl, {
+            scrollTrigger: { trigger: contactRef.current, start: "top 80%" },
+            y: 60,
+            opacity: 0,
+            scale: 0.95,
+            duration: 1,
+            ease: "power3.out",
+            immediateRender: false,
+          });
+        }
 
         // Stagger form fields entrance
         gsap.from(contactRef.current.querySelectorAll("input, textarea, select"), {
@@ -912,15 +923,18 @@ export default function Saludable() {
 
       // Map — dramatic slide-up with scale
       if (mapRef.current) {
-        gsap.from(".map-container", {
-          scrollTrigger: { trigger: mapRef.current, start: "top 80%" },
-          y: 80,
-          opacity: 0,
-          scale: 0.92,
-          duration: 1.2,
-          ease: "power3.out",
-          immediateRender: false,
-        });
+        const mapContainerEl = mapRef.current.querySelector(".map-container");
+        if (mapContainerEl) {
+          gsap.from(mapContainerEl, {
+            scrollTrigger: { trigger: mapRef.current, start: "top 80%" },
+            y: 80,
+            opacity: 0,
+            scale: 0.92,
+            duration: 1.2,
+            ease: "power3.out",
+            immediateRender: false,
+          });
+        }
       }
 
       // Beneficiarios horizontal scroll — vertical scroll drives horizontal movement
@@ -1184,10 +1198,10 @@ export default function Saludable() {
       {/* ═══ INSPIRADOS POR LOS MEJORES — PROFESSIONAL AMBASSADORS ═══ */}
       <section ref={celebsRef} className="pt-16 pb-24 px-6 overflow-hidden" style={{ background: 'linear-gradient(180deg, #F0F7F4 0%, #FDFCFB 15%, #F0F7F4 40%, #EBF5FB 100%)' }}>
         <div className="max-w-6xl mx-auto">
-          <div className="glass-header max-w-4xl mx-auto mb-16 text-center wow-title-shimmer">
+          <div className="glass-header max-w-3xl mx-auto mb-16 text-center wow-title-shimmer">
             <span className="inline-block px-4 py-1.5 rounded-full bg-[#6BAF8D]/10 text-[#2E7D32] text-xs font-bold uppercase tracking-[0.2em] mb-4 border border-[#6BAF8D]/20">Equipo de Excelencia</span>
             <h2
-              className="wow-title text-4xl md:text-6xl font-bold mb-4 text-[#2D3B2D]"
+              className="wow-title text-3xl md:text-5xl font-bold mb-4 text-[#2D3B2D]"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
               Inspirados por los <span className="emphasis">Mejores</span>
@@ -1584,9 +1598,9 @@ export default function Saludable() {
               Enfoque Holístico Circular
             </span>
           </div>
-          <div className="glass-header max-w-4xl mx-auto mb-8 text-center wow-title-shimmer">
+          <div className="glass-header max-w-3xl mx-auto mb-8 text-center wow-title-shimmer">
             <h2
-              className="wow-title text-5xl md:text-7xl font-bold text-center mb-6 text-[#1B5E20]"
+              className="wow-title text-3xl md:text-5xl font-bold text-center mb-4 text-[#1B5E20]"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
               Los 5 Pilares del <span className="emphasis">Bienestar</span>
@@ -1850,7 +1864,7 @@ export default function Saludable() {
         <div className="relative z-10 max-w-6xl mx-auto">
           <div className="glass-header max-w-2xl mx-auto mb-8 text-center wow-title-shimmer">
             <h2
-              className="wow-title text-4xl md:text-5xl font-bold text-center mb-4 text-[#1B5E20]"
+              className="wow-title text-3xl md:text-4xl font-bold text-center mb-4 text-[#1B5E20]"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
               Lo Que Dicen Nuestros <span className="emphasis">Beneficiarios</span>
@@ -1967,9 +1981,9 @@ export default function Saludable() {
               Proceso Certificado
             </span>
           </div>
-          <div className="glass-header max-w-4xl mx-auto mb-20 text-center wow-title-shimmer">
+          <div className="glass-header max-w-3xl mx-auto mb-20 text-center wow-title-shimmer">
             <h2
-              className="wow-title text-5xl md:text-7xl font-bold text-center mb-6 text-[#1B5E20]"
+              className="wow-title text-3xl md:text-5xl font-bold text-center mb-4 text-[#1B5E20]"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
               Planificación y <span className="emphasis">Cumplimiento</span>
@@ -2059,7 +2073,7 @@ export default function Saludable() {
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="glass-header max-w-3xl mx-auto mb-16 text-center wow-title-shimmer">
             <h2
-              className="wow-title text-4xl md:text-5xl font-bold text-center mb-4 text-[#2D3B2D]"
+              className="wow-title text-3xl md:text-4xl font-bold text-center mb-4 text-[#2D3B2D]"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
               Planes de <span className="emphasis">Servicio</span>
@@ -2206,7 +2220,7 @@ export default function Saludable() {
         <div className="max-w-4xl mx-auto">
           <div className="glass-header max-w-2xl mx-auto mb-12 text-center wow-title-shimmer">
             <h2
-              className="wow-title text-3xl md:text-4xl font-bold text-center mb-4 text-[#2D3B2D]"
+              className="wow-title text-2xl md:text-3xl font-bold text-center mb-4 text-[#2D3B2D]"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
               Preguntas <span className="emphasis">Frecuentes</span>
@@ -2334,7 +2348,7 @@ export default function Saludable() {
         <div className="max-w-6xl mx-auto">
           <div className="glass-header max-w-3xl mx-auto mb-12 text-center wow-title-shimmer">
             <h2
-              className="wow-title text-4xl md:text-5xl font-bold mb-4 text-[#2D3B2D]"
+              className="wow-title text-3xl md:text-4xl font-bold mb-4 text-[#2D3B2D]"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
               Red de <span className="emphasis">Farmacias</span>
@@ -2374,7 +2388,7 @@ export default function Saludable() {
         <div className="max-w-3xl mx-auto relative z-10">
           <div className="glass-header max-w-2xl mx-auto mb-12 text-center wow-title-shimmer">
             <h2
-              className="text-4xl md:text-5xl font-bold text-center mb-4 text-[#2D3B2D] typewriter-title"
+              className="text-3xl md:text-4xl font-bold text-center mb-4 text-[#2D3B2D] typewriter-title"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
               <span className="typewriter-text">Hablemos de </span><span className="emphasis typewriter-text">Bienestar</span>
