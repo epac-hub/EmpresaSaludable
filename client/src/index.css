@@ -148,3 +148,35 @@ body::after {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Typewriter effect for contact section title */
+.typewriter-title {
+  overflow: hidden;
+}
+.typewriter-text {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid #6BAF8D;
+  animation: typewriter 2.5s steps(20) 0.5s forwards, blink-caret 0.75s step-end infinite;
+  width: 0;
+}
+.typewriter-text:last-child {
+  animation: typewriter 1.5s steps(10) 2.8s forwards, blink-caret 0.75s step-end infinite;
+}
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+@keyframes blink-caret {
+  from, to { border-color: transparent; }
+  50% { border-color: #6BAF8D; }
+}
+
+/* Glow field effect on focus */
+.glow-field {
+  transition: box-shadow 0.3s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.3s ease;
+}
+.glow-field:focus {
+  transform: translateY(-1px);
+}

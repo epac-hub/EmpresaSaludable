@@ -13,6 +13,7 @@ import MusicPlayer from "@/components/saludable/MusicPlayer";
 import FuturisticCursor from "@/components/saludable/FuturisticCursor";
 import MagneticButton from "@/components/saludable/MagneticButton";
 import GreenParticles from "@/components/saludable/GreenParticles";
+import Interactive3DParticles from "@/components/saludable/Interactive3DParticles";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -70,7 +71,7 @@ const PILLARS = [
     icon: "💪",
     color: "#E07B4C",
     description: "Actividad física estructurada, ergonomía activa y prevención de enfermedades crónicas. Nuestros programas incluyen clases grupales, evaluaciones físicas periódicas y planes de ejercicio adaptados al entorno laboral.",
-    stats: ["112+ farmacias aliadas con servicios de salud", "Clases grupales 3x por semana", "Evaluaciones físicas semestrales", "Programas de ergonomía en oficina"],
+    stats: ["112+ Farmacias de Comunidad con servicios de salud", "Clases grupales 3x por semana", "Evaluaciones físicas semestrales", "Programas de ergonomía en oficina"],
   },
   {
     id: "nutricional",
@@ -99,7 +100,7 @@ const PILLARS = [
 ];
 
 const STATS = [
-  { value: 112, suffix: "+", label: "Farmacias Aliadas" },
+  { value: 112, suffix: "+", label: "Farmacias de Comunidad" },
   { value: 70, suffix: "", label: "Municipios Cubiertos" },
   { value: 98, suffix: "%", label: "Satisfacción" },
   { value: 12, suffix: "K+", label: "Beneficiarios" },
@@ -123,7 +124,7 @@ const COMPLIANCE_STEPS = [
   {
     step: 3,
     title: "Implementación",
-    desc: "Ejecución coordinada con farmacias aliadas, proveedores certificados y equipo interno. Capacitación del personal y lanzamiento de programas piloto.",
+    desc: "Ejecución coordinada con Farmacias de Comunidad, proveedores certificados y equipo interno. Capacitación del personal y lanzamiento de programas piloto.",
     icon: "⚙️",
     deliverable: "Programas activos + capacitaciones",
   },
@@ -151,13 +152,13 @@ const PLANS = [
     description: "Ideal para empresas pequeñas (10-50 empleados) que inician su camino hacia el bienestar organizacional.",
     features: [
       "Evaluación básica de salud organizacional",
-      "Acceso a red de 112+ farmacias aliadas",
+      "Acceso a red de 112+ Farmacias de Comunidad",
       "Reportes trimestrales de cumplimiento",
       "Soporte por email en horario laboral",
       "1 taller mensual de bienestar",
       "Dashboard básico de métricas",
       "Guía de nutrición general",
-      "Descuentos en farmacias aliadas",
+      "Descuentos en Farmacias de Comunidad",
     ],
     highlighted: false,
     cta: "Comenzar",
@@ -655,19 +656,8 @@ export default function Saludable() {
         <div className="absolute bottom-20 right-10 w-[350px] h-[350px] rounded-full bg-[#81C784]/25 blur-[100px] animate-pulse" style={{ animationDelay: '1.5s' }} />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-[#4CAF50]/10 blur-[150px] animate-pulse" style={{ animationDelay: '3s' }} />
 
-        {/* Floating leaf particles */}
-        {[...Array(8)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-2 h-2 rounded-full bg-[#388E3C]/25 animate-bounce"
-            style={{
-              top: `${15 + (i * 9) % 70}%`,
-              left: `${8 + (i * 13) % 85}%`,
-              animationDuration: `${3 + i * 0.7}s`,
-              animationDelay: `${i * 0.4}s`,
-            }}
-          />
-        ))}
+        {/* 3D Interactive Particles */}
+        <Interactive3DParticles count={600} color="#43A047" spread={8} size={0.035} speed={0.25} />
 
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-8">
@@ -894,6 +884,9 @@ export default function Saludable() {
           <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'linear-gradient(rgba(46,125,50,1) 1px, transparent 1px), linear-gradient(90deg, rgba(46,125,50,1) 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
         </div>
 
+        {/* 3D Interactive Particles */}
+        <Interactive3DParticles count={500} color="#2E7D32" spread={7} size={0.03} speed={0.2} />
+
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-6">
             <span className="inline-block px-5 py-2 rounded-full bg-white/60 text-[#2E7D32] text-xs font-bold uppercase tracking-[0.25em] mb-6 border border-[#66BB6A]/40 backdrop-blur-sm shadow-sm">
@@ -977,7 +970,7 @@ export default function Saludable() {
             Planes de <span className="text-[#6BAF8D]">Servicio</span>
           </h2>
           <p className="text-center text-[#2D3B2D]/60 mb-16 max-w-2xl mx-auto">
-            Soluciones escalables adaptadas al tamaño y necesidades de tu organización. Todos incluyen acceso a nuestra red de farmacias aliadas.
+            Soluciones escalables adaptadas al tamaño y necesidades de tu organización. Todos incluyen acceso a nuestra red de Farmacias de Comunidad.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -1076,7 +1069,7 @@ export default function Saludable() {
                 a: "La implementación básica toma entre 4-6 semanas. Comenzamos con la evaluación inicial, diseñamos el plan estratégico personalizado, y lanzamos los primeros programas piloto. El programa completo con certificación se logra en 6-12 meses dependiendo del tamaño de la organización."
               },
               {
-                q: "¿Qué incluye la red de farmacias aliadas?",
+                q: "¿Qué incluye la red de Farmacias de Comunidad?",
                 a: "Acceso a más de 112 farmacias en 70 municipios de Puerto Rico con servicios de salud preventiva, consultas nutricionales, monitoreo de presión arterial, vacunaciones, y descuentos en medicamentos y suplementos para todos los beneficiarios del programa."
               },
               {
@@ -1093,7 +1086,7 @@ export default function Saludable() {
               },
               {
                 q: "¿Qué diferencia a Empresa Saludable de otros programas de bienestar?",
-                a: "Nuestro enfoque integra los 5 pilares del bienestar (mental, físico, nutricional, financiero y corporativo) en un solo programa coordinado. Además, contamos con una red física de farmacias aliadas en toda la isla, embajadores profesionales certificados, y un sistema de cumplimiento regulatorio integrado."
+                a: "Nuestro enfoque integra los 5 pilares del bienestar (mental, físico, nutricional, financiero y corporativo) en un solo programa coordinado. Además, contamos con una red física de Farmacias de Comunidad en toda la isla, embajadores profesionales certificados, y un sistema de cumplimiento regulatorio integrado."
               },
             ].map((faq, i) => (
               <details
@@ -1127,7 +1120,7 @@ export default function Saludable() {
             Red de <span className="text-[#6BAF8D]">Farmacias</span>
           </h2>
           <p className="text-center text-[#2D3B2D]/60 mb-12 max-w-2xl mx-auto">
-            Más de 112 farmacias aliadas en 70 municipios de Puerto Rico, listas para servirte.
+            Más de 112 Farmacias de Comunidad en 70 municipios de Puerto Rico, listas para servirte.
           </p>
 
           <div className="map-container">
@@ -1145,13 +1138,16 @@ export default function Saludable() {
       </section>
 
       {/* ═══ HABLEMOS DE BIENESTAR — CONTACT FORM (LAST) ═══ */}
-      <section ref={contactRef} id="contacto" className="py-24 px-6 bg-[#F4F9F2]">
-        <div className="max-w-3xl mx-auto">
+      <section ref={contactRef} id="contacto" className="py-24 px-6 bg-[#F4F9F2] relative overflow-hidden">
+        {/* Subtle background glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[#66BB6A]/10 blur-[150px] pointer-events-none" />
+
+        <div className="max-w-3xl mx-auto relative z-10">
           <h2
-            className="text-4xl md:text-5xl font-bold text-center mb-4 text-[#2D3B2D]"
+            className="text-4xl md:text-5xl font-bold text-center mb-4 text-[#2D3B2D] typewriter-title"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            Hablemos de <span className="text-[#6BAF8D]">Bienestar</span>
+            <span className="typewriter-text">Hablemos de </span><span className="text-[#6BAF8D] typewriter-text">Bienestar</span>
           </h2>
           <p className="text-center text-[#2D3B2D]/60 mb-12">
             Escríbenos a{" "}
@@ -1184,12 +1180,12 @@ export default function Saludable() {
                   value={formData.name}
                   onChange={(e) => handleFieldChange("name", e.target.value)}
                   onBlur={() => handleFieldBlur("name")}
-                  className={`w-full px-5 py-4 rounded-xl bg-white border text-[#2D3B2D] placeholder-[#2D3B2D]/40 focus:outline-none focus:ring-2 transition-all ${
+                  className={`w-full px-5 py-4 rounded-xl bg-white border text-[#2D3B2D] placeholder-[#2D3B2D]/40 focus:outline-none transition-all duration-300 glow-field ${
                     formErrors.name && formTouched.name
-                      ? "border-red-400 focus:border-red-400 focus:ring-red-200"
+                      ? "border-red-400 focus:border-red-400 focus:shadow-[0_0_15px_rgba(248,113,113,0.3)]"
                       : formTouched.name && !formErrors.name
-                      ? "border-[#66BB6A] focus:border-[#66BB6A] focus:ring-[#66BB6A]/20"
-                      : "border-[#A8C5A0]/30 focus:border-[#6BAF8D] focus:ring-[#6BAF8D]/20"
+                      ? "border-[#66BB6A] focus:border-[#66BB6A] focus:shadow-[0_0_20px_rgba(102,187,106,0.4)]"
+                      : "border-[#A8C5A0]/30 focus:border-[#6BAF8D] focus:shadow-[0_0_20px_rgba(107,175,141,0.4)]"
                   }`}
                 />
                 {formErrors.name && formTouched.name && (
@@ -1203,12 +1199,12 @@ export default function Saludable() {
                   value={formData.email}
                   onChange={(e) => handleFieldChange("email", e.target.value)}
                   onBlur={() => handleFieldBlur("email")}
-                  className={`w-full px-5 py-4 rounded-xl bg-white border text-[#2D3B2D] placeholder-[#2D3B2D]/40 focus:outline-none focus:ring-2 transition-all ${
+                  className={`w-full px-5 py-4 rounded-xl bg-white border text-[#2D3B2D] placeholder-[#2D3B2D]/40 focus:outline-none transition-all duration-300 glow-field ${
                     formErrors.email && formTouched.email
-                      ? "border-red-400 focus:border-red-400 focus:ring-red-200"
+                      ? "border-red-400 focus:border-red-400 focus:shadow-[0_0_15px_rgba(248,113,113,0.3)]"
                       : formTouched.email && !formErrors.email
-                      ? "border-[#66BB6A] focus:border-[#66BB6A] focus:ring-[#66BB6A]/20"
-                      : "border-[#A8C5A0]/30 focus:border-[#6BAF8D] focus:ring-[#6BAF8D]/20"
+                      ? "border-[#66BB6A] focus:border-[#66BB6A] focus:shadow-[0_0_20px_rgba(102,187,106,0.4)]"
+                      : "border-[#A8C5A0]/30 focus:border-[#6BAF8D] focus:shadow-[0_0_20px_rgba(107,175,141,0.4)]"
                   }`}
                 />
                 {formErrors.email && formTouched.email && (
@@ -1221,7 +1217,7 @@ export default function Saludable() {
               placeholder="Empresa / Organización"
               value={formData.company}
               onChange={(e) => handleFieldChange("company", e.target.value)}
-              className="w-full px-5 py-4 rounded-xl bg-white border border-[#A8C5A0]/30 text-[#2D3B2D] placeholder-[#2D3B2D]/40 focus:outline-none focus:border-[#6BAF8D] focus:ring-2 focus:ring-[#6BAF8D]/20 transition-all"
+              className="w-full px-5 py-4 rounded-xl bg-white border border-[#A8C5A0]/30 text-[#2D3B2D] placeholder-[#2D3B2D]/40 focus:outline-none focus:border-[#6BAF8D] focus:shadow-[0_0_20px_rgba(107,175,141,0.4)] transition-all duration-300 glow-field"
             />
             <div>
               <textarea
@@ -1230,12 +1226,12 @@ export default function Saludable() {
                 onChange={(e) => handleFieldChange("message", e.target.value)}
                 onBlur={() => handleFieldBlur("message")}
                 rows={5}
-                className={`w-full px-5 py-4 rounded-xl bg-white border text-[#2D3B2D] placeholder-[#2D3B2D]/40 focus:outline-none focus:ring-2 transition-all resize-none ${
+                className={`w-full px-5 py-4 rounded-xl bg-white border text-[#2D3B2D] placeholder-[#2D3B2D]/40 focus:outline-none transition-all duration-300 resize-none glow-field ${
                   formErrors.message && formTouched.message
-                    ? "border-red-400 focus:border-red-400 focus:ring-red-200"
+                    ? "border-red-400 focus:border-red-400 focus:shadow-[0_0_15px_rgba(248,113,113,0.3)]"
                     : formTouched.message && !formErrors.message
-                    ? "border-[#66BB6A] focus:border-[#66BB6A] focus:ring-[#66BB6A]/20"
-                    : "border-[#A8C5A0]/30 focus:border-[#6BAF8D] focus:ring-[#6BAF8D]/20"
+                    ? "border-[#66BB6A] focus:border-[#66BB6A] focus:shadow-[0_0_20px_rgba(102,187,106,0.4)]"
+                    : "border-[#A8C5A0]/30 focus:border-[#6BAF8D] focus:shadow-[0_0_20px_rgba(107,175,141,0.4)]"
                 }`}
               />
               {formErrors.message && formTouched.message && (

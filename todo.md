@@ -25,3 +25,8 @@
 - [x] Contact form: real-time field validation with visual feedback
 - [x] Contact form: success animation on submit
 - [x] Contact form: magnetic button on submit
+- [x] Pilares: 3D interactive particles that react to cursor
+- [x] Cumplimiento: 3D interactive particles that react to cursor
+- [x] Contact form: typewriter effect on section title
+- [x] Contact form: glow/brillo effect on field focus
+- [x] Fix: Replace "farmacias aliadas" with "Farmacias de Comunidad" everywhere
