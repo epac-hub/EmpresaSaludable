@@ -23,8 +23,24 @@ const ComplianceParticles3D = lazy(() => import("@/components/saludable/Complian
 
 // ─── Data ───────────────────────────────────────────────────────────────────
 
+/*
+ * ═══ GUÍA PARA REEMPLAZAR FOTOS DE ESPECIALISTAS ═══
+ *
+ * Para reemplazar una imagen de IA con la foto real:
+ * 1. Sube la foto con: manus-upload-file --webdev /ruta/a/foto.jpg
+ * 2. Copia la URL devuelta (ej: /manus-storage/nombre_abc12345.jpg)
+ * 3. Reemplaza el valor del campo "image" del especialista correspondiente
+ *
+ * ESPECIALISTA 1: Lcda. Mariana Colón → image: "/manus-storage/nutricionista-boricua_b6ef4a1e.jpg"
+ * ESPECIALISTA 2: Dr. Rafael Méndez  → image: "/manus-storage/dr-rafael-mendez-boricua_62f6369a.jpg"
+ * ESPECIALISTA 3: Dra. Valeria Santiago → image: "/manus-storage/valeria-boricua_0889189c.jpg"
+ * ESPECIALISTA 4: Lcdo. Carlos Rivera → image: "/manus-storage/carlos-rivera-boricua_fb656031.jpg"
+ *
+ * Tamaño recomendado: 600x800px (retrato), formato JPG o WebP
+ */
 const AMBASSADORS = [
   {
+    id: "mariana-colon", // ← PLACEHOLDER: Reemplazar image con foto real
     name: "Lcda. Mariana Colón, RDN",
     role: "Nutrición Clínica",
     image: "/manus-storage/nutricionista-boricua_b6ef4a1e.jpg",
@@ -33,6 +49,7 @@ const AMBASSADORS = [
     expertise: ["Planes nutricionales corporativos", "Talleres de cocina saludable", "Evaluaciones metabólicas"],
   },
   {
+    id: "rafael-mendez", // ← PLACEHOLDER: Reemplazar image con foto real
     name: "Dr. Rafael Méndez, MD, MPH",
     role: "Medicina Preventiva",
     image: "/manus-storage/dr-rafael-mendez-boricua_62f6369a.jpg",
@@ -41,6 +58,7 @@ const AMBASSADORS = [
     expertise: ["Evaluaciones preventivas", "Protocolos de salud ocupacional", "Gestión de riesgos clínicos"],
   },
   {
+    id: "valeria-santiago", // ← PLACEHOLDER: Reemplazar image con foto real
     name: "Dra. Valeria Santiago, PharmD, CPT, CES",
     role: "Salud Integral",
     image: "/manus-storage/valeria-boricua_0889189c.jpg",
@@ -49,6 +67,7 @@ const AMBASSADORS = [
     expertise: ["Programas integrales de bienestar", "Entrenamiento funcional y movilidad", "Prevención de lesiones en ambiente laboral"],
   },
   {
+    id: "carlos-rivera", // ← PLACEHOLDER: Reemplazar image con foto real
     name: "Lcdo. Carlos Rivera, MBA, CWPC",
     role: "Bienestar Corporativo",
     image: "/manus-storage/carlos-rivera-boricua_fb656031.jpg",
