@@ -309,21 +309,31 @@ body::after {
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 1.5rem;
-  padding: 2rem 2.5rem;
+  padding: 2.5rem 3rem;
   box-shadow: 0 8px 32px rgba(67, 160, 71, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: fit-content;
+  overflow: visible;
 }
 
 /* Split word wrapper for GSAP animation */
+.wow-title {
+  text-align: center;
+}
+
 .wow-title .word {
   display: inline-block;
-  overflow: hidden;
-  vertical-align: top;
-  margin-right: 0.3em;
+  overflow: visible;
+  vertical-align: baseline;
+  margin-right: 0.25em;
+  padding-bottom: 0.1em;
 }
 
 .wow-title .word .char {
   display: inline-block;
-  transform: translateY(120%) rotateX(-40deg);
+  transform: translateY(100%) rotateX(-30deg);
   opacity: 0;
   transform-origin: center bottom;
   will-change: transform, opacity;

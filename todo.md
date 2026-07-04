@@ -121,3 +121,8 @@
 - [x] Aliados logos smooth zoom on hover
 - [x] Fix: Inspirados specialist photos cut off heads on mobile (iPhone 16 Pro Max) - adjust object-position
 - [x] Fix: Los 5 Pilares - tapping each pillar should show its detailed information
+- [x] Fix: "Hablemos de Bienestar" title displaying vertically (letters stacked) — removed wow-title class conflict with typewriter effect
+- [x] Fix: Letters cut off on all section titles (descenders clipped) — changed .wow-title .word overflow to visible
+- [x] Fix: Section headers not centered (Inspirados was left-aligned, Farmacias was right-aligned) — all now mx-auto text-center
+- [x] Fix: Beneficiarios "Historias reales" glass container too large — reduced max-width, increased subtitle text size
+- [x] Fix: .glass-header CSS updated with overflow:visible, text-align:center, margin auto, max-width:fit-content

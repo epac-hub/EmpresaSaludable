@@ -1184,7 +1184,7 @@ export default function Saludable() {
       {/* ═══ INSPIRADOS POR LOS MEJORES — PROFESSIONAL AMBASSADORS ═══ */}
       <section ref={celebsRef} className="pt-16 pb-24 px-6 overflow-hidden" style={{ background: 'linear-gradient(180deg, #F0F7F4 0%, #FDFCFB 15%, #F0F7F4 40%, #EBF5FB 100%)' }}>
         <div className="max-w-6xl mx-auto">
-          <div className="glass-header max-w-4xl mb-16 md:text-left text-center wow-title-shimmer md:ml-0 mx-auto">
+          <div className="glass-header max-w-4xl mx-auto mb-16 text-center wow-title-shimmer">
             <span className="inline-block px-4 py-1.5 rounded-full bg-[#6BAF8D]/10 text-[#2E7D32] text-xs font-bold uppercase tracking-[0.2em] mb-4 border border-[#6BAF8D]/20">Equipo de Excelencia</span>
             <h2
               className="wow-title text-4xl md:text-6xl font-bold mb-4 text-[#2D3B2D]"
@@ -1848,14 +1848,14 @@ export default function Saludable() {
         <div className="absolute inset-0 bg-gradient-to-b from-[#E8F5E0]/50 via-[#C8E6C9]/45 to-[#A5D6A7]/55" />
 
         <div className="relative z-10 max-w-6xl mx-auto">
-          <div className="glass-header max-w-3xl mx-auto mb-8 text-center wow-title-shimmer">
+          <div className="glass-header max-w-2xl mx-auto mb-8 text-center wow-title-shimmer">
             <h2
               className="wow-title text-4xl md:text-5xl font-bold text-center mb-4 text-[#1B5E20]"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
               Lo Que Dicen Nuestros <span className="emphasis">Beneficiarios</span>
             </h2>
-            <p className="text-[#2E7D32]/70 max-w-xl mx-auto">
+            <p className="text-[#2E7D32]/70 text-lg max-w-xl mx-auto">
               Historias reales de transformación y bienestar en toda la isla.
             </p>
           </div>
@@ -2332,14 +2332,14 @@ export default function Saludable() {
       {/* ═══ PHARMACY MAP ═══ */}
       <section ref={mapRef} id="farmacias" className="py-24 px-6 bg-white">
         <div className="max-w-6xl mx-auto">
-          <div className="glass-header max-w-3xl mb-12 md:text-right text-center wow-title-shimmer md:mr-0 md:ml-auto mx-auto">
+          <div className="glass-header max-w-3xl mx-auto mb-12 text-center wow-title-shimmer">
             <h2
               className="wow-title text-4xl md:text-5xl font-bold mb-4 text-[#2D3B2D]"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
               Red de <span className="emphasis">Farmacias</span>
             </h2>
-            <p className="text-[#2D3B2D]/60 max-w-2xl md:ml-auto">
+            <p className="text-[#2D3B2D]/60 max-w-2xl mx-auto">
               Más de 112 Farmacias de Comunidad en 70 municipios de Puerto Rico, listas para servirte.
             </p>
           </div>
@@ -2374,7 +2374,7 @@ export default function Saludable() {
         <div className="max-w-3xl mx-auto relative z-10">
           <div className="glass-header max-w-2xl mx-auto mb-12 text-center wow-title-shimmer">
             <h2
-              className="wow-title text-4xl md:text-5xl font-bold text-center mb-4 text-[#2D3B2D] typewriter-title"
+              className="text-4xl md:text-5xl font-bold text-center mb-4 text-[#2D3B2D] typewriter-title"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
               <span className="typewriter-text">Hablemos de </span><span className="emphasis typewriter-text">Bienestar</span>
