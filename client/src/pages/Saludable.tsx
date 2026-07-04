@@ -383,6 +383,70 @@ export default function Saludable() {
           ease: "back.out(1.7)",
         }, "-=1.2");
 
+      // ═══ CINEMATIC SECTION TRANSITIONS ═══
+      // Each major section reveals with a unique cinematic entrance
+      const sectionRefs = [
+        { ref: celebsRef, direction: 'left' },
+        { ref: pillarsRef, direction: 'bottom' },
+        { ref: statsRef, direction: 'right' },
+        { ref: complianceRef, direction: 'bottom' },
+        { ref: plansRef, direction: 'scale' },
+        { ref: mapRef, direction: 'left' },
+        { ref: contactRef, direction: 'right' },
+      ];
+
+      sectionRefs.forEach(({ ref, direction }) => {
+        if (!ref.current) return;
+        const el = ref.current;
+
+        // Section header cinematic reveal
+        const header = el.querySelector('h2');
+        if (header) {
+          const fromVars: Record<string, unknown> = {
+            opacity: 0,
+            duration: 1,
+            ease: "power3.out",
+            immediateRender: false,
+          };
+          if (direction === 'left') { fromVars.x = -80; fromVars.clipPath = 'inset(0 100% 0 0)'; }
+          else if (direction === 'right') { fromVars.x = 80; fromVars.clipPath = 'inset(0 0 0 100%)'; }
+          else if (direction === 'scale') { fromVars.scale = 0.85; fromVars.y = 40; }
+          else { fromVars.y = 60; }
+
+          gsap.from(header, {
+            scrollTrigger: { trigger: el, start: "top 80%" },
+            ...fromVars,
+            clearProps: 'clipPath',
+          });
+        }
+
+        // Subtitle/paragraph reveal with slight delay
+        const subtitle = el.querySelector('p');
+        if (subtitle) {
+          gsap.from(subtitle, {
+            scrollTrigger: { trigger: el, start: "top 78%" },
+            y: 30,
+            opacity: 0,
+            duration: 0.8,
+            delay: 0.15,
+            ease: "power2.out",
+            immediateRender: false,
+          });
+        }
+      });
+
+      // Sections with data-reveal attribute get a full-section cinematic fade-up
+      gsap.utils.toArray<HTMLElement>('[data-reveal="fade-up"]').forEach((section) => {
+        gsap.from(section, {
+          scrollTrigger: { trigger: section, start: "top 85%" },
+          y: 50,
+          opacity: 0,
+          duration: 1,
+          ease: "power3.out",
+          immediateRender: false,
+        });
+      });
+
       // Ambassador cards entrance
       if (celebsRef.current) {
         gsap.from(".celeb-card", {
@@ -510,16 +574,47 @@ export default function Saludable() {
         });
       }
 
-      // Plans
+      // Plans — dramatic staggered entrance with rotation
       if (plansRef.current) {
         gsap.from(".plan-card", {
-          scrollTrigger: { trigger: plansRef.current, start: "top 85%" },
-          y: 40,
+          scrollTrigger: { trigger: plansRef.current, start: "top 80%" },
+          y: 80,
           opacity: 0,
-          duration: 0.6,
-          stagger: 0.12,
-          ease: "power3.out",
+          rotateY: 15,
+          scale: 0.9,
+          duration: 0.9,
+          stagger: 0.2,
+          ease: "power4.out",
           immediateRender: false,
+        });
+
+        // Add 3D tilt effect to plan cards on mouse move
+        const planCards = plansRef.current.querySelectorAll('.plan-card');
+        planCards.forEach((card) => {
+          const cardEl = card as HTMLElement;
+          const inner = cardEl.querySelector('.plan-card-inner') as HTMLElement;
+          if (!inner) return;
+
+          cardEl.addEventListener('mousemove', (e: MouseEvent) => {
+            const rect = cardEl.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / rect.width - 0.5;
+            const y = (e.clientY - rect.top) / rect.height - 0.5;
+            gsap.to(inner, {
+              rotateY: x * 12,
+              rotateX: -y * 8,
+              duration: 0.4,
+              ease: 'power2.out',
+            });
+          });
+
+          cardEl.addEventListener('mouseleave', () => {
+            gsap.to(inner, {
+              rotateY: 0,
+              rotateX: 0,
+              duration: 0.6,
+              ease: 'elastic.out(1, 0.5)',
+            });
+          });
         });
       }
 
@@ -1109,12 +1204,16 @@ export default function Saludable() {
                 key={i}
                 className="plan-card group relative perspective-[1200px]"
               >
-                {/* Main card */}
+                {/* Main card with 3D tilt inner wrapper */}
+                <div
+                  className="plan-card-inner"
+                  style={{ transformStyle: 'preserve-3d', willChange: 'transform' }}
+                >
                 <div
                   className={`relative p-8 rounded-3xl border-2 transition-all duration-500 group-hover:-translate-y-4 group-hover:shadow-2xl group-hover:scale-[1.03] ${
                     plan.highlighted
-                      ? "border-[#6BAF8D] bg-white shadow-xl shadow-[#6BAF8D]/15 scale-[1.02]"
-                      : "border-[#A8C5A0]/30 bg-white group-hover:border-[#6BAF8D]/50"
+                      ? "border-[#6BAF8D] bg-white shadow-xl shadow-[#6BAF8D]/15 scale-[1.02] ring-2 ring-[#6BAF8D]/20 group-hover:ring-4 group-hover:ring-[#6BAF8D]/30"
+                      : "border-[#A8C5A0]/30 bg-white group-hover:border-[#6BAF8D]/50 group-hover:ring-2 group-hover:ring-[#6BAF8D]/15"
                   }`}
                 >
                   {plan.highlighted && (
@@ -1151,6 +1250,7 @@ export default function Saludable() {
                     Solicitar Cotización
                   </a>
                 </div>
+                </div>{/* close plan-card-inner */}
 
                 {/* Popup overlay — expands outward on hover */}
                 <div className="absolute inset-0 z-20 pointer-events-none group-hover:pointer-events-auto">
@@ -1188,7 +1288,7 @@ export default function Saludable() {
       </section>
 
       {/* ═══ LOGOS INSTITUCIONALES — CARRUSEL INTERACTIVO ═══ */}
-      <section className="py-16 px-6 bg-white border-y border-[#A8C5A0]/10">
+      <section className="py-16 px-6 bg-white border-y border-[#A8C5A0]/10" data-reveal="fade-up">
         <div className="max-w-5xl mx-auto">
           <p className="text-center text-sm text-[#2D3B2D]/50 mb-8 uppercase tracking-wider font-medium">
             Alineados con las regulaciones de
@@ -1215,7 +1315,7 @@ export default function Saludable() {
       </section>
 
       {/* ═══ FAQ — PREGUNTAS FRECUENTES (GSAP Accordion) ═══ */}
-      <section className="py-24 px-6 bg-[#F4F9F2]">
+      <section className="py-24 px-6 bg-[#F4F9F2]" data-reveal="fade-up">
         <div className="max-w-4xl mx-auto">
           <h2
             className="text-3xl md:text-4xl font-bold text-center mb-4 text-[#2D3B2D]"

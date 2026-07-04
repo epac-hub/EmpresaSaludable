@@ -64,3 +64,5 @@
 - [x] Hero: Regenerate video (old expired from S3) — new video of fit boricua women doing yoga/warrior poses on Caribbean beach at golden hour, autoplay+muted+loop+playsInline confirmed working
 - [x] Hero: Add darker overlay filter on video so text is easier to read
 - [x] Hero: Add animated "Únete Ahora" button that scrolls to services section (with GSAP entrance + shimmer hover effect)
+- [x] Cinematic scroll transitions between sections (GSAP ScrollTrigger clip-path + directional reveals per section)
+- [x] Interactive plan cards with visual hover effects (3D tilt via mousemove, ring glow, rotateY entrance, elastic snap-back)
