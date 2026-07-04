@@ -4,6 +4,7 @@
  * Animations: GSAP ScrollTrigger for reveals, Lenis for smooth scroll
  */
 import { useEffect, useRef } from "react";
+import { useAuth } from "@/_core/hooks/useAuth";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
@@ -131,6 +132,10 @@ const TECH_STACK = [
 ];
 
 export default function Home() {
+  // The userAuth hooks provides authentication state
+  // To implement login/logout functionality, simply call logout() or redirect to getLoginUrl()
+  let { user, loading, error, isAuthenticated, logout } = useAuth();
+
   const heroRef = useRef<HTMLDivElement>(null);
   const sectionsRef = useRef<HTMLDivElement>(null);
 
