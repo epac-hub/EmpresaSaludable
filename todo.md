@@ -62,3 +62,5 @@
 - [x] Lazy loading: Planificación (Three.js lazy import + IntersectionObserver scroll-proximity) and Testimonios (video scroll-proximity mount with poster fallback)
 - [x] Contact form: Enhanced with confetti burst animation on success submit
 - [x] Hero: Regenerate video (old expired from S3) — new video of fit boricua women doing yoga/warrior poses on Caribbean beach at golden hour, autoplay+muted+loop+playsInline confirmed working
+- [x] Hero: Add darker overlay filter on video so text is easier to read
+- [x] Hero: Add animated "Únete Ahora" button that scrolls to services section (with GSAP entrance + shimmer hover effect)

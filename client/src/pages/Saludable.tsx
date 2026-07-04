@@ -374,7 +374,14 @@ export default function Saludable() {
           duration: 2,
           ease: "power1.inOut",
           stagger: 0.15,
-        }, "-=0.8");
+        }, "-=0.8")
+        .from(".hero-cta", {
+          y: 40,
+          opacity: 0,
+          scale: 0.9,
+          duration: 0.8,
+          ease: "back.out(1.7)",
+        }, "-=1.2");
 
       // Ambassador cards entrance
       if (celebsRef.current) {
@@ -632,34 +639,48 @@ export default function Saludable() {
             <source src="/manus-storage/hero-boricua-people-moving_848eae57.mp4" type="video/mp4" />
           </video>
         </div>
-        {/* Very light overlay — let the people show clearly */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/15 via-transparent to-black/25" />
+        {/* Dark overlay for text readability — people still visible through it */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/25 to-black/50" />
 
         {/* Kinetic Typography — Empresa Saludable */}
         <div className="relative z-10 text-center px-6">
-          <span className="hero-title block text-3xl md:text-5xl lg:text-6xl tracking-[0.3em] uppercase text-white font-bold mb-8" style={{ fontFamily: "'Space Grotesk', sans-serif", textShadow: '0 4px 20px rgba(0,0,0,0.5)' }}>
+          <span className="hero-title block text-3xl md:text-5xl lg:text-6xl tracking-[0.3em] uppercase text-white font-bold mb-8" style={{ fontFamily: "'Space Grotesk', sans-serif", textShadow: '0 4px 20px rgba(0,0,0,0.6)' }}>
             Bienvenido a
           </span>
           <h1 className="hero-title overflow-hidden">
             <span
-              className="kinetic-word block text-7xl md:text-9xl lg:text-[11rem] font-black leading-[0.85] tracking-tight text-white drop-shadow-[0_4px_30px_rgba(0,0,0,0.4)]"
+              className="kinetic-word block text-7xl md:text-9xl lg:text-[11rem] font-black leading-[0.85] tracking-tight text-white drop-shadow-[0_6px_40px_rgba(0,0,0,0.6)]"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
               Empresa
             </span>
             <span
-              className="kinetic-word block text-7xl md:text-9xl lg:text-[11rem] font-black leading-[0.85] tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#81C784] via-[#66BB6A] to-[#43A047] drop-shadow-[0_4px_30px_rgba(76,175,80,0.5)]"
+              className="kinetic-word block text-7xl md:text-9xl lg:text-[11rem] font-black leading-[0.85] tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#81C784] via-[#66BB6A] to-[#43A047] drop-shadow-[0_6px_40px_rgba(76,175,80,0.6)]"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
               Saludable
             </span>
           </h1>
+
+          {/* Animated CTA button — scrolls to services */}
+          <a
+            href="#planes"
+            className="hero-cta inline-flex items-center gap-3 mt-12 px-8 py-4 bg-gradient-to-r from-[#43A047] to-[#66BB6A] text-white font-bold text-lg rounded-full shadow-[0_8px_32px_rgba(67,160,71,0.4)] hover:shadow-[0_12px_48px_rgba(67,160,71,0.6)] hover:scale-105 active:scale-95 transition-all duration-300 relative overflow-hidden group"
+            style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+          >
+            {/* Shimmer effect */}
+            <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+            <span className="relative z-10">Únete Ahora</span>
+            <svg className="relative z-10 w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>
         </div>
 
         {/* Scroll indicator */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
-          <span className="text-xs text-white/50 tracking-widest uppercase">Scroll</span>
-          <div className="w-px h-8 bg-gradient-to-b from-white/50 to-transparent" />
+          <span className="text-xs text-white/60 tracking-widest uppercase">Scroll</span>
+          <div className="w-px h-8 bg-gradient-to-b from-white/60 to-transparent" />
         </div>
       </section>
 
