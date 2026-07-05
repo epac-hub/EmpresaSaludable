@@ -1192,14 +1192,14 @@ export default function Saludable() {
         {/* Hero image — Puerto Rico Wellness Center with Ken Burns animation */}
         <div className="absolute inset-0 overflow-hidden">
           <img
-            src="/manus-storage/hero-pr-fresh-v3_bd9f31d8.jpg"
+            src="/manus-storage/hero-pr-fresh-v4_89ae7421.jpg"
             alt="Empresa Saludable - Profesionales boricuas fit y saludables en centro de bienestar premium"
             className="absolute inset-0 w-full h-full object-cover animate-ken-burns"
-            style={{ filter: 'brightness(1.15) saturate(1.15) contrast(1.05)' }}
+            style={{ filter: 'brightness(1.2) saturate(1.2) contrast(1.05)' }}
           />
         </div>
         {/* Dark overlay for text readability — people still visible through it */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/5 via-transparent to-black/10" />
 
 
 
