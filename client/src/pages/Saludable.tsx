@@ -1203,6 +1203,22 @@ export default function Saludable() {
 
 
 
+        {/* Interactive CTA Button */}
+        <div className="absolute bottom-24 left-1/2 -translate-x-1/2 z-10">
+          <a
+            href="#planes"
+            className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white/15 backdrop-blur-md border border-white/30 text-white font-semibold text-lg tracking-wide overflow-hidden transition-all duration-500 hover:bg-white/25 hover:border-white/50 hover:scale-105 hover:shadow-[0_0_40px_rgba(107,175,141,0.3)] active:scale-95"
+            style={{ fontFamily: "'Montserrat', sans-serif" }}
+          >
+            {/* Shimmer sweep on hover */}
+            <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+            <span className="relative z-10">Conoce Nuestros Servicios</span>
+            <svg className="relative z-10 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>
+        </div>
+
         {/* Scroll indicator */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
           <span className="text-xs text-white/60 tracking-widest uppercase">Scroll</span>
@@ -1610,7 +1626,7 @@ export default function Saludable() {
       {/* ═══ LOS 5 PILARES DEL BIENESTAR — SUMMER GREEN PARALLAX ═══ */}
 
       {/* ═══ LOS 5 PILARES DEL BIENESTAR — CIRCULAR HOLISTIC ═══ */}
-      <section ref={pillarsRef} id="pilares" className="relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #E8F5E9 0%, #C8E6C9 50%, #E8F5E9 100%)' }}>
+      <section ref={pillarsRef} id="pilares" data-reveal="fade-up" className="relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #E8F5E9 0%, #C8E6C9 50%, #E8F5E9 100%)' }}>
         {/* Parallax background image — luxury Caribbean wellness */}
         <div className="absolute inset-0 overflow-hidden">
           <img
@@ -1972,7 +1988,7 @@ export default function Saludable() {
       </div>
 
       {/* ═══ PLANIFICACIÓN Y CUMPLIMIENTO — WOW INTERACTIVE TIMELINE ═══ */}
-      <section ref={complianceRef} id="cumplimiento" className="py-32 px-6 relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #E8F5E0 0%, #C8E6C9 40%, #B9DEB5 70%, #E8F5E0 100%)' }}>
+      <section ref={complianceRef} id="cumplimiento" data-reveal="fade-up" className="py-32 px-6 relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #E8F5E0 0%, #C8E6C9 40%, #B9DEB5 70%, #E8F5E0 100%)' }}>
         {/* Parallax background image — compliance professionals */}
         <div className="absolute inset-0 overflow-hidden">
           <img
@@ -2110,7 +2126,7 @@ export default function Saludable() {
       </div>
 
       {/* ═══ PLANES DE SERVICIO — FULL 3 PLANS ═══ */}
-      <section ref={plansRef} id="planes" className="py-24 px-6 relative overflow-hidden bg-gradient-to-b from-[#F4F9F2] to-[#EDF5EA]">
+      <section ref={plansRef} id="planes" data-reveal="fade-up" className="py-24 px-6 relative overflow-hidden bg-gradient-to-b from-[#F4F9F2] to-[#EDF5EA]">
         {/* Parallax background image — corporate wellness celebration */}
         <div className="absolute inset-0 overflow-hidden">
           <img
@@ -2404,7 +2420,7 @@ export default function Saludable() {
       </div>
 
       {/* ═══ PHARMACY MAP ═══ */}
-      <section ref={mapRef} id="farmacias" className="py-24 px-6 bg-white relative overflow-hidden">
+      <section ref={mapRef} id="farmacias" data-reveal="fade-up" className="py-24 px-6 bg-white relative overflow-hidden">
         {/* Parallax background image — modern community pharmacy */}
         <div className="absolute inset-0 overflow-hidden">
           <img
@@ -2450,7 +2466,7 @@ export default function Saludable() {
       </div>
 
       {/* ═══ HABLEMOS DE BIENESTAR — CONTACT FORM (LAST) ═══ */}
-      <section ref={contactRef} id="contacto" className="py-24 px-6 bg-[#F4F9F2] relative overflow-hidden">
+      <section ref={contactRef} id="contacto" data-reveal="fade-up" className="py-24 px-6 bg-[#F4F9F2] relative overflow-hidden">
         {/* Subtle background glow */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[#66BB6A]/10 blur-[150px] pointer-events-none" />
 

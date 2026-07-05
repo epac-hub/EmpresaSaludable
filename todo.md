@@ -159,3 +159,6 @@
 - [x] Regenerate 4 EMBAJADOR headshot photos with more elegant/upscale professionals
 - [x] Update Saludable.tsx with new embajador image URLs
 - [x] Save checkpoint with new embajador photos
+- [x] Add interactive button "Conoce nuestros servicios" on hero image with smooth hover transition
+- [x] Add subtle entrance animation for main sections when users scroll down
+- [x] Verify testimonials section is properly integrated
