@@ -45,7 +45,7 @@ const AMBASSADORS = [
     id: "mariana-colon", // ← PLACEHOLDER: Reemplazar image con foto real
     name: "Lcda. Mariana Colón, RDN",
     role: "Nutrición Clínica",
-    image: "/manus-storage/nutricionista-boricua_b6ef4a1e.jpg",
+    image: "/manus-storage/embajador-nutricionista-v2_6c218682.jpg",
     quote: "Una alimentación consciente es la base de toda transformación corporativa.",
     specialty: "Nutricionista clínica certificada con 12 años de experiencia diseñando planes alimentarios para empresas. Especialista en nutrición tropical y prevención de enfermedades metabólicas.",
     expertise: ["Planes nutricionales corporativos", "Talleres de cocina saludable", "Evaluaciones metabólicas"],
@@ -62,7 +62,7 @@ const AMBASSADORS = [
     id: "rafael-mendez", // ← PLACEHOLDER: Reemplazar image con foto real
     name: "Dr. Rafael Méndez, MD, MPH",
     role: "Medicina Preventiva",
-    image: "/manus-storage/dr-rafael-mendez-boricua_62f6369a.jpg",
+    image: "/manus-storage/embajador-doctor-v2_3685bcd7.jpg",
     quote: "Prevenir es la inversión más inteligente que una empresa puede hacer en su capital humano.",
     specialty: "Médico internista con maestría en Salud Pública. 15 años en medicina preventiva y salud ocupacional. Consultor para programas de bienestar en empresas Fortune 500 en PR.",
     expertise: ["Evaluaciones preventivas", "Protocolos de salud ocupacional", "Gestión de riesgos clínicos"],
@@ -79,7 +79,7 @@ const AMBASSADORS = [
     id: "valeria-santiago", // ← PLACEHOLDER: Reemplazar image con foto real
     name: "Dra. Valeria Santiago, PharmD, CPT, CES",
     role: "Salud Integral",
-    image: "/manus-storage/valeria-boricua_0889189c.jpg",
+    image: "/manus-storage/embajador-valeria-v2_38fbd6d7.jpg",
     quote: "El movimiento diario transforma equipos completos — física, mental y emocionalmente.",
     specialty: "Farmacéutica y entrenadora personal certificada por la National Academy of Sports Medicine (NASM), con especialización en entrenamiento funcional, movilidad y prevención de lesiones. Diseña programas integrales de bienestar, prevención y actividad física, adaptados a las necesidades de los empleados dentro de su ambiente laboral.",
     expertise: ["Programas integrales de bienestar", "Entrenamiento funcional y movilidad", "Prevención de lesiones en ambiente laboral"],
@@ -96,7 +96,7 @@ const AMBASSADORS = [
     id: "carlos-rivera", // ← PLACEHOLDER: Reemplazar image con foto real
     name: "Lcdo. Carlos Rivera, MBA, CWPC",
     role: "Bienestar Corporativo",
-    image: "/manus-storage/carlos-rivera-boricua_fb656031.jpg",
+    image: "/manus-storage/embajador-carlos-v2_528c396b.jpg",
     quote: "Una empresa saludable es una empresa rentable — los datos lo demuestran consistentemente.",
     specialty: "Consultor certificado en bienestar corporativo con MBA en Gestión Estratégica. Implementa programas de cultura organizacional saludable y cumplimiento regulatorio en toda la isla.",
     expertise: ["Cultura organizacional", "Cumplimiento Depto. de Salud", "ROI de bienestar"],
