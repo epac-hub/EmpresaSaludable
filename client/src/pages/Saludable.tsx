@@ -1175,7 +1175,7 @@ export default function Saludable() {
         {/* Hero image — Puerto Rico Wellness Center */}
         <div className="absolute inset-0 overflow-hidden">
           <img
-            src="/manus-storage/hero-final-v19_39985e5c.jpg"
+            src="/manus-storage/hero-final-v20_8f49d281.jpg"
             alt="Puerto Rico Wellness Center — grupo de personas haciendo yoga y fitness en un centro de bienestar con vista al Caribe"
             className="hero-video absolute inset-0 w-full h-full object-cover"
             style={{ filter: 'brightness(1.05) saturate(1.1)' }}
