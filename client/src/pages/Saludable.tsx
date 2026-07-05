@@ -1614,9 +1614,9 @@ export default function Saludable() {
         {/* Parallax background image — luxury Caribbean wellness */}
         <div className="absolute inset-0 overflow-hidden">
           <img
-            src="/manus-storage/section-pilares-v3_6ceb129f.jpg"
+            src="/manus-storage/section-pilares-v4_ff668714.jpg"
             alt=""
-            className="section-parallax-img absolute inset-0 w-full h-[120%] object-cover opacity-[0.18] scale-110"
+            className="section-parallax-img absolute inset-0 w-full h-[120%] object-cover opacity-[0.25] scale-110"
             style={{ willChange: 'transform' }}
           />
         </div>
@@ -1976,9 +1976,9 @@ export default function Saludable() {
         {/* Parallax background image — compliance professionals */}
         <div className="absolute inset-0 overflow-hidden">
           <img
-            src="/manus-storage/section-cumplimiento-v3_73843462.jpg"
+            src="/manus-storage/section-cumplimiento-v4_bac55919.jpg"
             alt=""
-            className="section-parallax-img absolute inset-0 w-full h-[120%] object-cover opacity-[0.15] scale-110"
+            className="section-parallax-img absolute inset-0 w-full h-[120%] object-cover opacity-[0.22] scale-110"
             style={{ willChange: 'transform' }}
           />
         </div>
@@ -2114,9 +2114,9 @@ export default function Saludable() {
         {/* Parallax background image — corporate wellness celebration */}
         <div className="absolute inset-0 overflow-hidden">
           <img
-            src="/manus-storage/section-planes-v3_c9c77e14.jpg"
+            src="/manus-storage/section-planes-v4_187b2d3d.jpg"
             alt=""
-            className="section-parallax-img absolute inset-0 w-full h-[120%] object-cover opacity-[0.12] scale-110"
+            className="section-parallax-img absolute inset-0 w-full h-[120%] object-cover opacity-[0.20] scale-110"
             style={{ willChange: 'transform' }}
           />
         </div>
@@ -2408,9 +2408,9 @@ export default function Saludable() {
         {/* Parallax background image — modern community pharmacy */}
         <div className="absolute inset-0 overflow-hidden">
           <img
-            src="/manus-storage/section-farmacias-v3_d90ebc63.jpg"
+            src="/manus-storage/section-farmacias-v4_490647aa.jpg"
             alt=""
-            className="section-parallax-img absolute inset-0 w-full h-[120%] object-cover opacity-[0.10] scale-110"
+            className="section-parallax-img absolute inset-0 w-full h-[120%] object-cover opacity-[0.18] scale-110"
             style={{ willChange: 'transform' }}
           />
         </div>

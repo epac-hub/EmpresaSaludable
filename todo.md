@@ -150,3 +150,7 @@
 - [x] Regenerate all 4 interior images with DIFFERENT people (not same generic models — real variety in age, body type, style)
 - [x] Update Saludable.tsx with v3 image URLs
 - [x] Save checkpoint with v3 images
+- [x] Regenerate 4 interior images with ELEGANT people (executives, blazers, guayaberas, corporate premium — NOT yoga/beach wear)
+- [x] Increase opacity so images are more visible
+- [x] Update Saludable.tsx with v4 image URLs + higher opacity
+- [x] Save checkpoint with v4 elegant images
