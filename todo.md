@@ -133,3 +133,4 @@
 - [x] Fix: Beneficiarios title visible — reduced to text-3xl md:text-4xl, glass container max-w-2xl
 - [x] Integrate background music (bossa-vocal-final) with play/mute button into Saludable page
 - [x] Hero: Replace video with new hero image (Puerto Rico Wellness Center — 5 women + 2 men, yoga/fitness/smoothie bar, ocean view, golden hour)
+- [x] Hero: Replace video with approved image v20 (group exercising in luxury pavilion with EMPRESA SALUDABLE sign) + Ken Burns zoom animation for movement sensation
