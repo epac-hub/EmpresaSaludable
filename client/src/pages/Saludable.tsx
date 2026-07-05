@@ -1614,7 +1614,7 @@ export default function Saludable() {
         {/* Parallax background image — luxury Caribbean wellness */}
         <div className="absolute inset-0 overflow-hidden">
           <img
-            src="/manus-storage/section-pilares-v4_ff668714.jpg"
+            src="/manus-storage/section-pilares-v5_e7b27bb5.jpg"
             alt=""
             className="section-parallax-img absolute inset-0 w-full h-[120%] object-cover opacity-[0.25] scale-110"
             style={{ willChange: 'transform' }}
@@ -1976,7 +1976,7 @@ export default function Saludable() {
         {/* Parallax background image — compliance professionals */}
         <div className="absolute inset-0 overflow-hidden">
           <img
-            src="/manus-storage/section-cumplimiento-v4_bac55919.jpg"
+            src="/manus-storage/section-cumplimiento-v5_8ca21360.jpg"
             alt=""
             className="section-parallax-img absolute inset-0 w-full h-[120%] object-cover opacity-[0.22] scale-110"
             style={{ willChange: 'transform' }}
@@ -2114,7 +2114,7 @@ export default function Saludable() {
         {/* Parallax background image — corporate wellness celebration */}
         <div className="absolute inset-0 overflow-hidden">
           <img
-            src="/manus-storage/section-planes-v4_187b2d3d.jpg"
+            src="/manus-storage/section-planes-v5_4b199cb7.jpg"
             alt=""
             className="section-parallax-img absolute inset-0 w-full h-[120%] object-cover opacity-[0.20] scale-110"
             style={{ willChange: 'transform' }}
@@ -2408,7 +2408,7 @@ export default function Saludable() {
         {/* Parallax background image — modern community pharmacy */}
         <div className="absolute inset-0 overflow-hidden">
           <img
-            src="/manus-storage/section-farmacias-v4_490647aa.jpg"
+            src="/manus-storage/section-farmacias-v5_2d059e95.jpg"
             alt=""
             className="section-parallax-img absolute inset-0 w-full h-[120%] object-cover opacity-[0.18] scale-110"
             style={{ willChange: 'transform' }}

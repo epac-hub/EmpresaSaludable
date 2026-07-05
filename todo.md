@@ -154,6 +154,8 @@
 - [x] Increase opacity so images are more visible
 - [x] Update Saludable.tsx with v4 image URLs + higher opacity
 - [x] Save checkpoint with v4 elegant images
+- [x] Regenerate 4 section bg images with TRULY DIVERSE people (different races, ages, body types, hair colors)
+- [x] Update Saludable.tsx with v5 diverse image URLs
 - [x] Regenerate 4 EMBAJADOR headshot photos with more elegant/upscale professionals
 - [x] Update Saludable.tsx with new embajador image URLs
 - [x] Save checkpoint with new embajador photos
