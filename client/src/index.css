@@ -217,7 +217,7 @@ body::after {
 }
 
 .animate-ken-burns {
-  animation: kenBurns 20s ease-in-out infinite;
+  animation: kenBurns 8s ease-in-out infinite;
   will-change: transform;
 }
 

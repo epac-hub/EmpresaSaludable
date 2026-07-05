@@ -1175,7 +1175,7 @@ export default function Saludable() {
         {/* Hero image — Puerto Rico Wellness Center with Ken Burns animation */}
         <div className="absolute inset-0 overflow-hidden">
           <img
-            src="/manus-storage/hero-final-v20_8f49d281.jpg"
+            src="/manus-storage/hero-final-v17_afba38ed.jpg"
             alt="Empresa Saludable - Grupo de personas ejercitándose en pabellón de lujo caribeño"
             className="absolute inset-0 w-full h-full object-cover animate-ken-burns"
             style={{ filter: 'brightness(1.05) saturate(1.1)' }}
