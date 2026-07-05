@@ -147,3 +147,6 @@
 - [x] Regenerate Farmacias image: MORE UPSCALE (high-end boutique pharmacy, cinematic)
 - [x] Update Saludable.tsx with new upscale image URLs
 - [x] Save checkpoint with upscale images
+- [x] Regenerate all 4 interior images with DIFFERENT people (not same generic models — real variety in age, body type, style)
+- [x] Update Saludable.tsx with v3 image URLs
+- [x] Save checkpoint with v3 images
