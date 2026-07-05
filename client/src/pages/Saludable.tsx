@@ -945,6 +945,23 @@ export default function Saludable() {
         }
       }
 
+      // ═══ PARALLAX SCROLLING on interior section background images ═══
+      gsap.utils.toArray<HTMLImageElement>('.section-parallax-img').forEach((img) => {
+        const section = img.closest('section');
+        if (section) {
+          gsap.to(img, {
+            scrollTrigger: {
+              trigger: section,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 1.2,
+            },
+            y: '-15%',
+            ease: 'none',
+          });
+        }
+      });
+
       // Beneficiarios cards — infinite marquee scroll (no page scroll hijack)
       if (beneficiaryScrollRef.current) {
         const track = beneficiaryScrollRef.current.querySelector('.beneficiary-track') as HTMLElement;
@@ -1594,6 +1611,15 @@ export default function Saludable() {
 
       {/* ═══ LOS 5 PILARES DEL BIENESTAR — CIRCULAR HOLISTIC ═══ */}
       <section ref={pillarsRef} id="pilares" className="relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #E8F5E9 0%, #C8E6C9 50%, #E8F5E9 100%)' }}>
+        {/* Parallax background image — luxury Caribbean wellness */}
+        <div className="absolute inset-0 overflow-hidden">
+          <img
+            src="/manus-storage/section-pilares_9dad0704.jpg"
+            alt=""
+            className="section-parallax-img absolute inset-0 w-full h-[120%] object-cover opacity-[0.18] scale-110"
+            style={{ willChange: 'transform' }}
+          />
+        </div>
         {/* GLSL Animated Noise Gradient Shader Background */}
         <Suspense fallback={null}>
           <ShaderGradientBG
@@ -1947,6 +1973,15 @@ export default function Saludable() {
 
       {/* ═══ PLANIFICACIÓN Y CUMPLIMIENTO — WOW INTERACTIVE TIMELINE ═══ */}
       <section ref={complianceRef} id="cumplimiento" className="py-32 px-6 relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #E8F5E0 0%, #C8E6C9 40%, #B9DEB5 70%, #E8F5E0 100%)' }}>
+        {/* Parallax background image — compliance professionals */}
+        <div className="absolute inset-0 overflow-hidden">
+          <img
+            src="/manus-storage/section-cumplimiento_aecd4948.jpg"
+            alt=""
+            className="section-parallax-img absolute inset-0 w-full h-[120%] object-cover opacity-[0.15] scale-110"
+            style={{ willChange: 'transform' }}
+          />
+        </div>
         {/* GLSL Animated Noise Gradient Shader Background */}
         <Suspense fallback={null}>
           <ShaderGradientBG
@@ -2076,6 +2111,15 @@ export default function Saludable() {
 
       {/* ═══ PLANES DE SERVICIO — FULL 3 PLANS ═══ */}
       <section ref={plansRef} id="planes" className="py-24 px-6 relative overflow-hidden bg-gradient-to-b from-[#F4F9F2] to-[#EDF5EA]">
+        {/* Parallax background image — corporate wellness celebration */}
+        <div className="absolute inset-0 overflow-hidden">
+          <img
+            src="/manus-storage/section-planes_e82f3e0c.jpg"
+            alt=""
+            className="section-parallax-img absolute inset-0 w-full h-[120%] object-cover opacity-[0.12] scale-110"
+            style={{ willChange: 'transform' }}
+          />
+        </div>
         {/* GLSL Animated Noise Gradient Shader Background */}
         <Suspense fallback={null}>
           <ShaderGradientBG
@@ -2360,7 +2404,16 @@ export default function Saludable() {
       </div>
 
       {/* ═══ PHARMACY MAP ═══ */}
-      <section ref={mapRef} id="farmacias" className="py-24 px-6 bg-white">
+      <section ref={mapRef} id="farmacias" className="py-24 px-6 bg-white relative overflow-hidden">
+        {/* Parallax background image — modern community pharmacy */}
+        <div className="absolute inset-0 overflow-hidden">
+          <img
+            src="/manus-storage/section-farmacias_26534505.jpg"
+            alt=""
+            className="section-parallax-img absolute inset-0 w-full h-[120%] object-cover opacity-[0.10] scale-110"
+            style={{ willChange: 'transform' }}
+          />
+        </div>
         <div className="max-w-6xl mx-auto">
           <div className="glass-header max-w-3xl mx-auto mb-12 text-center wow-title-shimmer">
             <h2

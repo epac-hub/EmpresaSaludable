@@ -134,3 +134,10 @@
 - [x] Integrate background music (bossa-vocal-final) with play/mute button into Saludable page
 - [x] Hero: Replace video with new hero image (Puerto Rico Wellness Center — 5 women + 2 men, yoga/fitness/smoothie bar, ocean view, golden hour)
 - [x] Hero: Replace video with approved image v20 (group exercising in luxury pavilion with EMPRESA SALUDABLE sign) + Ken Burns zoom animation for movement sensation
+- [x] Generate interior section image: Pilares (bienestar integral, yoga, meditación, nutrición)
+- [x] Generate interior section image: Cumplimiento (profesionales revisando documentos)
+- [x] Generate interior section image: Planes (ambiente corporativo celebrando bienestar)
+- [x] Generate interior section image: Farmacias (farmacia de comunidad moderna)
+- [x] Upload all images and integrate into Saludable.tsx
+- [x] Add parallax scrolling effects to interior sections with new images
+- [x] Save checkpoint after completing interior images + parallax

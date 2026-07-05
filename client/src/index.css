@@ -216,8 +216,14 @@ body::after {
   100% { transform: scale(1) translate(0, 0); }
 }
 
+@keyframes panHorizontal {
+  0% { transform: scale(1.15) translateX(5%); }
+  50% { transform: scale(1.15) translateX(-5%); }
+  100% { transform: scale(1.15) translateX(5%); }
+}
+
 .animate-ken-burns {
-  animation: kenBurns 8s ease-in-out infinite;
+  animation: panHorizontal 10s ease-in-out infinite;
   will-change: transform;
 }
 
