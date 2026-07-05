@@ -1614,7 +1614,7 @@ export default function Saludable() {
         {/* Parallax background image — luxury Caribbean wellness */}
         <div className="absolute inset-0 overflow-hidden">
           <img
-            src="/manus-storage/section-pilares_9dad0704.jpg"
+            src="/manus-storage/section-pilares-v2_613172c9.jpg"
             alt=""
             className="section-parallax-img absolute inset-0 w-full h-[120%] object-cover opacity-[0.18] scale-110"
             style={{ willChange: 'transform' }}
@@ -1976,7 +1976,7 @@ export default function Saludable() {
         {/* Parallax background image — compliance professionals */}
         <div className="absolute inset-0 overflow-hidden">
           <img
-            src="/manus-storage/section-cumplimiento_aecd4948.jpg"
+            src="/manus-storage/section-cumplimiento-v2_ca685447.jpg"
             alt=""
             className="section-parallax-img absolute inset-0 w-full h-[120%] object-cover opacity-[0.15] scale-110"
             style={{ willChange: 'transform' }}
@@ -2114,7 +2114,7 @@ export default function Saludable() {
         {/* Parallax background image — corporate wellness celebration */}
         <div className="absolute inset-0 overflow-hidden">
           <img
-            src="/manus-storage/section-planes_e82f3e0c.jpg"
+            src="/manus-storage/section-planes-v2_6acc92f4.jpg"
             alt=""
             className="section-parallax-img absolute inset-0 w-full h-[120%] object-cover opacity-[0.12] scale-110"
             style={{ willChange: 'transform' }}
@@ -2408,7 +2408,7 @@ export default function Saludable() {
         {/* Parallax background image — modern community pharmacy */}
         <div className="absolute inset-0 overflow-hidden">
           <img
-            src="/manus-storage/section-farmacias_26534505.jpg"
+            src="/manus-storage/section-farmacias-v2_bbb4580b.jpg"
             alt=""
             className="section-parallax-img absolute inset-0 w-full h-[120%] object-cover opacity-[0.10] scale-110"
             style={{ willChange: 'transform' }}

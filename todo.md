@@ -141,3 +141,9 @@
 - [x] Upload all images and integrate into Saludable.tsx
 - [x] Add parallax scrolling effects to interior sections with new images
 - [x] Save checkpoint after completing interior images + parallax
+- [x] Regenerate Pilares image: MORE UPSCALE (5-star resort, editorial fashion, cinematic)
+- [x] Regenerate Cumplimiento image: MORE UPSCALE (luxury executive boardroom, cinematic)
+- [x] Regenerate Planes image: MORE UPSCALE (premium corporate wellness, cinematic)
+- [x] Regenerate Farmacias image: MORE UPSCALE (high-end boutique pharmacy, cinematic)
+- [x] Update Saludable.tsx with new upscale image URLs
+- [x] Save checkpoint with upscale images
