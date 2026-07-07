@@ -172,3 +172,4 @@
 - [x] Add interactive hover effect on Historias Reales testimonial cards (show name/testimonial on cursor hover)
 - [x] Add hover effect on specialist cards that displays a brief biography overlay for each team member
 - [x] Add staggered scroll-triggered entrance animation for specialist cards (smooth appear on scroll)
+- [x] Move Preguntas Frecuentes (FAQ) section to the very bottom of the page (below Contacto)

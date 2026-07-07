@@ -2315,141 +2315,15 @@ export default function Saludable() {
         </div>
       </section>
 
-      {/* ═══ TRANSITION BRIDGE: Logos → FAQ ═══ */}
+      {/* ═══ TRANSITION BRIDGE: Logos → Map ═══ */}
       <div className="relative h-16 -mt-1">
-        <div className="absolute inset-0 bg-gradient-to-b from-white to-[#F4F9F2]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-white to-white" />
         <svg className="absolute bottom-0 left-0 w-full h-10" viewBox="0 0 1440 40" preserveAspectRatio="none" fill="none">
-          <path d="M0,20 C480,40 960,0 1440,20 L1440,40 L0,40 Z" fill="#F4F9F2" />
+          <path d="M0,20 C480,40 960,0 1440,20 L1440,40 L0,40 Z" fill="white" />
         </svg>
       </div>
 
-      {/* ═══ FAQ — PREGUNTAS FRECUENTES (GSAP Accordion) ═══ */}
-      <section className="py-24 px-6 bg-[#F4F9F2]" data-reveal="fade-up">
-        <div className="max-w-4xl mx-auto">
-          <div className="glass-header max-w-2xl mx-auto mb-12 text-center wow-title-shimmer">
-            <h2
-              className="wow-title text-2xl md:text-3xl font-bold text-center mb-4 text-[#2D3B2D]"
-              style={{ fontFamily: "'Playfair Display', serif" }}
-            >
-              Preguntas <span className="emphasis">Frecuentes</span>
-            </h2>
-            <p className="text-[#2D3B2D]/60 max-w-xl mx-auto">
-              Resolvemos las dudas más comunes sobre nuestros programas de bienestar corporativo.
-            </p>
-          </div>
 
-          <div className="space-y-3" data-faq-accordion>
-            {[
-              {
-                q: "¿Cuánto tiempo toma implementar un programa de bienestar?",
-                a: "La implementación básica toma entre 4-6 semanas. Comenzamos con la evaluación inicial, diseñamos el plan estratégico personalizado, y lanzamos los primeros programas piloto. El programa completo con certificación se logra en 6-12 meses dependiendo del tamaño de la organización."
-              },
-              {
-                q: "¿Qué incluye la red de Farmacias de Comunidad?",
-                a: "Acceso a más de 112 farmacias en 70 municipios de Puerto Rico con servicios de salud preventiva, consultas nutricionales, monitoreo de presión arterial, vacunaciones, y descuentos en medicamentos y suplementos para todos los beneficiarios del programa."
-              },
-              {
-                q: "¿Cómo se mide el ROI del programa?",
-                a: "Medimos el retorno de inversión a través de métricas verificables: reducción en ausentismo, disminución de reclamaciones de salud, mejora en productividad medida por KPIs departamentales, retención de talento, y encuestas de satisfacción. Nuestros clientes reportan un ROI promedio de 3:1."
-              },
-              {
-                q: "¿El programa cumple con las regulaciones del Depto. de Salud y Depto. del Trabajo?",
-                a: "Sí. Todos nuestros programas están diseñados para cumplir con las regulaciones del Departamento de Salud de Puerto Rico y el Departamento del Trabajo y Recursos Humanos. Incluimos auditorías de cumplimiento regulatorio como parte del servicio."
-              },
-              {
-                q: "¿Puedo personalizar el programa para mi industria específica?",
-                a: "Absolutamente. Cada programa se adapta a la industria, tamaño y cultura de tu organización. Tenemos experiencia en manufactura, servicios financieros, tecnología, salud, gobierno y retail. El Plan Empresarial incluye personalización completa."
-              },
-              {
-                q: "¿Qué diferencia a Empresa Saludable de otros programas de bienestar?",
-                a: "Nuestro enfoque integra los 5 pilares del bienestar (mental, físico, nutricional, financiero y corporativo) en un solo programa coordinado. Además, contamos con una red física de Farmacias de Comunidad en toda la isla, embajadores profesionales certificados, y un sistema de cumplimiento regulatorio integrado."
-              },
-            ].map((faq, i) => (
-              <div
-                key={i}
-                className="faq-item bg-white rounded-2xl border border-[#A8C5A0]/20 hover:border-[#6BAF8D]/40 transition-all duration-300 hover:shadow-lg hover:shadow-[#6BAF8D]/10 overflow-hidden"
-                style={{ opacity: 0, transform: 'translateY(20px)' }}
-                ref={(el) => {
-                  if (el && !el.dataset.revealed) {
-                    el.dataset.revealed = 'true';
-                    gsap.to(el, {
-                      scrollTrigger: { trigger: el, start: 'top 90%' },
-                      opacity: 1,
-                      y: 0,
-                      duration: 0.6,
-                      delay: i * 0.1,
-                      ease: 'power3.out',
-                    });
-                  }
-                }}
-              >
-                <button
-                  className="w-full flex items-center justify-between p-6 cursor-pointer text-left"
-                  aria-expanded="false"
-                  onClick={(e) => {
-                    const btn = e.currentTarget;
-                    const item = btn.parentElement!;
-                    const content = item.querySelector('.faq-content') as HTMLElement;
-                    const icon = item.querySelector('.faq-icon') as HTMLElement;
-                    const isOpen = content.style.maxHeight && content.style.maxHeight !== '0px';
-                    
-                    if (isOpen) {
-                      btn.setAttribute('aria-expanded', 'false');
-                      gsap.to(content, { maxHeight: 0, opacity: 0, paddingTop: 0, duration: 0.4, ease: 'power3.inOut' });
-                      gsap.to(icon, { rotation: 0, scale: 1, duration: 0.3, ease: 'back.out(2)' });
-                      item.classList.remove('ring-2', 'ring-[#6BAF8D]/20');
-                    } else {
-                      // Close all others first with smooth collapse
-                      document.querySelectorAll('.faq-item .faq-content').forEach((el) => {
-                        if (el !== content) {
-                          gsap.to(el, { maxHeight: 0, opacity: 0, paddingTop: 0, duration: 0.35, ease: 'power3.inOut' });
-                        }
-                      });
-                      document.querySelectorAll('.faq-item .faq-icon').forEach((el) => {
-                        if (el !== icon) {
-                          gsap.to(el, { rotation: 0, scale: 1, duration: 0.3, ease: 'back.out(2)' });
-                        }
-                      });
-                      document.querySelectorAll('.faq-item').forEach((el) => {
-                        if (el !== item) el.classList.remove('ring-2', 'ring-[#6BAF8D]/20');
-                      });
-                      document.querySelectorAll('.faq-item button').forEach((el) => {
-                        if (el !== btn) el.setAttribute('aria-expanded', 'false');
-                      });
-                      btn.setAttribute('aria-expanded', 'true');
-                      item.classList.add('ring-2', 'ring-[#6BAF8D]/20');
-                      // Use scrollHeight for dynamic content height
-                      const targetHeight = content.scrollHeight || 500;
-                      gsap.to(content, { maxHeight: targetHeight, opacity: 1, duration: 0.5, ease: 'power2.out' });
-                      gsap.to(icon, { rotation: 135, scale: 1.1, duration: 0.4, ease: 'back.out(2)' });
-                    }
-                  }}
-                >
-                  <span className="font-semibold text-[#2D3B2D] text-sm md:text-base pr-4">{faq.q}</span>
-                  <span className="faq-icon flex-shrink-0 w-9 h-9 rounded-full bg-gradient-to-br from-[#6BAF8D]/20 to-[#81C784]/10 flex items-center justify-center text-[#6BAF8D] transition-colors">
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
-                    </svg>
-                  </span>
-                </button>
-                <div className="faq-content overflow-hidden" style={{ maxHeight: '0px', opacity: 0 }}>
-                  <div className="px-6 pb-6 pt-0">
-                    <p className="text-sm text-[#2D3B2D]/70 leading-relaxed">{faq.a}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══ TRANSITION BRIDGE: FAQ → Map ═══ */}
-      <div className="relative h-16 -mt-1">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#F4F9F2] to-white" />
-        <svg className="absolute bottom-0 left-0 w-full h-10" viewBox="0 0 1440 40" preserveAspectRatio="none" fill="none">
-          <path d="M0,20 C360,40 720,0 1080,20 C1260,30 1380,25 1440,20 L1440,40 L0,40 Z" fill="white" />
-        </svg>
-      </div>
 
       {/* ═══ PHARMACY MAP ═══ */}
       <section ref={mapRef} id="farmacias" data-reveal="fade-up" className="py-24 px-6 bg-white relative overflow-hidden">
@@ -2671,7 +2545,132 @@ export default function Saludable() {
         </div>
       </section>
 
-      {/* ═══ TRANSITION BRIDGE: Contact → Footer ═══ */}
+      {/* ═══ TRANSITION BRIDGE: Contact → FAQ ═══ */}
+      <div className="relative h-16 -mt-1">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#F4F9F2] to-[#F4F9F2]" />
+      </div>
+
+      {/* ═══ FAQ — PREGUNTAS FRECUENTES (GSAP Accordion) ═══ */}
+      <section className="py-24 px-6 bg-[#F4F9F2]" data-reveal="fade-up">
+        <div className="max-w-4xl mx-auto">
+          <div className="glass-header max-w-2xl mx-auto mb-12 text-center wow-title-shimmer">
+            <h2
+              className="wow-title text-2xl md:text-3xl font-bold text-center mb-4 text-[#2D3B2D]"
+              style={{ fontFamily: "'Playfair Display', serif" }}
+            >
+              Preguntas <span className="emphasis">Frecuentes</span>
+            </h2>
+            <p className="text-[#2D3B2D]/60 max-w-xl mx-auto">
+              Resolvemos las dudas más comunes sobre nuestros programas de bienestar corporativo.
+            </p>
+          </div>
+
+          <div className="space-y-3" data-faq-accordion>
+            {[
+              {
+                q: "¿Cuánto tiempo toma implementar un programa de bienestar?",
+                a: "La implementación básica toma entre 4-6 semanas. Comenzamos con la evaluación inicial, diseñamos el plan estratégico personalizado, y lanzamos los primeros programas piloto. El programa completo con certificación se logra en 6-12 meses dependiendo del tamaño de la organización."
+              },
+              {
+                q: "¿Qué incluye la red de Farmacias de Comunidad?",
+                a: "Acceso a más de 112 farmacias en 70 municipios de Puerto Rico con servicios de salud preventiva, consultas nutricionales, monitoreo de presión arterial, vacunaciones, y descuentos en medicamentos y suplementos para todos los beneficiarios del programa."
+              },
+              {
+                q: "¿Cómo se mide el ROI del programa?",
+                a: "Medimos el retorno de inversión a través de métricas verificables: reducción en ausentismo, disminución de reclamaciones de salud, mejora en productividad medida por KPIs departamentales, retención de talento, y encuestas de satisfacción. Nuestros clientes reportan un ROI promedio de 3:1."
+              },
+              {
+                q: "¿El programa cumple con las regulaciones del Depto. de Salud y Depto. del Trabajo?",
+                a: "Sí. Todos nuestros programas están diseñados para cumplir con las regulaciones del Departamento de Salud de Puerto Rico y el Departamento del Trabajo y Recursos Humanos. Incluimos auditorías de cumplimiento regulatorio como parte del servicio."
+              },
+              {
+                q: "¿Puedo personalizar el programa para mi industria específica?",
+                a: "Absolutamente. Cada programa se adapta a la industria, tamaño y cultura de tu organización. Tenemos experiencia en manufactura, servicios financieros, tecnología, salud, gobierno y retail. El Plan Empresarial incluye personalización completa."
+              },
+              {
+                q: "¿Qué diferencia a Empresa Saludable de otros programas de bienestar?",
+                a: "Nuestro enfoque integra los 5 pilares del bienestar (mental, físico, nutricional, financiero y corporativo) en un solo programa coordinado. Además, contamos con una red física de Farmacias de Comunidad en toda la isla, embajadores profesionales certificados, y un sistema de cumplimiento regulatorio integrado."
+              },
+            ].map((faq, i) => (
+              <div
+                key={i}
+                className="faq-item bg-white rounded-2xl border border-[#A8C5A0]/20 hover:border-[#6BAF8D]/40 transition-all duration-300 hover:shadow-lg hover:shadow-[#6BAF8D]/10 overflow-hidden"
+                style={{ opacity: 0, transform: 'translateY(20px)' }}
+                ref={(el) => {
+                  if (el && !el.dataset.revealed) {
+                    el.dataset.revealed = 'true';
+                    gsap.to(el, {
+                      scrollTrigger: { trigger: el, start: 'top 90%' },
+                      opacity: 1,
+                      y: 0,
+                      duration: 0.6,
+                      delay: i * 0.1,
+                      ease: 'power3.out',
+                    });
+                  }
+                }}
+              >
+                <button
+                  className="w-full flex items-center justify-between p-6 cursor-pointer text-left"
+                  aria-expanded="false"
+                  onClick={(e) => {
+                    const btn = e.currentTarget;
+                    const item = btn.parentElement!;
+                    const content = item.querySelector('.faq-content') as HTMLElement;
+                    const icon = item.querySelector('.faq-icon') as HTMLElement;
+                    const isOpen = content.style.maxHeight && content.style.maxHeight !== '0px';
+                    
+                    if (isOpen) {
+                      btn.setAttribute('aria-expanded', 'false');
+                      gsap.to(content, { maxHeight: 0, opacity: 0, paddingTop: 0, duration: 0.4, ease: 'power3.inOut' });
+                      gsap.to(icon, { rotation: 0, scale: 1, duration: 0.3, ease: 'back.out(2)' });
+                      item.classList.remove('ring-2', 'ring-[#6BAF8D]/20');
+                    } else {
+                      // Close all others first with smooth collapse
+                      document.querySelectorAll('.faq-item .faq-content').forEach((el) => {
+                        if (el !== content) {
+                          gsap.to(el, { maxHeight: 0, opacity: 0, paddingTop: 0, duration: 0.35, ease: 'power3.inOut' });
+                        }
+                      });
+                      document.querySelectorAll('.faq-item .faq-icon').forEach((el) => {
+                        if (el !== icon) {
+                          gsap.to(el, { rotation: 0, scale: 1, duration: 0.3, ease: 'back.out(2)' });
+                        }
+                      });
+                      document.querySelectorAll('.faq-item').forEach((el) => {
+                        if (el !== item) el.classList.remove('ring-2', 'ring-[#6BAF8D]/20');
+                      });
+                      document.querySelectorAll('.faq-item button').forEach((el) => {
+                        if (el !== btn) el.setAttribute('aria-expanded', 'false');
+                      });
+                      btn.setAttribute('aria-expanded', 'true');
+                      item.classList.add('ring-2', 'ring-[#6BAF8D]/20');
+                      // Use scrollHeight for dynamic content height
+                      const targetHeight = content.scrollHeight || 500;
+                      gsap.to(content, { maxHeight: targetHeight, opacity: 1, duration: 0.5, ease: 'power2.out' });
+                      gsap.to(icon, { rotation: 135, scale: 1.1, duration: 0.4, ease: 'back.out(2)' });
+                    }
+                  }}
+                >
+                  <span className="font-semibold text-[#2D3B2D] text-sm md:text-base pr-4">{faq.q}</span>
+                  <span className="faq-icon flex-shrink-0 w-9 h-9 rounded-full bg-gradient-to-br from-[#6BAF8D]/20 to-[#81C784]/10 flex items-center justify-center text-[#6BAF8D] transition-colors">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
+                    </svg>
+                  </span>
+                </button>
+                <div className="faq-content overflow-hidden" style={{ maxHeight: '0px', opacity: 0 }}>
+                  <div className="px-6 pb-6 pt-0">
+                    <p className="text-sm text-[#2D3B2D]/70 leading-relaxed">{faq.a}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ TRANSITION BRIDGE: FAQ → Footer ═══ */}
       <div className="relative h-16 -mt-1">
         <div className="absolute inset-0 bg-gradient-to-b from-[#F4F9F2] to-[#2D3B2D]" />
         <svg className="absolute bottom-0 left-0 w-full h-10" viewBox="0 0 1440 40" preserveAspectRatio="none" fill="none">
