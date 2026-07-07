@@ -173,3 +173,5 @@
 - [x] Add hover effect on specialist cards that displays a brief biography overlay for each team member
 - [x] Add staggered scroll-triggered entrance animation for specialist cards (smooth appear on scroll)
 - [x] Move Preguntas Frecuentes (FAQ) section to the very bottom of the page (below Contacto)
+- [x] Replace emoji-style icons in Planificación y Cumplimiento timeline with clean professional SVG icons
+- [x] Move logos section below FAQ, rename to "Nuestros Colaboradores", add logos: Farmacia Isla Verde, Cámara de Comercio, RPS Medical, Professional Hospital, MCS, CORE PLUS, VarMED

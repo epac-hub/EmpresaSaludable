@@ -166,35 +166,35 @@ const COMPLIANCE_STEPS = [
     step: 1,
     title: "Evaluación Inicial",
     desc: "Diagnóstico completo del estado de salud organizacional, identificación de riesgos, análisis de clima laboral y evaluación de necesidades específicas de cada departamento.",
-    icon: "🔍",
+    icon: "search",
     deliverable: "Informe de diagnóstico + plan de acción",
   },
   {
     step: 2,
     title: "Plan Estratégico",
     desc: "Diseño personalizado de intervenciones basadas en evidencia científica, establecimiento de KPIs medibles y cronograma de implementación con hitos claros.",
-    icon: "📋",
+    icon: "clipboard",
     deliverable: "Documento estratégico + cronograma",
   },
   {
     step: 3,
     title: "Implementación",
     desc: "Ejecución coordinada con Farmacias de Comunidad, proveedores certificados y equipo interno. Capacitación del personal y lanzamiento de programas piloto.",
-    icon: "⚙️",
+    icon: "cog",
     deliverable: "Programas activos + capacitaciones",
   },
   {
     step: 4,
     title: "Monitoreo Continuo",
     desc: "Seguimiento en tiempo real de métricas de bienestar, ajustes basados en datos, reportes de cumplimiento regulatorio del Depto. de Salud y Depto. del Trabajo de PR, y alertas proactivas.",
-    icon: "📊",
+    icon: "chart",
     deliverable: "Dashboard en vivo + reportes mensuales",
   },
   {
     step: 5,
     title: "Certificación",
     desc: "Validación independiente de resultados, auditoría de cumplimiento, obtención de certificaciones de bienestar corporativo y reconocimiento público.",
-    icon: "🏆",
+    icon: "badge",
     deliverable: "Certificado Empresa Saludable",
   },
 ];
@@ -2112,7 +2112,23 @@ export default function Saludable() {
                       boxShadow: '0 8px 25px rgba(67,160,71,0.3), inset 0 0 15px rgba(255,255,255,0.1)',
                     }}
                   >
-                    <span className="drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]">{step.icon}</span>
+                    <span className="drop-shadow-[0_0_8px_rgba(255,255,255,0.6)] flex items-center justify-center">
+                      {step.icon === 'search' && (
+                        <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" strokeWidth={2} /><path strokeLinecap="round" strokeWidth={2} d="m21 21-4.35-4.35" /></svg>
+                      )}
+                      {step.icon === 'clipboard' && (
+                        <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" /></svg>
+                      )}
+                      {step.icon === 'cog' && (
+                        <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><circle cx="12" cy="12" r="3" strokeWidth={2} /></svg>
+                      )}
+                      {step.icon === 'chart' && (
+                        <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+                      )}
+                      {step.icon === 'badge' && (
+                        <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" /></svg>
+                      )}
+                    </span>
                     {/* Orbiting ring */}
                     <div className="absolute inset-[-6px] rounded-full border border-[#43A047]/30 animate-spin" style={{ animationDuration: `${8 + i * 2}s` }} />
                   </div>
@@ -2280,46 +2296,11 @@ export default function Saludable() {
         </div>
       </section>
 
-      {/* ═══ TRANSITION BRIDGE: Plans → Logos ═══ */}
+      {/* ═══ TRANSITION BRIDGE: Plans → Map ═══ */}
       <div className="relative h-16 -mt-1">
         <div className="absolute inset-0 bg-gradient-to-b from-[#EDF5EA] to-white" />
         <svg className="absolute bottom-0 left-0 w-full h-10" viewBox="0 0 1440 40" preserveAspectRatio="none" fill="none">
           <path d="M0,20 C360,40 720,0 1080,20 C1260,30 1380,25 1440,20 L1440,40 L0,40 Z" fill="white" />
-        </svg>
-      </div>
-
-      {/* ═══ LOGOS INSTITUCIONALES — CARRUSEL INTERACTIVO ═══ */}
-      <section className="py-16 px-6 bg-white border-y border-[#A8C5A0]/10" data-reveal="fade-up">
-        <div className="max-w-5xl mx-auto">
-          <p className="text-center text-sm text-[#2D3B2D]/50 mb-8 uppercase tracking-wider font-medium">
-            Alineados con las regulaciones de
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-12 md:gap-20">
-            <a href="https://www.salud.gov.pr/" target="_blank" rel="noopener noreferrer" className="aliado-logo group flex flex-col items-center gap-3 cursor-pointer">
-              <img
-                src="/manus-storage/logo-depto-salud_962431fe.png"
-                alt="Departamento de Salud de Puerto Rico"
-                className="h-20 md:h-24 w-auto object-contain opacity-80 group-hover:opacity-100 transition-opacity duration-500"
-              />
-              <span className="text-xs text-[#2D3B2D]/50 font-medium group-hover:text-[#43A047] transition-colors duration-300">Depto. de Salud de PR</span>
-            </a>
-            <a href="https://www.trabajo.pr.gov/" target="_blank" rel="noopener noreferrer" className="aliado-logo group flex flex-col items-center gap-3 cursor-pointer">
-              <img
-                src="/manus-storage/logo-depto-trabajo_d62964d2.png"
-                alt="Departamento del Trabajo y Recursos Humanos"
-                className="h-20 md:h-24 w-auto object-contain opacity-80 group-hover:opacity-100 transition-opacity duration-500"
-              />
-              <span className="text-xs text-[#2D3B2D]/50 font-medium group-hover:text-[#43A047] transition-colors duration-300">Depto. del Trabajo y RRHH</span>
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* ═══ TRANSITION BRIDGE: Logos → Map ═══ */}
-      <div className="relative h-16 -mt-1">
-        <div className="absolute inset-0 bg-gradient-to-b from-white to-white" />
-        <svg className="absolute bottom-0 left-0 w-full h-10" viewBox="0 0 1440 40" preserveAspectRatio="none" fill="none">
-          <path d="M0,20 C480,40 960,0 1440,20 L1440,40 L0,40 Z" fill="white" />
         </svg>
       </div>
 
@@ -2670,9 +2651,90 @@ export default function Saludable() {
         </div>
       </section>
 
-      {/* ═══ TRANSITION BRIDGE: FAQ → Footer ═══ */}
+      {/* ═══ TRANSITION BRIDGE: FAQ → Colaboradores ═══ */}
+      <div className="relative h-8 -mt-1">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#F4F9F2] to-white" />
+      </div>
+
+      {/* ═══ NUESTROS COLABORADORES ═══ */}
+      <section className="py-20 px-6 bg-white" data-reveal="fade-up">
+        <div className="max-w-6xl mx-auto">
+          <div className="glass-header max-w-2xl mx-auto mb-14 text-center wow-title-shimmer">
+            <h2
+              className="wow-title text-2xl md:text-3xl font-bold text-center mb-4 text-[#2D3B2D]"
+              style={{ fontFamily: "'Playfair Display', serif" }}
+            >
+              Nuestros <span className="emphasis">Colaboradores</span>
+            </h2>
+            <p className="text-[#2D3B2D]/60 max-w-xl mx-auto">
+              Organizaciones líderes que confían en nuestro programa de bienestar corporativo.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-8 items-center justify-items-center">
+            <a href="https://www.farmaciaislaverde.com/" target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center gap-3 cursor-pointer transition-transform duration-300 hover:scale-110">
+              <img
+                src="/manus-storage/logo-farmacia-isla-verde_f8abca09.jpg"
+                alt="Farmacia Isla Verde"
+                className="h-16 md:h-20 w-auto object-contain opacity-75 group-hover:opacity-100 transition-opacity duration-500"
+              />
+              <span className="text-[10px] text-[#2D3B2D]/50 font-medium group-hover:text-[#43A047] transition-colors duration-300 text-center">Farmacia Isla Verde</span>
+            </a>
+            <a href="https://www.camarapr.org/" target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center gap-3 cursor-pointer transition-transform duration-300 hover:scale-110">
+              <img
+                src="/manus-storage/logo-camara-comercio_95450442.png"
+                alt="Cámara de Comercio de Puerto Rico"
+                className="h-16 md:h-20 w-auto object-contain opacity-75 group-hover:opacity-100 transition-opacity duration-500"
+              />
+              <span className="text-[10px] text-[#2D3B2D]/50 font-medium group-hover:text-[#43A047] transition-colors duration-300 text-center">Cámara de Comercio</span>
+            </a>
+            <a href="https://www.rpsmedical.com/" target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center gap-3 cursor-pointer transition-transform duration-300 hover:scale-110">
+              <img
+                src="/manus-storage/logo-rps-medical_47faf98c.png"
+                alt="RPS Medical"
+                className="h-16 md:h-20 w-auto object-contain opacity-75 group-hover:opacity-100 transition-opacity duration-500"
+              />
+              <span className="text-[10px] text-[#2D3B2D]/50 font-medium group-hover:text-[#43A047] transition-colors duration-300 text-center">RPS Medical</span>
+            </a>
+            <a href="https://www.professionalhospital.com/" target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center gap-3 cursor-pointer transition-transform duration-300 hover:scale-110">
+              <img
+                src="/manus-storage/logo-professional-hospital_451eec14.png"
+                alt="Professional Hospital Guaynabo"
+                className="h-16 md:h-20 w-auto object-contain opacity-75 group-hover:opacity-100 transition-opacity duration-500"
+              />
+              <span className="text-[10px] text-[#2D3B2D]/50 font-medium group-hover:text-[#43A047] transition-colors duration-300 text-center">Professional Hospital</span>
+            </a>
+            <a href="https://www.mcs.com.pr/" target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center gap-3 cursor-pointer transition-transform duration-300 hover:scale-110">
+              <img
+                src="/manus-storage/logo-mcs_ddb3acde.png"
+                alt="MCS Healthcare"
+                className="h-16 md:h-20 w-auto object-contain opacity-75 group-hover:opacity-100 transition-opacity duration-500"
+              />
+              <span className="text-[10px] text-[#2D3B2D]/50 font-medium group-hover:text-[#43A047] transition-colors duration-300 text-center">MCS</span>
+            </a>
+            <a href="https://corepluspr.com/" target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center gap-3 cursor-pointer transition-transform duration-300 hover:scale-110">
+              <img
+                src="/manus-storage/logo-coreplus_f2cf11ef.png"
+                alt="CORE PLUS"
+                className="h-16 md:h-20 w-auto object-contain opacity-75 group-hover:opacity-100 transition-opacity duration-500"
+              />
+              <span className="text-[10px] text-[#2D3B2D]/50 font-medium group-hover:text-[#43A047] transition-colors duration-300 text-center">CORE PLUS</span>
+            </a>
+            <a href="https://varmedmanagement.com/" target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center gap-3 cursor-pointer transition-transform duration-300 hover:scale-110">
+              <img
+                src="/manus-storage/logo-varmed_36b690af.png"
+                alt="VarMED Management Group"
+                className="h-16 md:h-20 w-auto object-contain opacity-75 group-hover:opacity-100 transition-opacity duration-500"
+              />
+              <span className="text-[10px] text-[#2D3B2D]/50 font-medium group-hover:text-[#43A047] transition-colors duration-300 text-center">VarMED</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ TRANSITION BRIDGE: Colaboradores → Footer ═══ */}
       <div className="relative h-16 -mt-1">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#F4F9F2] to-[#2D3B2D]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-white to-[#2D3B2D]" />
         <svg className="absolute bottom-0 left-0 w-full h-10" viewBox="0 0 1440 40" preserveAspectRatio="none" fill="none">
           <path d="M0,20 C360,40 720,0 1080,20 C1260,30 1380,25 1440,20 L1440,40 L0,40 Z" fill="#2D3B2D" />
         </svg>
