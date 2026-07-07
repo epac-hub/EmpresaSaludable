@@ -155,10 +155,10 @@ const PILLARS = [
 ];
 
 const STATS = [
-  { value: 112, suffix: "+", label: "Farmacias de Comunidad" },
-  { value: 70, suffix: "", label: "Municipios Cubiertos" },
-  { value: 98, suffix: "%", label: "Satisfacción" },
-  { value: 12, suffix: "K+", label: "Beneficiarios" },
+  { value: 112, suffix: "+", label: "Farmacias de Comunidad", icon: "🏥" },
+  { value: 70, suffix: "", label: "Municipios Cubiertos", icon: "📍" },
+  { value: 98, suffix: "%", label: "Satisfacción", icon: "⭐" },
+  { value: 12, suffix: "K+", label: "Beneficiarios", icon: "👥" },
 ];
 
 const COMPLIANCE_STEPS = [
@@ -1056,11 +1056,11 @@ export default function Saludable() {
               ease: "back.out(1.7)",
             });
 
-            // Count-up with dramatic easing
+            // Count-up with slower dramatic easing for more notable effect
             gsap.to(obj, {
               val: value,
-              duration: 2.5,
-              ease: "power4.out",
+              duration: 4,
+              ease: "power3.out",
               onUpdate: () => {
                 if (countRef.current) {
                   countRef.current.textContent = Math.round(obj.val) + suffix;
@@ -1874,11 +1874,14 @@ export default function Saludable() {
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {STATS.map((stat, i) => (
-              <div key={i} className="stat-item text-center">
-                <div className="text-4xl md:text-5xl font-bold mb-2 text-white drop-shadow-lg">
+              <div key={i} className="stat-item text-center group cursor-default">
+                <div className="text-3xl mb-3 transition-transform duration-300 group-hover:scale-125 group-hover:rotate-12">
+                  {stat.icon}
+                </div>
+                <div className="text-4xl md:text-5xl font-bold mb-2 text-white drop-shadow-lg transition-colors duration-500 group-hover:text-[#FFD54F]">
                   <AnimatedCounter value={stat.value} suffix={stat.suffix} />
                 </div>
-                <p className="text-sm text-white/80">{stat.label}</p>
+                <p className="text-sm text-white/80 transition-colors duration-500 group-hover:text-white">{stat.label}</p>
               </div>
             ))}
           </div>
