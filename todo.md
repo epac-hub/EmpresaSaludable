@@ -162,4 +162,7 @@
 - [x] Add interactive button "Conoce nuestros servicios" on hero image with smooth hover transition
 - [x] Add subtle entrance animation for main sections when users scroll down
 - [x] Verify testimonials section is properly integrated
-- [ ] Add animated counter to stats section that counts from 0 to final number on scroll
+- [x] Add animated counter to stats section that counts from 0 to final number on scroll (enhanced: slower 4s animation, icons above numbers, gold hover color change)
+- [x] Regenerate Pilares (Bienestar Integral) background image with YOUNGER people
+- [x] Regenerate Cumplimiento (Planificación y Cumplimiento) background image with YOUNGER people
+- [x] Speed up Historias Reales (Testimonials) background video — people look like robots, need faster movement (set playbackRate to 2x)

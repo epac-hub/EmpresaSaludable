@@ -1630,7 +1630,7 @@ export default function Saludable() {
         {/* Parallax background image — luxury Caribbean wellness */}
         <div className="absolute inset-0 overflow-hidden">
           <img
-            src="/manus-storage/section-pilares-v5_e7b27bb5.jpg"
+            src="/manus-storage/section-pilares-v6_9fc64034.jpg"
             alt=""
             className="section-parallax-img absolute inset-0 w-full h-[120%] object-cover opacity-[0.25] scale-110"
             style={{ willChange: 'transform' }}
@@ -1909,6 +1909,7 @@ export default function Saludable() {
             playsInline
             preload="none"
             poster="/manus-storage/testimonial-bg-keyframe_dae63de5.png"
+            ref={(el) => { if (el) el.playbackRate = 2.0; }}
           >
             <source src="/manus-storage/testimonial-bg-video_0077eed0.mp4" type="video/mp4" />
           </video>
@@ -1995,7 +1996,7 @@ export default function Saludable() {
         {/* Parallax background image — compliance professionals */}
         <div className="absolute inset-0 overflow-hidden">
           <img
-            src="/manus-storage/section-cumplimiento-v5_8ca21360.jpg"
+            src="/manus-storage/section-cumplimiento-v6_d4d511c0.jpg"
             alt=""
             className="section-parallax-img absolute inset-0 w-full h-[120%] object-cover opacity-[0.22] scale-110"
             style={{ willChange: 'transform' }}
