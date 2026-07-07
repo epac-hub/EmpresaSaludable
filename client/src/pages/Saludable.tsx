@@ -347,7 +347,7 @@ export default function Saludable() {
   const [showParticles3D, setShowParticles3D] = useState(false);
   const [showTestimonialVideo, setShowTestimonialVideo] = useState(false);
   const testimonialSectionRef = useRef<HTMLElement>(null);
-  const beneficiaryScrollRef = useRef<HTMLDivElement>(null);
+  // beneficiaryScrollRef removed - using static grid instead of marquee
 
   useEffect(() => {
     const observerOptions = { rootMargin: '400px 0px', threshold: 0 };
@@ -972,76 +972,13 @@ export default function Saludable() {
         }
       });
 
-      // Beneficiarios cards — infinite marquee scroll (no page scroll hijack)
-      if (beneficiaryScrollRef.current) {
-        const track = beneficiaryScrollRef.current.querySelector('.beneficiary-track') as HTMLElement;
-        if (track) {
-          // Duplicate cards for seamless infinite loop
-          const cards = track.innerHTML;
-          track.innerHTML = cards + cards;
-
-          const totalWidth = track.scrollWidth / 2;
-          const marquee = gsap.to(track, {
-            x: -totalWidth,
-            duration: totalWidth / 50, // speed: 50px per second
-            ease: "none",
-            repeat: -1,
-            modifiers: {
-              x: gsap.utils.unitize((x: number) => x % totalWidth),
-            },
-          });
-
-          // Pause on hover
-          beneficiaryScrollRef.current.addEventListener('mouseenter', () => marquee.pause());
-          beneficiaryScrollRef.current.addEventListener('mouseleave', () => marquee.resume());
-        }
-      }
+      // Beneficiarios cards — now using static grid (no marquee needed)
     }, containerRef);
 
     return () => ctx.revert();
   }, []);
 
-  // Restart marquee when filter changes
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (beneficiaryScrollRef.current) {
-        const track = beneficiaryScrollRef.current.querySelector('.beneficiary-track') as HTMLElement;
-        if (track) {
-          // Kill existing tweens on this track
-          gsap.killTweensOf(track);
-          gsap.set(track, { x: 0 });
-
-          // Re-duplicate cards for the new filtered set
-          const children = track.querySelectorAll('.beneficiary-panel');
-          // Remove duplicates (second half)
-          const half = children.length / 2;
-          for (let i = children.length - 1; i >= half; i--) {
-            children[i].remove();
-          }
-          // Re-duplicate
-          const cards = track.innerHTML;
-          track.innerHTML = cards + cards;
-
-          const totalWidth = track.scrollWidth / 2;
-          if (totalWidth > 0) {
-            const marquee = gsap.to(track, {
-              x: -totalWidth,
-              duration: totalWidth / 50,
-              ease: "none",
-              repeat: -1,
-              modifiers: {
-                x: gsap.utils.unitize((x: number) => x % totalWidth),
-              },
-            });
-
-            beneficiaryScrollRef.current.addEventListener('mouseenter', () => marquee.pause());
-            beneficiaryScrollRef.current.addEventListener('mouseleave', () => marquee.resume());
-          }
-        }
-      }
-    }, 100);
-    return () => clearTimeout(timer);
-  }, [testimonialFilter]);
+  // Filter change is handled reactively by the grid rendering filtered testimonials
 
   // ─── Animated Counter ─────────────────────────────────────────────────────
   function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
@@ -1954,58 +1891,58 @@ export default function Saludable() {
             </p>
           </div>
 
-          {/* Category Filter Buttons */}
-          <div className="flex flex-wrap justify-center gap-3 mb-12">
+          {/* Category Filter Buttons — Elegant Premium Health Style */}
+          <div className="flex flex-wrap justify-center gap-4 mb-12">
             {TESTIMONIAL_CATEGORIES.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setTestimonialFilter(cat)}
-                className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+                className={`relative px-7 py-2.5 rounded-[2rem] text-sm font-semibold tracking-wide transition-all duration-400 ease-[cubic-bezier(0.23,1,0.32,1)] overflow-hidden ${
                   testimonialFilter === cat
-                    ? 'bg-[#43A047] text-white shadow-lg shadow-[#43A047]/30 scale-105'
-                    : 'bg-white/60 text-[#2E7D32] border border-[#66BB6A]/30 hover:bg-[#43A047]/10 hover:border-[#43A047]/50 hover:scale-105'
+                    ? 'bg-gradient-to-r from-[#2E7D32] via-[#43A047] to-[#66BB6A] text-white shadow-[0_8px_32px_rgba(46,125,50,0.35)] scale-[1.05] ring-2 ring-white/30'
+                    : 'bg-white/80 text-[#2E7D32] border border-[#81C784]/40 shadow-[0_2px_12px_rgba(46,125,50,0.08)] hover:shadow-[0_6px_24px_rgba(46,125,50,0.2)] hover:border-[#43A047]/60 hover:scale-[1.03] hover:bg-gradient-to-r hover:from-[#E8F5E9] hover:to-white'
                 }`}
               >
-                {cat}
+                {/* Subtle shine sweep on active */}
+                {testimonialFilter === cat && (
+                  <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-[shimmer_2s_infinite]" />
+                )}
+                <span className="relative z-10">{cat}</span>
               </button>
             ))}
           </div>
 
-          {/* INFINITE MARQUEE — cards scroll horizontally without blocking page scroll */}
-          <div ref={beneficiaryScrollRef} className="relative overflow-hidden py-4">
-            <div className="beneficiary-track flex gap-6 will-change-transform">
-              {filteredTestimonials.map((testimonial, i) => (
-                <div
-                  key={i}
-                  className="beneficiary-panel flex-shrink-0 w-[340px] md:w-[380px] p-8 rounded-2xl bg-white/35 backdrop-blur-sm border border-[#66BB6A]/20 shadow-xl hover:shadow-[0_25px_70px_rgba(67,160,71,0.4)] hover:-translate-y-5 hover:scale-[1.07] hover:bg-white/65 hover:border-[#43A047]/50 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group cursor-pointer relative overflow-hidden"
-                >
-                  {/* Hover glow overlay */}
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[#43A047]/0 via-[#66BB6A]/0 to-[#A5D6A7]/0 group-hover:from-[#43A047]/5 group-hover:via-[#66BB6A]/8 group-hover:to-[#A5D6A7]/10 transition-all duration-700 pointer-events-none" />
-                  {/* Shimmer sweep on hover */}
-                  <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-[cubic-bezier(0.23,1,0.32,1)] bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none" />
-                  <div className="relative z-10">
-                    <svg className="w-8 h-8 text-[#43A047]/50 mb-4 group-hover:text-[#2E7D32] group-hover:scale-125 group-hover:rotate-12 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983z" />
-                    </svg>
-                    <p className="text-[#2D3B2D]/80 text-sm leading-relaxed mb-6 italic group-hover:text-[#1B5E20] transition-colors duration-500">
-                      "{testimonial.quote}"
-                    </p>
-                    <div className="border-t border-[#66BB6A]/20 pt-4 group-hover:border-[#43A047]/40 transition-colors duration-500">
-                      <p className="font-semibold text-[#1B5E20] text-sm group-hover:text-[#2E7D32] group-hover:tracking-wide transition-all duration-300">{testimonial.name}</p>
-                      <p className="text-xs text-[#43A047] mt-0.5 group-hover:text-[#1B5E20] group-hover:font-medium transition-all duration-300">{testimonial.role}</p>
-                      <p className="text-xs text-[#2D3B2D]/50 mt-0.5 group-hover:text-[#2E7D32]/70 transition-colors duration-300">{testimonial.municipality}, PR</p>
-                      {/* Category badge appears on hover */}
-                      <span className="inline-block mt-3 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#43A047]/0 text-[#43A047]/0 border border-[#43A047]/0 group-hover:bg-[#43A047]/10 group-hover:text-[#2E7D32] group-hover:border-[#43A047]/30 transition-all duration-500 delay-100">
-                        {testimonial.category}
-                      </span>
-                    </div>
+          {/* RESPONSIVE GRID — all cards fully visible, no clipping */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
+            {filteredTestimonials.map((testimonial, i) => (
+              <div
+                key={`${testimonialFilter}-${i}`}
+                className="p-8 rounded-2xl bg-white/60 backdrop-blur-md border border-[#66BB6A]/25 shadow-lg hover:shadow-[0_20px_60px_rgba(67,160,71,0.3)] hover:-translate-y-3 hover:scale-[1.03] hover:bg-white/85 hover:border-[#43A047]/50 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group cursor-pointer relative overflow-hidden"
+                style={{ animationDelay: `${i * 80}ms` }}
+              >
+                {/* Hover glow overlay */}
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[#43A047]/0 via-[#66BB6A]/0 to-[#A5D6A7]/0 group-hover:from-[#43A047]/5 group-hover:via-[#66BB6A]/8 group-hover:to-[#A5D6A7]/10 transition-all duration-700 pointer-events-none" />
+                {/* Shimmer sweep on hover */}
+                <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-[cubic-bezier(0.23,1,0.32,1)] bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none" />
+                <div className="relative z-10">
+                  <svg className="w-7 h-7 text-[#43A047]/40 mb-4 group-hover:text-[#2E7D32] group-hover:scale-110 group-hover:rotate-6 transition-all duration-500" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983z" />
+                  </svg>
+                  <p className="text-[#2D3B2D]/80 text-sm leading-relaxed mb-6 italic group-hover:text-[#1B5E20] transition-colors duration-500">
+                    "{testimonial.quote}"
+                  </p>
+                  <div className="border-t border-[#66BB6A]/20 pt-4 group-hover:border-[#43A047]/40 transition-colors duration-500">
+                    <p className="font-semibold text-[#1B5E20] text-sm group-hover:text-[#2E7D32] transition-all duration-300">{testimonial.name}</p>
+                    <p className="text-xs text-[#43A047] mt-0.5 group-hover:text-[#1B5E20] transition-all duration-300">{testimonial.role}</p>
+                    <p className="text-xs text-[#2D3B2D]/50 mt-0.5 group-hover:text-[#2E7D32]/70 transition-colors duration-300">{testimonial.municipality}, PR</p>
+                    {/* Category badge */}
+                    <span className="inline-block mt-3 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#43A047]/10 text-[#2E7D32] border border-[#43A047]/20">
+                      {testimonial.category}
+                    </span>
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
-          <div className="flex justify-center mt-6">
-            <span className="text-xs text-[#2E7D32]/50">Pasa el cursor para pausar • Toca para explorar</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -2112,32 +2049,15 @@ export default function Saludable() {
                       boxShadow: '0 8px 25px rgba(67,160,71,0.3), inset 0 0 15px rgba(255,255,255,0.1)',
                     }}
                   >
-                    <span className="drop-shadow-[0_0_8px_rgba(255,255,255,0.6)] flex items-center justify-center">
-                      {step.icon === 'search' && (
-                        <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" strokeWidth={2} /><path strokeLinecap="round" strokeWidth={2} d="m21 21-4.35-4.35" /></svg>
-                      )}
-                      {step.icon === 'clipboard' && (
-                        <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" /></svg>
-                      )}
-                      {step.icon === 'cog' && (
-                        <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><circle cx="12" cy="12" r="3" strokeWidth={2} /></svg>
-                      )}
-                      {step.icon === 'chart' && (
-                        <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
-                      )}
-                      {step.icon === 'badge' && (
-                        <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" /></svg>
-                      )}
+                    <span className="text-white font-bold text-2xl" style={{ fontFamily: "'Playfair Display', serif" }}>
+                      {step.step}
                     </span>
                     {/* Orbiting ring */}
                     <div className="absolute inset-[-6px] rounded-full border border-[#43A047]/30 animate-spin" style={{ animationDuration: `${8 + i * 2}s` }} />
                   </div>
                 </MagneticButton>
 
-                {/* Step number */}
-                <div className="absolute top-0 right-[calc(50%-56px)] w-7 h-7 rounded-full bg-gradient-to-br from-[#43A047] to-[#2E7D32] text-white text-xs font-bold flex items-center justify-center shadow-lg shadow-[#43A047]/40 z-20">
-                  {step.step}
-                </div>
+
 
                 {/* Content card */}
                 <div
@@ -2671,63 +2591,112 @@ export default function Saludable() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-8 items-center justify-items-center">
-            <a href="https://www.farmaciaislaverde.com/" target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center gap-3 cursor-pointer transition-transform duration-300 hover:scale-110">
-              <img
-                src="/manus-storage/logo-farmacia-isla-verde_f8abca09.jpg"
-                alt="Farmacia Isla Verde"
-                className="h-16 md:h-20 w-auto object-contain opacity-75 group-hover:opacity-100 transition-opacity duration-500"
-              />
-              <span className="text-[10px] text-[#2D3B2D]/50 font-medium group-hover:text-[#43A047] transition-colors duration-300 text-center">Farmacia Isla Verde</span>
-            </a>
-            <a href="https://www.camarapr.org/" target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center gap-3 cursor-pointer transition-transform duration-300 hover:scale-110">
-              <img
-                src="/manus-storage/logo-camara-comercio_95450442.png"
-                alt="Cámara de Comercio de Puerto Rico"
-                className="h-16 md:h-20 w-auto object-contain opacity-75 group-hover:opacity-100 transition-opacity duration-500"
-              />
-              <span className="text-[10px] text-[#2D3B2D]/50 font-medium group-hover:text-[#43A047] transition-colors duration-300 text-center">Cámara de Comercio</span>
-            </a>
-            <a href="https://www.rpsmedical.com/" target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center gap-3 cursor-pointer transition-transform duration-300 hover:scale-110">
-              <img
-                src="/manus-storage/logo-rps-medical_47faf98c.png"
-                alt="RPS Medical"
-                className="h-16 md:h-20 w-auto object-contain opacity-75 group-hover:opacity-100 transition-opacity duration-500"
-              />
-              <span className="text-[10px] text-[#2D3B2D]/50 font-medium group-hover:text-[#43A047] transition-colors duration-300 text-center">RPS Medical</span>
-            </a>
-            <a href="https://www.professionalhospital.com/" target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center gap-3 cursor-pointer transition-transform duration-300 hover:scale-110">
-              <img
-                src="/manus-storage/logo-professional-hospital_451eec14.png"
-                alt="Professional Hospital Guaynabo"
-                className="h-16 md:h-20 w-auto object-contain opacity-75 group-hover:opacity-100 transition-opacity duration-500"
-              />
-              <span className="text-[10px] text-[#2D3B2D]/50 font-medium group-hover:text-[#43A047] transition-colors duration-300 text-center">Professional Hospital</span>
-            </a>
-            <a href="https://www.mcs.com.pr/" target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center gap-3 cursor-pointer transition-transform duration-300 hover:scale-110">
-              <img
-                src="/manus-storage/logo-mcs_ddb3acde.png"
-                alt="MCS Healthcare"
-                className="h-16 md:h-20 w-auto object-contain opacity-75 group-hover:opacity-100 transition-opacity duration-500"
-              />
-              <span className="text-[10px] text-[#2D3B2D]/50 font-medium group-hover:text-[#43A047] transition-colors duration-300 text-center">MCS</span>
-            </a>
-            <a href="https://corepluspr.com/" target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center gap-3 cursor-pointer transition-transform duration-300 hover:scale-110">
-              <img
-                src="/manus-storage/logo-coreplus_f2cf11ef.png"
-                alt="CORE PLUS"
-                className="h-16 md:h-20 w-auto object-contain opacity-75 group-hover:opacity-100 transition-opacity duration-500"
-              />
-              <span className="text-[10px] text-[#2D3B2D]/50 font-medium group-hover:text-[#43A047] transition-colors duration-300 text-center">CORE PLUS</span>
-            </a>
-            <a href="https://varmedmanagement.com/" target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center gap-3 cursor-pointer transition-transform duration-300 hover:scale-110">
-              <img
-                src="/manus-storage/logo-varmed_36b690af.png"
-                alt="VarMED Management Group"
-                className="h-16 md:h-20 w-auto object-contain opacity-75 group-hover:opacity-100 transition-opacity duration-500"
-              />
-              <span className="text-[10px] text-[#2D3B2D]/50 font-medium group-hover:text-[#43A047] transition-colors duration-300 text-center">VarMED</span>
-            </a>
+          {/* Auto-scrolling marquee at medium speed */}
+          <div className="relative overflow-hidden">
+            {/* Fade edges */}
+            <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+            
+            <div className="flex animate-[collab-scroll_40s_linear_infinite] hover:[animation-play-state:paused] gap-12 items-center py-4">
+              {/* First set */}
+              <a href="https://www.farmaciaislaverde.com/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
+                <img src="/manus-storage/logo-farmacia-isla-verde_f8abca09.jpg" alt="Farmacia Isla Verde" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">Farmacia Isla Verde</span>
+              </a>
+              <a href="https://www.camarapr.org/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
+                <img src="/manus-storage/logo-camara-comercio_95450442.png" alt="Cámara de Comercio" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">Cámara de Comercio</span>
+              </a>
+              <a href="https://www.rpsmedical.com/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
+                <img src="/manus-storage/logo-rps-medical_47faf98c.png" alt="RPS Medical" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">RPS Medical</span>
+              </a>
+              <a href="https://www.professionalhospital.com/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
+                <img src="/manus-storage/logo-professional-hospital_451eec14.png" alt="Professional Hospital" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">Professional Hospital</span>
+              </a>
+              <a href="https://www.mcs.com.pr/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
+                <img src="/manus-storage/logo-mcs_ddb3acde.png" alt="MCS" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">MCS</span>
+              </a>
+              <a href="https://corepluspr.com/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
+                <img src="/manus-storage/logo-coreplus_f2cf11ef.png" alt="CORE PLUS" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">CORE PLUS</span>
+              </a>
+              <a href="https://varmedmanagement.com/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
+                <img src="/manus-storage/logo-varmed_36b690af.png" alt="VarMED" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">VarMED</span>
+              </a>
+              <a href="https://www.salud.pr.gov/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
+                <img src="/manus-storage/logo-depto-salud_48756c01.jpg" alt="Depto. de Salud de PR" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">Depto. de Salud</span>
+              </a>
+              <a href="https://www.trabajo.pr.gov/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
+                <img src="/manus-storage/logo-dtrh_66a38ba0.png" alt="Depto. del Trabajo y RRHH" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">Depto. del Trabajo</span>
+              </a>
+              <a href="https://www.osha.gov/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
+                <img src="/manus-storage/logo-osha_55ae4b19.png" alt="OSHA" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">OSHA</span>
+              </a>
+              <a href="https://www.merck.com/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
+                <img src="/manus-storage/logo-merck_74dc9884.png" alt="MERCK" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">MERCK</span>
+              </a>
+              <a href="https://www.empresariosporpr.com/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
+                <img src="/manus-storage/logo-empresarios-pr_6b7b8f35.jpg" alt="Empresarios por Puerto Rico" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">Empresarios por PR</span>
+              </a>
+              {/* Duplicate set for seamless loop */}
+              <a href="https://www.farmaciaislaverde.com/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
+                <img src="/manus-storage/logo-farmacia-isla-verde_f8abca09.jpg" alt="Farmacia Isla Verde" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">Farmacia Isla Verde</span>
+              </a>
+              <a href="https://www.camarapr.org/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
+                <img src="/manus-storage/logo-camara-comercio_95450442.png" alt="Cámara de Comercio" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">Cámara de Comercio</span>
+              </a>
+              <a href="https://www.rpsmedical.com/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
+                <img src="/manus-storage/logo-rps-medical_47faf98c.png" alt="RPS Medical" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">RPS Medical</span>
+              </a>
+              <a href="https://www.professionalhospital.com/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
+                <img src="/manus-storage/logo-professional-hospital_451eec14.png" alt="Professional Hospital" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">Professional Hospital</span>
+              </a>
+              <a href="https://www.mcs.com.pr/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
+                <img src="/manus-storage/logo-mcs_ddb3acde.png" alt="MCS" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">MCS</span>
+              </a>
+              <a href="https://corepluspr.com/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
+                <img src="/manus-storage/logo-coreplus_f2cf11ef.png" alt="CORE PLUS" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">CORE PLUS</span>
+              </a>
+              <a href="https://varmedmanagement.com/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
+                <img src="/manus-storage/logo-varmed_36b690af.png" alt="VarMED" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">VarMED</span>
+              </a>
+              <a href="https://www.salud.pr.gov/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
+                <img src="/manus-storage/logo-depto-salud_48756c01.jpg" alt="Depto. de Salud de PR" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">Depto. de Salud</span>
+              </a>
+              <a href="https://www.trabajo.pr.gov/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
+                <img src="/manus-storage/logo-dtrh_66a38ba0.png" alt="Depto. del Trabajo y RRHH" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">Depto. del Trabajo</span>
+              </a>
+              <a href="https://www.osha.gov/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
+                <img src="/manus-storage/logo-osha_55ae4b19.png" alt="OSHA" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">OSHA</span>
+              </a>
+              <a href="https://www.merck.com/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
+                <img src="/manus-storage/logo-merck_74dc9884.png" alt="MERCK" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">MERCK</span>
+              </a>
+              <a href="https://www.empresariosporpr.com/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
+                <img src="/manus-storage/logo-empresarios-pr_6b7b8f35.jpg" alt="Empresarios por Puerto Rico" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">Empresarios por PR</span>
+              </a>
+            </div>
           </div>
         </div>
       </section>

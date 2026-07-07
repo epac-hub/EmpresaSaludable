@@ -175,3 +175,7 @@
 - [x] Move Preguntas Frecuentes (FAQ) section to the very bottom of the page (below Contacto)
 - [x] Replace emoji-style icons in Planificación y Cumplimiento timeline with clean professional SVG icons
 - [x] Move logos section below FAQ, rename to "Nuestros Colaboradores", add logos: Farmacia Isla Verde, Cámara de Comercio, RPS Medical, Professional Hospital, MCS, CORE PLUS, VarMED
+- [x] Fix testimonial carousel cards being cut off (text not fully visible)
+- [x] Redesign testimonial category filter buttons to be elegant, premium, and health-themed (not ugly/blocky)
+- [x] Add Depto. de Salud, Depto. del Trabajo, OSHA, MERCK, and Empresarios por Puerto Rico to Nuestros Colaboradores section with links
+- [x] Convert Colaboradores section to auto-scrolling marquee at medium speed
