@@ -170,3 +170,4 @@
 - [x] Regenerate Planes section image with younger people for consistency
 - [x] Increase parallax effect / opacity on background images for more depth
 - [x] Add interactive hover effect on Historias Reales testimonial cards (show name/testimonial on cursor hover)
+- [x] Add hover effect on specialist cards that displays a brief biography overlay for each team member

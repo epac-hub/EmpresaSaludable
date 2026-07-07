@@ -1282,7 +1282,7 @@ export default function Saludable() {
                   card.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
                 }}
               >
-                {/* Photo — click to open bio modal */}
+                {/* Photo — click to open bio modal + hover biography overlay */}
                 <div
                   className="w-full md:w-[220px] h-[320px] md:h-auto flex-shrink-0 overflow-hidden relative cursor-pointer"
                   onClick={() => setSelectedSpecialist(amb)}
@@ -1293,9 +1293,17 @@ export default function Saludable() {
                     className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110 group-hover:brightness-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent to-white/10 md:bg-gradient-to-b md:from-transparent md:to-[#2D3B2D]/20" />
-                  {/* Click hint overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20">
-                    <span className="px-3 py-1.5 rounded-full bg-white/90 text-[#2D3B2D] text-xs font-semibold shadow-lg">Ver Perfil Completo</span>
+                  {/* Hover biography overlay — slides up from bottom */}
+                  <div className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] pointer-events-none">
+                    <div className="bg-gradient-to-t from-[#1B5E20]/95 via-[#2E7D32]/85 to-transparent p-4 pt-10">
+                      <p className="text-white/90 text-[11px] leading-relaxed line-clamp-4">
+                        {amb.specialty}
+                      </p>
+                      <div className="mt-2 flex items-center gap-1.5">
+                        <span className="inline-block w-4 h-[1px] bg-[#A5D6A7]/70" />
+                        <span className="text-[#A5D6A7] text-[10px] font-medium uppercase tracking-wider">Ver Perfil</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
