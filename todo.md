@@ -171,3 +171,4 @@
 - [x] Increase parallax effect / opacity on background images for more depth
 - [x] Add interactive hover effect on Historias Reales testimonial cards (show name/testimonial on cursor hover)
 - [x] Add hover effect on specialist cards that displays a brief biography overlay for each team member
+- [x] Add staggered scroll-triggered entrance animation for specialist cards (smooth appear on scroll)

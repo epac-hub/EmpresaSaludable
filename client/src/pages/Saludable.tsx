@@ -637,20 +637,30 @@ export default function Saludable() {
           });
         }
 
-        // Specialist cards — dramatic 3D flip entrance with stagger
+        // Specialist cards — staggered scroll-triggered entrance animation
         const celebCards = document.querySelectorAll(".celeb-card");
         if (celebCards.length > 0) {
-          gsap.from(celebCards, {
-            scrollTrigger: { trigger: celebsRef.current, start: "top 75%" },
-            y: 100,
-            opacity: 0,
-            scale: 0.85,
-            rotateY: 25,
-            rotateX: 10,
-            duration: 1.2,
-            stagger: 0.25,
-            ease: "back.out(1.2)",
-            immediateRender: false,
+          gsap.set(celebCards, { opacity: 0, y: 80, scale: 0.9, rotateY: 15, rotateX: 5 });
+          ScrollTrigger.create({
+            trigger: celebsRef.current,
+            start: "top 70%",
+            onEnter: () => {
+              gsap.to(celebCards, {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                rotateY: 0,
+                rotateX: 0,
+                duration: 1,
+                stagger: {
+                  each: 0.2,
+                  from: "start",
+                },
+                ease: "power3.out",
+                overwrite: true,
+              });
+            },
+            once: true,
           });
         }
 
