@@ -956,7 +956,7 @@ export default function Saludable() {
               end: 'bottom top',
               scrub: 1.2,
             },
-            y: '-15%',
+            y: '-25%',
             ease: 'none',
           });
         }
@@ -1632,7 +1632,7 @@ export default function Saludable() {
           <img
             src="/manus-storage/section-pilares-v6_9fc64034.jpg"
             alt=""
-            className="section-parallax-img absolute inset-0 w-full h-[120%] object-cover opacity-[0.25] scale-110"
+            className="section-parallax-img absolute inset-0 w-full h-[120%] object-cover opacity-[0.35] scale-110"
             style={{ willChange: 'transform' }}
           />
         </div>
@@ -1909,7 +1909,7 @@ export default function Saludable() {
             playsInline
             preload="none"
             poster="/manus-storage/testimonial-bg-keyframe_dae63de5.png"
-            ref={(el) => { if (el) el.playbackRate = 2.0; }}
+            ref={(el) => { if (el) el.playbackRate = 1.5; }}
           >
             <source src="/manus-storage/testimonial-bg-video_0077eed0.mp4" type="video/mp4" />
           </video>
@@ -1959,18 +1959,28 @@ export default function Saludable() {
               {filteredTestimonials.map((testimonial, i) => (
                 <div
                   key={i}
-                  className="beneficiary-panel flex-shrink-0 w-[340px] md:w-[380px] p-8 rounded-2xl bg-white/35 backdrop-blur-sm border border-[#66BB6A]/20 shadow-xl hover:shadow-[0_20px_60px_rgba(67,160,71,0.35)] hover:-translate-y-4 hover:scale-[1.06] hover:bg-white/55 hover:border-[#43A047]/40 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group"
+                  className="beneficiary-panel flex-shrink-0 w-[340px] md:w-[380px] p-8 rounded-2xl bg-white/35 backdrop-blur-sm border border-[#66BB6A]/20 shadow-xl hover:shadow-[0_25px_70px_rgba(67,160,71,0.4)] hover:-translate-y-5 hover:scale-[1.07] hover:bg-white/65 hover:border-[#43A047]/50 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group cursor-pointer relative overflow-hidden"
                 >
-                  <svg className="w-8 h-8 text-[#43A047]/50 mb-4 group-hover:text-[#2E7D32] group-hover:scale-125 group-hover:rotate-6 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983z" />
-                  </svg>
-                  <p className="text-[#2D3B2D]/80 text-sm leading-relaxed mb-6 italic group-hover:text-[#1B5E20] transition-colors duration-500">
-                    "{testimonial.quote}"
-                  </p>
-                  <div className="border-t border-[#66BB6A]/20 pt-4 group-hover:border-[#43A047]/40 transition-colors duration-500">
-                    <p className="font-semibold text-[#1B5E20] text-sm group-hover:text-[#2E7D32] transition-colors duration-300">{testimonial.name}</p>
-                    <p className="text-xs text-[#43A047] mt-0.5 group-hover:text-[#1B5E20] transition-colors duration-300">{testimonial.role}</p>
-                    <p className="text-xs text-[#2D3B2D]/50 mt-0.5">{testimonial.municipality}, PR</p>
+                  {/* Hover glow overlay */}
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[#43A047]/0 via-[#66BB6A]/0 to-[#A5D6A7]/0 group-hover:from-[#43A047]/5 group-hover:via-[#66BB6A]/8 group-hover:to-[#A5D6A7]/10 transition-all duration-700 pointer-events-none" />
+                  {/* Shimmer sweep on hover */}
+                  <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-[cubic-bezier(0.23,1,0.32,1)] bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none" />
+                  <div className="relative z-10">
+                    <svg className="w-8 h-8 text-[#43A047]/50 mb-4 group-hover:text-[#2E7D32] group-hover:scale-125 group-hover:rotate-12 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983z" />
+                    </svg>
+                    <p className="text-[#2D3B2D]/80 text-sm leading-relaxed mb-6 italic group-hover:text-[#1B5E20] transition-colors duration-500">
+                      "{testimonial.quote}"
+                    </p>
+                    <div className="border-t border-[#66BB6A]/20 pt-4 group-hover:border-[#43A047]/40 transition-colors duration-500">
+                      <p className="font-semibold text-[#1B5E20] text-sm group-hover:text-[#2E7D32] group-hover:tracking-wide transition-all duration-300">{testimonial.name}</p>
+                      <p className="text-xs text-[#43A047] mt-0.5 group-hover:text-[#1B5E20] group-hover:font-medium transition-all duration-300">{testimonial.role}</p>
+                      <p className="text-xs text-[#2D3B2D]/50 mt-0.5 group-hover:text-[#2E7D32]/70 transition-colors duration-300">{testimonial.municipality}, PR</p>
+                      {/* Category badge appears on hover */}
+                      <span className="inline-block mt-3 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#43A047]/0 text-[#43A047]/0 border border-[#43A047]/0 group-hover:bg-[#43A047]/10 group-hover:text-[#2E7D32] group-hover:border-[#43A047]/30 transition-all duration-500 delay-100">
+                        {testimonial.category}
+                      </span>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -1998,7 +2008,7 @@ export default function Saludable() {
           <img
             src="/manus-storage/section-cumplimiento-v6_d4d511c0.jpg"
             alt=""
-            className="section-parallax-img absolute inset-0 w-full h-[120%] object-cover opacity-[0.22] scale-110"
+            className="section-parallax-img absolute inset-0 w-full h-[120%] object-cover opacity-[0.32] scale-110"
             style={{ willChange: 'transform' }}
           />
         </div>
@@ -2134,9 +2144,9 @@ export default function Saludable() {
         {/* Parallax background image — corporate wellness celebration */}
         <div className="absolute inset-0 overflow-hidden">
           <img
-            src="/manus-storage/section-planes-v5_4b199cb7.jpg"
+            src="/manus-storage/section-planes-v6_2b0732b4.jpg"
             alt=""
-            className="section-parallax-img absolute inset-0 w-full h-[120%] object-cover opacity-[0.20] scale-110"
+            className="section-parallax-img absolute inset-0 w-full h-[120%] object-cover opacity-[0.30] scale-110"
             style={{ willChange: 'transform' }}
           />
         </div>
@@ -2430,7 +2440,7 @@ export default function Saludable() {
           <img
             src="/manus-storage/section-farmacias-v5_2d059e95.jpg"
             alt=""
-            className="section-parallax-img absolute inset-0 w-full h-[120%] object-cover opacity-[0.18] scale-110"
+            className="section-parallax-img absolute inset-0 w-full h-[120%] object-cover opacity-[0.28] scale-110"
             style={{ willChange: 'transform' }}
           />
         </div>

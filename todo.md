@@ -166,3 +166,7 @@
 - [x] Regenerate Pilares (Bienestar Integral) background image with YOUNGER people
 - [x] Regenerate Cumplimiento (Planificación y Cumplimiento) background image with YOUNGER people
 - [x] Speed up Historias Reales (Testimonials) background video — people look like robots, need faster movement (set playbackRate to 2x)
+- [x] Fix Historias Reales video speed — 2x is too fast, reduce to 1.5x
+- [x] Regenerate Planes section image with younger people for consistency
+- [x] Increase parallax effect / opacity on background images for more depth
+- [x] Add interactive hover effect on Historias Reales testimonial cards (show name/testimonial on cursor hover)
