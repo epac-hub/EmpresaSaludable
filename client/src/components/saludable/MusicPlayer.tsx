@@ -84,7 +84,7 @@ export default function MusicPlayer() {
       >
         {/* Track label */}
         <span className="text-xs text-white/80 whitespace-nowrap font-medium">
-          ♪ Bossa Nova
+          <svg className="w-3 h-3 inline-block mr-1" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z"/></svg>Bossa Nova
         </span>
 
         {/* Volume slider */}

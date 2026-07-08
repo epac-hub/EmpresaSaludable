@@ -115,7 +115,7 @@ const PILLARS = [
   {
     id: "mental",
     title: "Salud Mental",
-    icon: "🧠",
+    icon: "mental",
     color: "#7C6DC8",
     description: "Programas integrales de bienestar emocional que incluyen manejo del estrés laboral, apoyo psicológico profesional, mindfulness corporativo y prevención del burnout. Cada programa se adapta a la cultura organizacional de tu empresa.",
     stats: ["85% reducción en ausentismo por estrés", "Talleres semanales con psicólogos certificados", "Línea de apoyo emocional 24/7", "Evaluaciones de clima laboral trimestrales"],
@@ -123,7 +123,7 @@ const PILLARS = [
   {
     id: "fisica",
     title: "Salud Física",
-    icon: "💪",
+    icon: "fisica",
     color: "#E07B4C",
     description: "Actividad física estructurada, ergonomía activa y prevención de enfermedades crónicas. Nuestros programas incluyen clases grupales, evaluaciones físicas periódicas y planes de ejercicio adaptados al entorno laboral.",
     stats: ["112+ Farmacias de Comunidad con servicios de salud", "Clases grupales 3x por semana", "Evaluaciones físicas semestrales", "Programas de ergonomía en oficina"],
@@ -131,7 +131,7 @@ const PILLARS = [
   {
     id: "nutricional",
     title: "Salud Nutricional",
-    icon: "🥗",
+    icon: "nutricional",
     color: "#4CAF50",
     description: "Nutrición basada en evidencia científica con enfoque tropical puertorriqueño. Planes alimentarios personalizados, talleres de cocina saludable, evaluaciones metabólicas y asesoría para comedores corporativos.",
     stats: ["Planes nutricionales individualizados", "Talleres de cocina saludable mensual", "Evaluaciones metabólicas completas", "Menús corporativos balanceados"],
@@ -139,7 +139,7 @@ const PILLARS = [
   {
     id: "financiera",
     title: "Salud Financiera",
-    icon: "📊",
+    icon: "financiera",
     color: "#2196F3",
     description: "Educación financiera práctica, planificación de retiro, gestión de beneficios y herramientas para la estabilidad económica de cada empleado. Reducimos el estrés financiero que impacta la productividad.",
     stats: ["ROI 3:1 comprobado en productividad", "Asesoría financiera personalizada", "Planes de ahorro y retiro", "Talleres de presupuesto familiar"],
@@ -147,7 +147,7 @@ const PILLARS = [
   {
     id: "corporativa",
     title: "Salud Corporativa",
-    icon: "🏢",
+    icon: "corporativa",
     color: "#FF9800",
     description: "Cultura organizacional saludable, cumplimiento regulatorio con el Depto. de Salud y Depto. del Trabajo de PR, y programas de bienestar empresarial que mejoran retención y productividad.",
     stats: ["Cumplimiento Depto. de Salud de PR", "Cumplimiento Depto. del Trabajo de PR", "Certificación Empresa Saludable", "Clima laboral óptimo medible"],
@@ -155,10 +155,10 @@ const PILLARS = [
 ];
 
 const STATS = [
-  { value: 112, suffix: "+", label: "Farmacias de Comunidad", icon: "🏥" },
-  { value: 70, suffix: "", label: "Municipios Cubiertos", icon: "📍" },
-  { value: 98, suffix: "%", label: "Satisfacción", icon: "⭐" },
-  { value: 12, suffix: "K+", label: "Beneficiarios", icon: "👥" },
+  { value: 112, suffix: "+", label: "Farmacias de Comunidad", icon: "farmacias" },
+  { value: 70, suffix: "", label: "Municipios Cubiertos", icon: "municipios" },
+  { value: 98, suffix: "%", label: "Satisfacción", icon: "satisfaccion" },
+  { value: 12, suffix: "K+", label: "Beneficiarios", icon: "beneficiarios" },
 ];
 
 const COMPLIANCE_STEPS = [
@@ -1345,7 +1345,7 @@ export default function Saludable() {
                 <div className="flex flex-wrap gap-2">
                   {selectedSpecialist.expertise.map((cert, j) => (
                     <span key={j} className="px-3 py-1.5 text-xs font-medium rounded-lg bg-[#6BAF8D]/10 text-[#6BAF8D] border border-[#6BAF8D]/20">
-                      ✓ {cert}
+                      <svg className="w-3 h-3 inline-block mr-1 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/></svg>{cert}
                     </span>
                   ))}
                 </div>
@@ -1654,7 +1654,7 @@ export default function Saludable() {
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
               <div className="text-center">
                 <div className="w-28 h-28 md:w-36 md:h-36 rounded-full bg-white/90 backdrop-blur-xl shadow-2xl flex items-center justify-center border-2 border-[#66BB6A]/30 mx-auto">
-                  <span className="text-4xl md:text-5xl">🌿</span>
+                  <svg className="w-12 h-12 md:w-14 md:h-14 text-[#2E7D32]" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 3c4.97 0 9 4.03 9 9-4.97 0-9-4.03-9-9zM12 3c-4.97 0-9 4.03-9 9 4.97 0 9-4.03 9-9z"/><path strokeLinecap="round" strokeLinejoin="round" d="M12 3v18"/><path strokeLinecap="round" d="M12 8c-2 2-3 4-3 6"/><path strokeLinecap="round" d="M12 8c2 2 3 4 3 6"/></svg>
                 </div>
                 <p className="mt-4 text-sm font-bold text-[#2E7D32] tracking-wider uppercase">Bienestar<br/>Integral</p>
               </div>
@@ -1713,7 +1713,11 @@ export default function Saludable() {
                     }}
                     data-cursor-hover
                   >
-                    <span className="text-2xl md:text-3xl drop-shadow-lg group-hover:scale-110 transition-transform duration-300">{pillar.icon}</span>
+                    {pillar.icon === 'mental' && <svg className="w-8 h-8 md:w-10 md:h-10 text-white drop-shadow-lg" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 2a7 7 0 0 1 7 7c0 2.5-1.5 4.5-3 6l-1 2H9l-1-2c-1.5-1.5-3-3.5-3-6a7 7 0 0 1 7-7z"/><path strokeLinecap="round" d="M9 17h6M10 20h4"/></svg>}
+                    {pillar.icon === 'fisica' && <svg className="w-8 h-8 md:w-10 md:h-10 text-white drop-shadow-lg" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM5 8h14M3 8h2l1 12h12l1-12h2M8 8v4m8-4v4"/></svg>}
+                    {pillar.icon === 'nutricional' && <svg className="w-8 h-8 md:w-10 md:h-10 text-white drop-shadow-lg" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 22c-4-2-8-6-8-11a4 4 0 0 1 8-1 4 4 0 0 1 8 1c0 5-4 9-8 11z"/><path strokeLinecap="round" d="M12 8v6m0 0l-2-2m2 2l2-2"/></svg>}
+                    {pillar.icon === 'financiera' && <svg className="w-8 h-8 md:w-10 md:h-10 text-white drop-shadow-lg" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 3v18h18"/><path strokeLinecap="round" strokeLinejoin="round" d="M7 16l4-4 3 3 5-5"/><path strokeLinecap="round" strokeLinejoin="round" d="M15 10h4v4"/></svg>}
+                    {pillar.icon === 'corporativa' && <svg className="w-8 h-8 md:w-10 md:h-10 text-white drop-shadow-lg" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-4h6v4M9 9h.01M15 9h.01M9 13h.01M15 13h.01"/></svg>}
                   </div>
 
                   {/* Expanded info panel — appears on hover (desktop) OR tap (mobile) */}
@@ -1738,7 +1742,11 @@ export default function Saludable() {
                           className="w-10 h-10 rounded-xl flex items-center justify-center text-xl"
                           style={{ background: `${pillar.color}20` }}
                         >
-                          {pillar.icon}
+                          {pillar.icon === 'mental' && <svg className="w-5 h-5" style={{color: pillar.color}} fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 2a7 7 0 0 1 7 7c0 2.5-1.5 4.5-3 6l-1 2H9l-1-2c-1.5-1.5-3-3.5-3-6a7 7 0 0 1 7-7z"/><path strokeLinecap="round" d="M9 17h6M10 20h4"/></svg>}
+                          {pillar.icon === 'fisica' && <svg className="w-5 h-5" style={{color: pillar.color}} fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM5 8h14M3 8h2l1 12h12l1-12h2M8 8v4m8-4v4"/></svg>}
+                          {pillar.icon === 'nutricional' && <svg className="w-5 h-5" style={{color: pillar.color}} fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 22c-4-2-8-6-8-11a4 4 0 0 1 8-1 4 4 0 0 1 8 1c0 5-4 9-8 11z"/><path strokeLinecap="round" d="M12 8v6m0 0l-2-2m2 2l2-2"/></svg>}
+                          {pillar.icon === 'financiera' && <svg className="w-5 h-5" style={{color: pillar.color}} fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 3v18h18"/><path strokeLinecap="round" strokeLinejoin="round" d="M7 16l4-4 3 3 5-5"/><path strokeLinecap="round" strokeLinejoin="round" d="M15 10h4v4"/></svg>}
+                          {pillar.icon === 'corporativa' && <svg className="w-5 h-5" style={{color: pillar.color}} fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-4h6v4M9 9h.01M15 9h.01M9 13h.01M15 13h.01"/></svg>}
                         </div>
                         <h3 className="text-lg font-bold text-[#1B5E20]" style={{ fontFamily: "'Playfair Display', serif" }}>
                           {pillar.title}
@@ -1781,7 +1789,11 @@ export default function Saludable() {
                         className="w-10 h-10 rounded-xl flex items-center justify-center text-xl"
                         style={{ background: `${pillar.color}20` }}
                       >
-                        {pillar.icon}
+                        {pillar.icon === 'mental' && <svg className="w-5 h-5" style={{color: pillar.color}} fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 2a7 7 0 0 1 7 7c0 2.5-1.5 4.5-3 6l-1 2H9l-1-2c-1.5-1.5-3-3.5-3-6a7 7 0 0 1 7-7z"/><path strokeLinecap="round" d="M9 17h6M10 20h4"/></svg>}
+                        {pillar.icon === 'fisica' && <svg className="w-5 h-5" style={{color: pillar.color}} fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM5 8h14M3 8h2l1 12h12l1-12h2M8 8v4m8-4v4"/></svg>}
+                        {pillar.icon === 'nutricional' && <svg className="w-5 h-5" style={{color: pillar.color}} fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 22c-4-2-8-6-8-11a4 4 0 0 1 8-1 4 4 0 0 1 8 1c0 5-4 9-8 11z"/><path strokeLinecap="round" d="M12 8v6m0 0l-2-2m2 2l2-2"/></svg>}
+                        {pillar.icon === 'financiera' && <svg className="w-5 h-5" style={{color: pillar.color}} fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 3v18h18"/><path strokeLinecap="round" strokeLinejoin="round" d="M7 16l4-4 3 3 5-5"/><path strokeLinecap="round" strokeLinejoin="round" d="M15 10h4v4"/></svg>}
+                        {pillar.icon === 'corporativa' && <svg className="w-5 h-5" style={{color: pillar.color}} fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-4h6v4M9 9h.01M15 9h.01M9 13h.01M15 13h.01"/></svg>}
                       </div>
                       <h3 className="text-lg font-bold text-[#1B5E20]" style={{ fontFamily: "'Playfair Display', serif" }}>
                         {pillar.title}
@@ -1830,8 +1842,11 @@ export default function Saludable() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {STATS.map((stat, i) => (
               <div key={i} className="stat-item text-center group cursor-default">
-                <div className="text-3xl mb-3 transition-transform duration-300 group-hover:scale-125 group-hover:rotate-12">
-                  {stat.icon}
+                <div className="text-3xl mb-3 transition-transform duration-300 group-hover:scale-125 group-hover:rotate-12 flex items-center justify-center">
+                  {stat.icon === 'farmacias' && <svg className="w-8 h-8 text-white drop-shadow-lg" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2z"/><path strokeLinecap="round" strokeLinejoin="round" d="M12 7v10M7 12h10"/></svg>}
+                  {stat.icon === 'municipios' && <svg className="w-8 h-8 text-white drop-shadow-lg" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>}
+                  {stat.icon === 'satisfaccion' && <svg className="w-8 h-8 text-white drop-shadow-lg" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>}
+                  {stat.icon === 'beneficiarios' && <svg className="w-8 h-8 text-white drop-shadow-lg" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path strokeLinecap="round" strokeLinejoin="round" d="M23 21v-2a4 4 0 0 0-3-3.87"/><path strokeLinecap="round" strokeLinejoin="round" d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>}
                 </div>
                 <div className="text-4xl md:text-5xl font-bold mb-2 text-white drop-shadow-lg transition-colors duration-500 group-hover:text-[#FFD54F]">
                   <AnimatedCounter value={stat.value} suffix={stat.suffix} />
@@ -2600,100 +2615,100 @@ export default function Saludable() {
             <div className="flex animate-[collab-scroll_40s_linear_infinite] hover:[animation-play-state:paused] gap-12 items-center py-4">
               {/* First set */}
               <a href="https://www.farmaciaislaverde.com/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
-                <img src="/manus-storage/logo-farmacia-isla-verde_f8abca09.jpg" alt="Farmacia Isla Verde" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <img src="/manus-storage/logo-farmacia-isla-verde_f8abca09.jpg" alt="Farmacia Isla Verde" className="h-14 w-auto object-contain hover:scale-110 transition-all duration-500" />
                 <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">Farmacia Isla Verde</span>
               </a>
               <a href="https://www.camarapr.org/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
-                <img src="/manus-storage/logo-camara-comercio_95450442.png" alt="Cámara de Comercio" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <img src="/manus-storage/logo-camara-comercio_95450442.png" alt="Cámara de Comercio" className="h-14 w-auto object-contain hover:scale-110 transition-all duration-500" />
                 <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">Cámara de Comercio</span>
               </a>
               <a href="https://www.rpsmedical.com/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
-                <img src="/manus-storage/logo-rps-medical_47faf98c.png" alt="RPS Medical" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <img src="/manus-storage/logo-rps-medical_47faf98c.png" alt="RPS Medical" className="h-14 w-auto object-contain hover:scale-110 transition-all duration-500" />
                 <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">RPS Medical</span>
               </a>
               <a href="https://www.professionalhospital.com/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
-                <img src="/manus-storage/logo-professional-hospital_451eec14.png" alt="Professional Hospital" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <img src="/manus-storage/logo-professional-hospital_451eec14.png" alt="Professional Hospital" className="h-14 w-auto object-contain hover:scale-110 transition-all duration-500" />
                 <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">Professional Hospital</span>
               </a>
               <a href="https://www.mcs.com.pr/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
-                <img src="/manus-storage/logo-mcs_ddb3acde.png" alt="MCS" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <img src="/manus-storage/logo-mcs_ddb3acde.png" alt="MCS" className="h-14 w-auto object-contain hover:scale-110 transition-all duration-500" />
                 <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">MCS</span>
               </a>
               <a href="https://corepluspr.com/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
-                <img src="/manus-storage/logo-coreplus_f2cf11ef.png" alt="CORE PLUS" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <img src="/manus-storage/logo-coreplus_f2cf11ef.png" alt="CORE PLUS" className="h-14 w-auto object-contain hover:scale-110 transition-all duration-500" />
                 <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">CORE PLUS</span>
               </a>
               <a href="https://varmedmanagement.com/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
-                <img src="/manus-storage/logo-varmed_36b690af.png" alt="VarMED" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <img src="/manus-storage/logo-varmed_36b690af.png" alt="VarMED" className="h-14 w-auto object-contain hover:scale-110 transition-all duration-500" />
                 <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">VarMED</span>
               </a>
               <a href="https://www.salud.pr.gov/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
-                <img src="/manus-storage/logo-depto-salud_48756c01.jpg" alt="Depto. de Salud de PR" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <img src="/manus-storage/logo-depto-salud_48756c01.jpg" alt="Depto. de Salud de PR" className="h-14 w-auto object-contain hover:scale-110 transition-all duration-500" />
                 <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">Depto. de Salud</span>
               </a>
               <a href="https://www.trabajo.pr.gov/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
-                <img src="/manus-storage/logo-dtrh_66a38ba0.png" alt="Depto. del Trabajo y RRHH" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <img src="/manus-storage/logo-dtrh_66a38ba0.png" alt="Depto. del Trabajo y RRHH" className="h-14 w-auto object-contain hover:scale-110 transition-all duration-500" />
                 <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">Depto. del Trabajo</span>
               </a>
               <a href="https://www.osha.gov/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
-                <img src="/manus-storage/logo-osha_55ae4b19.png" alt="OSHA" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <img src="/manus-storage/logo-osha_55ae4b19.png" alt="OSHA" className="h-14 w-auto object-contain hover:scale-110 transition-all duration-500" />
                 <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">OSHA</span>
               </a>
               <a href="https://www.merck.com/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
-                <img src="/manus-storage/logo-merck_74dc9884.png" alt="MERCK" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <img src="/manus-storage/logo-merck_74dc9884.png" alt="MERCK" className="h-14 w-auto object-contain hover:scale-110 transition-all duration-500" />
                 <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">MERCK</span>
               </a>
               <a href="https://www.empresariosporpr.com/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
-                <img src="/manus-storage/logo-empresarios-pr_6b7b8f35.jpg" alt="Empresarios por Puerto Rico" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <img src="/manus-storage/logo-empresarios-pr_6b7b8f35.jpg" alt="Empresarios por Puerto Rico" className="h-14 w-auto object-contain hover:scale-110 transition-all duration-500" />
                 <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">Empresarios por PR</span>
               </a>
               {/* Duplicate set for seamless loop */}
               <a href="https://www.farmaciaislaverde.com/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
-                <img src="/manus-storage/logo-farmacia-isla-verde_f8abca09.jpg" alt="Farmacia Isla Verde" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <img src="/manus-storage/logo-farmacia-isla-verde_f8abca09.jpg" alt="Farmacia Isla Verde" className="h-14 w-auto object-contain hover:scale-110 transition-all duration-500" />
                 <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">Farmacia Isla Verde</span>
               </a>
               <a href="https://www.camarapr.org/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
-                <img src="/manus-storage/logo-camara-comercio_95450442.png" alt="Cámara de Comercio" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <img src="/manus-storage/logo-camara-comercio_95450442.png" alt="Cámara de Comercio" className="h-14 w-auto object-contain hover:scale-110 transition-all duration-500" />
                 <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">Cámara de Comercio</span>
               </a>
               <a href="https://www.rpsmedical.com/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
-                <img src="/manus-storage/logo-rps-medical_47faf98c.png" alt="RPS Medical" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <img src="/manus-storage/logo-rps-medical_47faf98c.png" alt="RPS Medical" className="h-14 w-auto object-contain hover:scale-110 transition-all duration-500" />
                 <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">RPS Medical</span>
               </a>
               <a href="https://www.professionalhospital.com/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
-                <img src="/manus-storage/logo-professional-hospital_451eec14.png" alt="Professional Hospital" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <img src="/manus-storage/logo-professional-hospital_451eec14.png" alt="Professional Hospital" className="h-14 w-auto object-contain hover:scale-110 transition-all duration-500" />
                 <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">Professional Hospital</span>
               </a>
               <a href="https://www.mcs.com.pr/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
-                <img src="/manus-storage/logo-mcs_ddb3acde.png" alt="MCS" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <img src="/manus-storage/logo-mcs_ddb3acde.png" alt="MCS" className="h-14 w-auto object-contain hover:scale-110 transition-all duration-500" />
                 <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">MCS</span>
               </a>
               <a href="https://corepluspr.com/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
-                <img src="/manus-storage/logo-coreplus_f2cf11ef.png" alt="CORE PLUS" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <img src="/manus-storage/logo-coreplus_f2cf11ef.png" alt="CORE PLUS" className="h-14 w-auto object-contain hover:scale-110 transition-all duration-500" />
                 <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">CORE PLUS</span>
               </a>
               <a href="https://varmedmanagement.com/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
-                <img src="/manus-storage/logo-varmed_36b690af.png" alt="VarMED" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <img src="/manus-storage/logo-varmed_36b690af.png" alt="VarMED" className="h-14 w-auto object-contain hover:scale-110 transition-all duration-500" />
                 <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">VarMED</span>
               </a>
               <a href="https://www.salud.pr.gov/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
-                <img src="/manus-storage/logo-depto-salud_48756c01.jpg" alt="Depto. de Salud de PR" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <img src="/manus-storage/logo-depto-salud_48756c01.jpg" alt="Depto. de Salud de PR" className="h-14 w-auto object-contain hover:scale-110 transition-all duration-500" />
                 <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">Depto. de Salud</span>
               </a>
               <a href="https://www.trabajo.pr.gov/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
-                <img src="/manus-storage/logo-dtrh_66a38ba0.png" alt="Depto. del Trabajo y RRHH" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <img src="/manus-storage/logo-dtrh_66a38ba0.png" alt="Depto. del Trabajo y RRHH" className="h-14 w-auto object-contain hover:scale-110 transition-all duration-500" />
                 <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">Depto. del Trabajo</span>
               </a>
               <a href="https://www.osha.gov/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
-                <img src="/manus-storage/logo-osha_55ae4b19.png" alt="OSHA" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <img src="/manus-storage/logo-osha_55ae4b19.png" alt="OSHA" className="h-14 w-auto object-contain hover:scale-110 transition-all duration-500" />
                 <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">OSHA</span>
               </a>
               <a href="https://www.merck.com/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
-                <img src="/manus-storage/logo-merck_74dc9884.png" alt="MERCK" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <img src="/manus-storage/logo-merck_74dc9884.png" alt="MERCK" className="h-14 w-auto object-contain hover:scale-110 transition-all duration-500" />
                 <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">MERCK</span>
               </a>
               <a href="https://www.empresariosporpr.com/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
-                <img src="/manus-storage/logo-empresarios-pr_6b7b8f35.jpg" alt="Empresarios por Puerto Rico" className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+                <img src="/manus-storage/logo-empresarios-pr_6b7b8f35.jpg" alt="Empresarios por Puerto Rico" className="h-14 w-auto object-contain hover:scale-110 transition-all duration-500" />
                 <span className="text-[10px] text-[#2D3B2D]/50 font-medium whitespace-nowrap">Empresarios por PR</span>
               </a>
             </div>
