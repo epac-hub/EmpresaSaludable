@@ -192,3 +192,7 @@
 - [x] Implement Resultados Medibles section with animated metric charts showing impact
 - [x] Add smooth hover transitions and animations to all SVG icons across the page
 - [x] Add Agendar Cita button in specialist modal with quick contact form (already existed)
+- [x] Fix Pilares hover info panels - changed to click-to-show card below wheel (reliable on all devices)
+- [x] Resultados Medibles: added background image with dark green overlay (like other sections)
+- [x] Planificación: numbers replaced with SVG icons (search, clipboard, cog, chart, badge)
+- [x] Colaboradores marquee: sped up from 40s to 15s

@@ -1617,7 +1617,7 @@ export default function Saludable() {
       {/* ═══ LOS 5 PILARES DEL BIENESTAR — SUMMER GREEN PARALLAX ═══ */}
 
       {/* ═══ LOS 5 PILARES DEL BIENESTAR — CIRCULAR HOLISTIC ═══ */}
-      <section ref={pillarsRef} id="pilares" data-reveal="fade-up" className="relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #E8F5E9 0%, #C8E6C9 50%, #E8F5E9 100%)' }}>
+      <section ref={pillarsRef} id="pilares" data-reveal="fade-up" className="relative overflow-visible" style={{ background: 'linear-gradient(180deg, #E8F5E9 0%, #C8E6C9 50%, #E8F5E9 100%)' }}>
         {/* Parallax background image — luxury Caribbean wellness */}
         <div className="absolute inset-0 overflow-hidden">
           <img
@@ -1681,7 +1681,7 @@ export default function Saludable() {
           </div>
 
           {/* CIRCULAR HOLISTIC LAYOUT */}
-          <div className="relative w-full max-w-3xl mx-auto aspect-square flex items-center justify-center">
+          <div className="relative w-full max-w-3xl mx-auto aspect-square flex items-center justify-center overflow-visible">
             {/* Rotating dashed circle */}
             <div className="absolute inset-[12%] rounded-full border-2 border-dashed border-[#66BB6A]/30 animate-[spin_60s_linear_infinite]" />
             <div className="absolute inset-[18%] rounded-full border border-[#81C784]/15" />
@@ -1740,7 +1740,7 @@ export default function Saludable() {
               return (
                 <div
                   key={pillar.id}
-                  className={`pillar-node absolute z-10 ${selectedPillar === pillar.id ? 'pillar-active' : ''} group`}
+                  className={`pillar-node absolute z-30 ${selectedPillar === pillar.id ? 'pillar-active z-[200]' : ''} group hover:z-[200]`}
                   style={{
                     left: `${x}%`,
                     top: `${y}%`,
@@ -1750,7 +1750,7 @@ export default function Saludable() {
                 >
                   {/* The node circle */}
                   <div
-                    className={`pillar-circle relative w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center cursor-pointer transition-all duration-500 group-hover:scale-[1.6] group-hover:z-50 shadow-xl group-hover:shadow-2xl ${selectedPillar === pillar.id ? 'scale-[1.4] z-50 shadow-2xl' : ''}`}
+                    className={`pillar-circle relative w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center cursor-pointer transition-all duration-500 group-hover:scale-110 shadow-xl group-hover:shadow-2xl ${selectedPillar === pillar.id ? 'scale-[1.15] ring-4 ring-white/60 shadow-2xl' : ''}`}
                     style={{
                       background: `linear-gradient(135deg, ${pillar.color}, ${pillar.color}CC)`,
                       boxShadow: `0 8px 30px ${pillar.color}40`,
@@ -1764,52 +1764,10 @@ export default function Saludable() {
                     {pillar.icon === 'corporativa' && <svg className="w-8 h-8 md:w-10 md:h-10 text-white drop-shadow-lg" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-4h6v4M9 9h.01M15 9h.01M9 13h.01M15 13h.01"/></svg>}
                   </div>
 
-                  {/* Expanded info panel — appears on hover (desktop) OR tap (mobile) */}
-                  {/* Desktop: positioned popup */}
-                  <div
-                    className={`hidden md:block absolute transition-all duration-500 ease-out z-[100] ${selectedPillar === pillar.id ? 'opacity-100 pointer-events-auto' : 'opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto'}`}
-                    style={{
-                      width: '340px',
-                      left: x > 55 ? '110%' : x < 45 ? 'auto' : '50%',
-                      right: x < 45 ? '110%' : 'auto',
-                      top: y > 55 ? '-20%' : y < 45 ? 'auto' : '50%',
-                      bottom: y < 45 ? '-20%' : 'auto',
-                      transform: `translate(${x > 55 ? '0' : x < 45 ? '0' : '-50%'}, ${y > 55 ? '0' : y < 45 ? '0' : '-50%'})`,
-                    }}
-                  >
-                    <div
-                      className="bg-white/95 backdrop-blur-xl rounded-2xl p-6 shadow-2xl border scale-90 group-hover:scale-100 transition-transform duration-500 ease-out"
-                      style={{ borderColor: `${pillar.color}40` }}
-                    >
-                      <div className="flex items-center gap-3 mb-4">
-                        <div
-                          className="w-10 h-10 rounded-xl flex items-center justify-center text-xl"
-                          style={{ background: `${pillar.color}20` }}
-                        >
-                          {pillar.icon === 'mental' && <svg className="w-5 h-5" style={{color: pillar.color}} fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 2a7 7 0 0 1 7 7c0 2.5-1.5 4.5-3 6l-1 2H9l-1-2c-1.5-1.5-3-3.5-3-6a7 7 0 0 1 7-7z"/><path strokeLinecap="round" d="M9 17h6M10 20h4"/></svg>}
-                          {pillar.icon === 'fisica' && <svg className="w-5 h-5" style={{color: pillar.color}} fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM5 8h14M3 8h2l1 12h12l1-12h2M8 8v4m8-4v4"/></svg>}
-                          {pillar.icon === 'nutricional' && <svg className="w-5 h-5" style={{color: pillar.color}} fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 22c-4-2-8-6-8-11a4 4 0 0 1 8-1 4 4 0 0 1 8 1c0 5-4 9-8 11z"/><path strokeLinecap="round" d="M12 8v6m0 0l-2-2m2 2l2-2"/></svg>}
-                          {pillar.icon === 'financiera' && <svg className="w-5 h-5" style={{color: pillar.color}} fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 3v18h18"/><path strokeLinecap="round" strokeLinejoin="round" d="M7 16l4-4 3 3 5-5"/><path strokeLinecap="round" strokeLinejoin="round" d="M15 10h4v4"/></svg>}
-                          {pillar.icon === 'corporativa' && <svg className="w-5 h-5" style={{color: pillar.color}} fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-4h6v4M9 9h.01M15 9h.01M9 13h.01M15 13h.01"/></svg>}
-                        </div>
-                        <h3 className="text-lg font-bold text-[#1B5E20]" style={{ fontFamily: "'Playfair Display', serif" }}>
-                          {pillar.title}
-                        </h3>
-                      </div>
-                      <p className="text-sm text-[#2D3B2D]/70 leading-relaxed mb-4">{pillar.description}</p>
-                      <div className="space-y-2 pt-3 border-t border-[#66BB6A]/20">
-                        {pillar.stats.map((stat, i) => (
-                          <div key={i} className="flex items-center gap-2 text-xs text-[#2D3B2D]/70">
-                            <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: pillar.color }} />
-                            <span>{stat}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
+
 
                   {/* Title label below node */}
-                  <p className="text-center mt-2 text-[10px] md:text-xs font-bold text-[#1B5E20] whitespace-nowrap group-hover:opacity-0 transition-opacity duration-300">
+                  <p className="text-center mt-2 text-[10px] md:text-xs font-bold text-[#1B5E20] whitespace-nowrap transition-opacity duration-300">
                     {pillar.title}
                   </p>
                 </div>
@@ -1819,7 +1777,7 @@ export default function Saludable() {
 
           {/* Mobile: full-width card below the wheel when a pillar is tapped */}
           {selectedPillar && (
-            <div className="md:hidden mt-8 mx-auto max-w-sm animate-in fade-in slide-in-from-bottom-4 duration-400">
+            <div className="mt-8 mx-auto max-w-md animate-in fade-in slide-in-from-bottom-4 duration-400">
               {(() => {
                 const pillar = PILLARS.find(p => p.id === selectedPillar);
                 if (!pillar) return null;
@@ -1866,8 +1824,7 @@ export default function Saludable() {
 
           {/* Holistic instruction */}
           <p className="text-center text-[#2E7D32]/60 mt-12 text-sm italic max-w-2xl mx-auto">
-            <span className="hidden md:inline">Pasa el cursor sobre cada pilar para explorar cómo se integran en un ciclo continuo de bienestar.</span>
-            <span className="md:hidden">Toca cada pilar para ver su información detallada.</span>
+            Haz click en cada pilar para explorar cómo se integran en un ciclo continuo de bienestar.
           </p>
         </div>
       </section>
@@ -1903,9 +1860,18 @@ export default function Saludable() {
       </section>
 
       {/* ═══ RESULTADOS MEDIBLES — Animated Impact Metrics ═══ */}
-      <section className="relative py-24 md:py-32 px-6 overflow-hidden bg-gradient-to-b from-[#43A047] via-[#2E7D32] to-[#1B5E20]">
-        {/* Background pattern */}
-        <div className="absolute inset-0 opacity-10">
+      <section className="relative py-24 md:py-32 px-6 overflow-hidden">
+        {/* Background image like other sections */}
+        <div className="absolute inset-0">
+          <img
+            src="/manus-storage/section-resultados-bg_49ab120c.jpg"
+            alt=""
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#1B5E20]/85 via-[#2E7D32]/80 to-[#1B5E20]/90" />
+        </div>
+        {/* Background pattern overlay */}
+        <div className="absolute inset-0 opacity-10 pointer-events-none">
           <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 1px, transparent 1px), radial-gradient(circle at 80% 20%, rgba(255,255,255,0.08) 1px, transparent 1px)', backgroundSize: '60px 60px, 80px 80px' }} />
         </div>
 
@@ -2267,7 +2233,7 @@ export default function Saludable() {
                 {/* Step circle with magnetic hover */}
                 <MagneticButton strength={0.4} className="mb-6">
                   <div
-                    className="relative z-10 w-[80px] h-[80px] rounded-full flex items-center justify-center text-3xl group-hover:scale-125 group-hover:rotate-12 transition-all duration-700"
+                    className="relative z-10 w-[80px] h-[80px] rounded-full flex items-center justify-center group-hover:scale-125 group-hover:rotate-6 transition-all duration-700"
                     data-cursor-hover
                     style={{
                       background: 'linear-gradient(135deg, #66BB6A, #43A047)',
@@ -2275,9 +2241,11 @@ export default function Saludable() {
                       boxShadow: '0 8px 25px rgba(67,160,71,0.3), inset 0 0 15px rgba(255,255,255,0.1)',
                     }}
                   >
-                    <span className="text-white font-bold text-2xl" style={{ fontFamily: "'Playfair Display', serif" }}>
-                      {step.step}
-                    </span>
+                    {step.icon === 'search' && <svg className="w-9 h-9 text-white" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path strokeLinecap="round" d="M21 21l-4.35-4.35"/></svg>}
+                    {step.icon === 'clipboard' && <svg className="w-9 h-9 text-white" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2M9 5h6M9 12h6m-6 4h4"/></svg>}
+                    {step.icon === 'cog' && <svg className="w-9 h-9 text-white" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 0 0 1.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 0 0-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 0 0-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 0 0-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 0 0-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 0 0 1.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.573-1.066z"/><circle cx="12" cy="12" r="3"/></svg>}
+                    {step.icon === 'chart' && <svg className="w-9 h-9 text-white" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 3v18h18"/><path strokeLinecap="round" strokeLinejoin="round" d="M7 16l4-4 3 3 5-5"/></svg>}
+                    {step.icon === 'badge' && <svg className="w-9 h-9 text-white" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4M7.835 4.697A3.42 3.42 0 0 0 9.78 3.89a3.42 3.42 0 0 1 4.438 0 3.42 3.42 0 0 0 1.946.806 3.42 3.42 0 0 1 3.138 3.138 3.42 3.42 0 0 0 .806 1.946 3.42 3.42 0 0 1 0 4.438 3.42 3.42 0 0 0-.806 1.946 3.42 3.42 0 0 1-3.138 3.138 3.42 3.42 0 0 0-1.946.806 3.42 3.42 0 0 1-4.438 0 3.42 3.42 0 0 0-1.946-.806 3.42 3.42 0 0 1-3.138-3.138 3.42 3.42 0 0 0-.806-1.946 3.42 3.42 0 0 1 0-4.438 3.42 3.42 0 0 0 .806-1.946 3.42 3.42 0 0 1 3.138-3.138z"/></svg>}
                     {/* Orbiting ring */}
                     <div className="absolute inset-[-6px] rounded-full border border-[#43A047]/30 animate-spin" style={{ animationDuration: `${8 + i * 2}s` }} />
                   </div>
@@ -2823,7 +2791,7 @@ export default function Saludable() {
             <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
             <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
             
-            <div className="flex animate-[collab-scroll_40s_linear_infinite] hover:[animation-play-state:paused] gap-12 items-center py-4">
+            <div className="flex animate-[collab-scroll_15s_linear_infinite] hover:[animation-play-state:paused] gap-12 items-center py-4">
               {/* First set */}
               <a href="https://www.farmaciaislaverde.com/" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 flex flex-col items-center gap-2 hover:scale-110 transition-transform duration-300">
                 <img src="/manus-storage/logo-farmacia-isla-verde_f8abca09.jpg" alt="Farmacia Isla Verde" className="h-14 w-auto object-contain hover:scale-110 transition-all duration-500" />
