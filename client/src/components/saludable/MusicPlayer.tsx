@@ -117,7 +117,7 @@ export default function MusicPlayer() {
       {/* Main play/pause button */}
       <button
         onClick={toggleMusic}
-        className="w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 group relative"
+        className="music-player-btn w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 group relative"
         style={{
           background: isPlaying
             ? "linear-gradient(135deg, #66BB6A, #81C784)"

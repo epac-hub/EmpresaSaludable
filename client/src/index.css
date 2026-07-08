@@ -432,3 +432,46 @@ body::after {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
+
+/* ═══ SVG Icon Hover Animations ═══ */
+
+/* Pillar circle icons — bounce + glow on parent hover */
+.pillar-circle svg {
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), filter 0.4s ease;
+}
+.pillar-circle:hover svg {
+  transform: scale(1.2) rotate(5deg);
+  filter: drop-shadow(0 0 8px currentColor);
+}
+
+/* Hover panel icons — subtle pulse */
+[data-card-group] svg,
+.resultados-card svg {
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), filter 0.3s ease;
+}
+
+/* Stats section icons */
+.stat-item svg {
+  transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), filter 0.4s ease;
+}
+.stat-item:hover svg {
+  transform: scale(1.3) rotate(8deg);
+  filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.6));
+}
+
+/* Generic SVG icon hover for interactive elements */
+button svg, a svg, [data-cursor-hover] svg {
+  transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1), filter 0.3s ease;
+}
+button:hover svg, a:hover svg, [data-cursor-hover]:hover svg {
+  transform: scale(1.1);
+}
+
+/* Music player icon pulse */
+.music-player-btn svg {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.music-player-btn:hover svg {
+  transform: scale(1.15);
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.4));
+}

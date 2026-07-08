@@ -831,6 +831,42 @@ export default function Saludable() {
         }
       }
 
+      // Resultados Medibles — animated bars and circles on scroll
+      const resultadosBars = document.querySelectorAll(".resultados-bar");
+      resultadosBars.forEach((bar) => {
+        const targetWidth = (bar as HTMLElement).dataset.targetWidth || '50%';
+        gsap.to(bar, {
+          scrollTrigger: { trigger: bar, start: "top 85%" },
+          width: targetWidth,
+          duration: 1.4,
+          ease: "power2.out",
+        });
+      });
+
+      const resultadosCircles = document.querySelectorAll(".resultados-circle");
+      resultadosCircles.forEach((circle) => {
+        const targetOffset = (circle as SVGElement).dataset.targetOffset || '66';
+        gsap.to(circle, {
+          scrollTrigger: { trigger: circle, start: "top 85%" },
+          strokeDashoffset: targetOffset,
+          duration: 1.8,
+          ease: "power2.out",
+        });
+      });
+
+      const resultadosCards = document.querySelectorAll(".resultados-card");
+      if (resultadosCards.length > 0) {
+        gsap.from(resultadosCards, {
+          scrollTrigger: { trigger: resultadosCards[0], start: "top 80%" },
+          y: 60,
+          opacity: 0,
+          stagger: 0.1,
+          duration: 0.8,
+          ease: "power2.out",
+          immediateRender: false,
+        });
+      }
+
       // Compliance steps — cinematic stagger with slide from alternating sides
       if (complianceRef.current) {
         const steps = complianceRef.current.querySelectorAll(".compliance-step");
@@ -1321,7 +1357,7 @@ export default function Saludable() {
 
             {/* Photo */}
             <div className="w-full h-[300px] overflow-hidden rounded-t-3xl">
-              <img src={selectedSpecialist.image} alt={selectedSpecialist.name} className="w-full h-full object-cover" />
+              <img src={selectedSpecialist.image} alt={selectedSpecialist.name} className="w-full h-full object-cover object-top" />
             </div>
 
             {/* Content */}
@@ -1624,7 +1660,7 @@ export default function Saludable() {
           </div>
 
           {/* Bienestar Integral Context Block */}
-          <div data-bienestar-block className="max-w-4xl mx-auto mb-20 p-10 rounded-3xl bg-white/50 backdrop-blur-md border border-[#66BB6A]/30 shadow-xl relative overflow-hidden hover:shadow-2xl hover:shadow-[#43A047]/25 hover:border-[#66BB6A]/60 hover:scale-[1.04] hover:-translate-y-3 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] cursor-default group">
+          <div id="bienestar-integral-info" data-bienestar-block className="max-w-4xl mx-auto mb-20 p-10 rounded-3xl bg-white/50 backdrop-blur-md border border-[#66BB6A]/30 shadow-xl relative overflow-hidden hover:shadow-2xl hover:shadow-[#43A047]/25 hover:border-[#66BB6A]/60 hover:scale-[1.04] hover:-translate-y-3 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] cursor-default group">
             <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[#43A047] via-[#66BB6A] to-[#81C784]" />
             {/* Centered layout */}
             <div className="flex flex-col items-center text-center gap-5">
@@ -1651,11 +1687,19 @@ export default function Saludable() {
             <div className="absolute inset-[18%] rounded-full border border-[#81C784]/15" />
             
             {/* Center hub */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
+            <div className="absolute inset-0 flex items-center justify-center z-20">
               <div className="text-center">
-                <div className="w-28 h-28 md:w-36 md:h-36 rounded-full bg-white/90 backdrop-blur-xl shadow-2xl flex items-center justify-center border-2 border-[#66BB6A]/30 mx-auto">
+                <button
+                  onClick={() => {
+                    // Scroll to the Bienestar Integral context block above
+                    const el = document.getElementById('bienestar-integral-info');
+                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                  }}
+                  className="w-28 h-28 md:w-36 md:h-36 rounded-full bg-white/90 backdrop-blur-xl shadow-2xl flex items-center justify-center border-2 border-[#66BB6A]/30 mx-auto cursor-pointer hover:scale-110 hover:shadow-[0_0_40px_rgba(102,187,106,0.4)] transition-all duration-500"
+                  data-cursor-hover
+                >
                   <svg className="w-12 h-12 md:w-14 md:h-14 text-[#2E7D32]" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 3c4.97 0 9 4.03 9 9-4.97 0-9-4.03-9-9zM12 3c-4.97 0-9 4.03-9 9 4.97 0 9-4.03 9-9z"/><path strokeLinecap="round" strokeLinejoin="round" d="M12 3v18"/><path strokeLinecap="round" d="M12 8c-2 2-3 4-3 6"/><path strokeLinecap="round" d="M12 8c2 2 3 4 3 6"/></svg>
-                </div>
+                </button>
                 <p className="mt-4 text-sm font-bold text-[#2E7D32] tracking-wider uppercase">Bienestar<br/>Integral</p>
               </div>
             </div>
@@ -1706,7 +1750,7 @@ export default function Saludable() {
                 >
                   {/* The node circle */}
                   <div
-                    className={`relative w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center cursor-pointer transition-all duration-500 group-hover:scale-[1.6] group-hover:z-50 shadow-xl group-hover:shadow-2xl ${selectedPillar === pillar.id ? 'scale-[1.4] z-50 shadow-2xl' : ''}`}
+                    className={`pillar-circle relative w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center cursor-pointer transition-all duration-500 group-hover:scale-[1.6] group-hover:z-50 shadow-xl group-hover:shadow-2xl ${selectedPillar === pillar.id ? 'scale-[1.4] z-50 shadow-2xl' : ''}`}
                     style={{
                       background: `linear-gradient(135deg, ${pillar.color}, ${pillar.color}CC)`,
                       boxShadow: `0 8px 30px ${pillar.color}40`,
@@ -1858,9 +1902,176 @@ export default function Saludable() {
         </div>
       </section>
 
-      {/* ═══ TRANSITION BRIDGE: Stats → Testimonials Video ═══ */}
+      {/* ═══ RESULTADOS MEDIBLES — Animated Impact Metrics ═══ */}
+      <section className="relative py-24 md:py-32 px-6 overflow-hidden bg-gradient-to-b from-[#43A047] via-[#2E7D32] to-[#1B5E20]">
+        {/* Background pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 1px, transparent 1px), radial-gradient(circle at 80% 20%, rgba(255,255,255,0.08) 1px, transparent 1px)', backgroundSize: '60px 60px, 80px 80px' }} />
+        </div>
+
+        <div className="container relative z-10">
+          {/* Section header */}
+          <div data-section-header className="text-center mb-16 md:mb-20">
+            <span className="inline-block px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-white/70 border border-white/20 rounded-full mb-6">Impacto Comprobado</span>
+            <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>
+              Resultados <span className="text-[#A5D6A7]">Medibles</span>
+            </h2>
+            <p className="text-white/60 max-w-2xl mx-auto text-lg">
+              Datos reales de empresas que implementaron nuestro programa integral de bienestar corporativo.
+            </p>
+          </div>
+
+          {/* Metrics Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {/* Metric 1: Ausentismo */}
+            <div className="resultados-card group relative p-8 rounded-3xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/15 hover:border-white/40 hover:scale-[1.03] hover:-translate-y-2 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-14 h-14 rounded-2xl bg-[#A5D6A7]/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                  <svg className="w-7 h-7 text-[#A5D6A7]" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M13 17l5-5-5-5M6 17l5-5-5-5"/></svg>
+                </div>
+                <div>
+                  <p className="text-xs text-white/50 uppercase tracking-wider">Reduccion</p>
+                  <p className="text-3xl font-bold text-white">-40%</p>
+                </div>
+              </div>
+              <h4 className="text-lg font-semibold text-white mb-2">Ausentismo Laboral</h4>
+              <p className="text-white/60 text-sm leading-relaxed">Reduccion promedio en ausentismo no planificado durante los primeros 6 meses del programa.</p>
+              {/* Animated bar */}
+              <div className="mt-6 h-2 rounded-full bg-white/10 overflow-hidden">
+                <div className="resultados-bar h-full rounded-full bg-gradient-to-r from-[#A5D6A7] to-[#66BB6A]" style={{ width: '0%' }} data-target-width="60%" />
+              </div>
+              <div className="flex justify-between mt-2 text-xs text-white/40">
+                <span>Antes</span>
+                <span>Despues (-40%)</span>
+              </div>
+            </div>
+
+            {/* Metric 2: ROI */}
+            <div className="resultados-card group relative p-8 rounded-3xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/15 hover:border-white/40 hover:scale-[1.03] hover:-translate-y-2 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-14 h-14 rounded-2xl bg-[#FFD54F]/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                  <svg className="w-7 h-7 text-[#FFD54F]" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                </div>
+                <div>
+                  <p className="text-xs text-white/50 uppercase tracking-wider">Retorno</p>
+                  <p className="text-3xl font-bold text-white">3:1</p>
+                </div>
+              </div>
+              <h4 className="text-lg font-semibold text-white mb-2">ROI Comprobado</h4>
+              <p className="text-white/60 text-sm leading-relaxed">Por cada $1 invertido en bienestar corporativo, las empresas recuperan $3 en productividad y reduccion de costos.</p>
+              {/* Animated circular progress */}
+              <div className="mt-6 flex items-center justify-center">
+                <div className="relative w-24 h-24">
+                  <svg className="w-24 h-24 -rotate-90" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="8" />
+                    <circle className="resultados-circle" cx="50" cy="50" r="42" fill="none" stroke="#FFD54F" strokeWidth="8" strokeLinecap="round" strokeDasharray="264" strokeDashoffset="264" data-target-offset="66" />
+                  </svg>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="text-lg font-bold text-white">75%</span>
+                  </div>
+                </div>
+              </div>
+              <p className="text-center text-xs text-white/40 mt-3">Empresas que reportan ROI positivo en 12 meses</p>
+            </div>
+
+            {/* Metric 3: Satisfaccion */}
+            <div className="resultados-card group relative p-8 rounded-3xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/15 hover:border-white/40 hover:scale-[1.03] hover:-translate-y-2 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-14 h-14 rounded-2xl bg-[#81C784]/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                  <svg className="w-7 h-7 text-[#81C784]" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M14.828 14.828a4 4 0 0 1-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/></svg>
+                </div>
+                <div>
+                  <p className="text-xs text-white/50 uppercase tracking-wider">Satisfaccion</p>
+                  <p className="text-3xl font-bold text-white">98%</p>
+                </div>
+              </div>
+              <h4 className="text-lg font-semibold text-white mb-2">Satisfaccion Empleados</h4>
+              <p className="text-white/60 text-sm leading-relaxed">Indice de satisfaccion de empleados participantes en programas de bienestar integral.</p>
+              {/* Animated bar */}
+              <div className="mt-6 h-2 rounded-full bg-white/10 overflow-hidden">
+                <div className="resultados-bar h-full rounded-full bg-gradient-to-r from-[#81C784] to-[#43A047]" style={{ width: '0%' }} data-target-width="98%" />
+              </div>
+              <div className="flex justify-between mt-2 text-xs text-white/40">
+                <span>0%</span>
+                <span>98%</span>
+              </div>
+            </div>
+
+            {/* Metric 4: Productividad */}
+            <div className="resultados-card group relative p-8 rounded-3xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/15 hover:border-white/40 hover:scale-[1.03] hover:-translate-y-2 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-14 h-14 rounded-2xl bg-[#4FC3F7]/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                  <svg className="w-7 h-7 text-[#4FC3F7]" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                </div>
+                <div>
+                  <p className="text-xs text-white/50 uppercase tracking-wider">Aumento</p>
+                  <p className="text-3xl font-bold text-white">+25%</p>
+                </div>
+              </div>
+              <h4 className="text-lg font-semibold text-white mb-2">Productividad</h4>
+              <p className="text-white/60 text-sm leading-relaxed">Incremento medido en productividad laboral tras implementar los 5 pilares de bienestar.</p>
+              {/* Animated bar */}
+              <div className="mt-6 h-2 rounded-full bg-white/10 overflow-hidden">
+                <div className="resultados-bar h-full rounded-full bg-gradient-to-r from-[#4FC3F7] to-[#0288D1]" style={{ width: '0%' }} data-target-width="75%" />
+              </div>
+              <div className="flex justify-between mt-2 text-xs text-white/40">
+                <span>Base</span>
+                <span>+25% productividad</span>
+              </div>
+            </div>
+
+            {/* Metric 5: Retencion */}
+            <div className="resultados-card group relative p-8 rounded-3xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/15 hover:border-white/40 hover:scale-[1.03] hover:-translate-y-2 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-14 h-14 rounded-2xl bg-[#CE93D8]/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                  <svg className="w-7 h-7 text-[#CE93D8]" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path strokeLinecap="round" strokeLinejoin="round" d="M23 21v-2a4 4 0 0 0-3-3.87"/><path strokeLinecap="round" strokeLinejoin="round" d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+                <div>
+                  <p className="text-xs text-white/50 uppercase tracking-wider">Mejora</p>
+                  <p className="text-3xl font-bold text-white">+35%</p>
+                </div>
+              </div>
+              <h4 className="text-lg font-semibold text-white mb-2">Retencion de Talento</h4>
+              <p className="text-white/60 text-sm leading-relaxed">Mejora en retencion de empleados clave gracias a programas de bienestar y cultura organizacional.</p>
+              {/* Animated bar */}
+              <div className="mt-6 h-2 rounded-full bg-white/10 overflow-hidden">
+                <div className="resultados-bar h-full rounded-full bg-gradient-to-r from-[#CE93D8] to-[#AB47BC]" style={{ width: '0%' }} data-target-width="85%" />
+              </div>
+              <div className="flex justify-between mt-2 text-xs text-white/40">
+                <span>Industria PR</span>
+                <span>+35% retencion</span>
+              </div>
+            </div>
+
+            {/* Metric 6: Clima Laboral */}
+            <div className="resultados-card group relative p-8 rounded-3xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/15 hover:border-white/40 hover:scale-[1.03] hover:-translate-y-2 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-14 h-14 rounded-2xl bg-[#FFAB91]/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                  <svg className="w-7 h-7 text-[#FFAB91]" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707"/><circle cx="12" cy="12" r="4"/></svg>
+                </div>
+                <div>
+                  <p className="text-xs text-white/50 uppercase tracking-wider">Indice</p>
+                  <p className="text-3xl font-bold text-white">9.2/10</p>
+                </div>
+              </div>
+              <h4 className="text-lg font-semibold text-white mb-2">Clima Laboral</h4>
+              <p className="text-white/60 text-sm leading-relaxed">Puntuacion promedio de clima laboral en empresas con programa activo de bienestar integral.</p>
+              {/* Animated bar */}
+              <div className="mt-6 h-2 rounded-full bg-white/10 overflow-hidden">
+                <div className="resultados-bar h-full rounded-full bg-gradient-to-r from-[#FFAB91] to-[#FF7043]" style={{ width: '0%' }} data-target-width="92%" />
+              </div>
+              <div className="flex justify-between mt-2 text-xs text-white/40">
+                <span>0</span>
+                <span>9.2 / 10</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ TRANSITION BRIDGE: Resultados → Testimonials Video ═══ */}
       <div className="relative h-20 -mt-1">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#43A047] to-[#E8F5E0]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#1B5E20] to-[#E8F5E0]" />
         <svg className="absolute bottom-0 left-0 w-full h-12" viewBox="0 0 1440 48" preserveAspectRatio="none" fill="none">
           <path d="M0,20 C360,48 720,0 1080,28 C1260,40 1380,32 1440,24 L1440,48 L0,48 Z" fill="#E8F5E0" />
           <path d="M0,30 C480,48 960,12 1440,32 L1440,48 L0,48 Z" fill="#E8F5E0" opacity="0.5" />
