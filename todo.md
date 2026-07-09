@@ -196,3 +196,6 @@
 - [x] Resultados Medibles: added background image with dark green overlay (like other sections)
 - [x] Planificación: numbers replaced with SVG icons (search, clipboard, cog, chart, badge)
 - [x] Colaboradores marquee: sped up from 40s to 15s
+- [x] Agendar Cita form: add real-time validation (email format, phone format) + loading spinner on submit
+- [x] New section: Casos de Éxito with client logos and specific result metrics
+- [x] New section: Recursos with interactive article cards filterable by bienestar corporativo theme

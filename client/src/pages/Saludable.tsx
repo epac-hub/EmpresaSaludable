@@ -326,9 +326,27 @@ export default function Saludable() {
   const [apptForm, setApptForm] = useState({ name: '', email: '', phone: '', date: '', message: '' });
   const [apptSubmitting, setApptSubmitting] = useState(false);
   const [apptSuccess, setApptSuccess] = useState(false);
+  const [apptTouched, setApptTouched] = useState<Record<string, boolean>>({});
+
+  // Real-time validation helpers
+  const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const validatePhone = (phone: string) => !phone || /^[\d\s\-().+]{7,15}$/.test(phone);
+  const getFieldError = (field: string) => {
+    if (!apptTouched[field]) return '';
+    switch (field) {
+      case 'name': return apptForm.name.length < 2 ? 'Nombre requerido (m\u00ednimo 2 caracteres)' : '';
+      case 'email': return !apptForm.email ? 'Email requerido' : !validateEmail(apptForm.email) ? 'Formato de email inv\u00e1lido' : '';
+      case 'phone': return !validatePhone(apptForm.phone) ? 'Formato: 787-000-0000' : '';
+      default: return '';
+    }
+  };
+  const isApptFormValid = apptForm.name.length >= 2 && validateEmail(apptForm.email) && validatePhone(apptForm.phone);
 
   // Pillar tap-to-expand state (mobile)
   const [selectedPillar, setSelectedPillar] = useState<string | null>(null);
+
+  // Recursos filter state
+  const [resourceFilter, setResourceFilter] = useState('Todos');
 
   // Testimonial category filter
   const [testimonialFilter, setTestimonialFilter] = useState<typeof TESTIMONIAL_CATEGORIES[number]>("Todos");
@@ -1320,7 +1338,7 @@ export default function Saludable() {
                     </p>
                     {/* Agendar Cita button */}
                     <button
-                      onClick={() => { setAppointmentFor(amb.name.split(',')[0]); setApptSuccess(false); setApptForm({ name: '', email: '', phone: '', date: '', message: '' }); }}
+                      onClick={() => { setAppointmentFor(amb.name.split(',')[0]); setApptSuccess(false); setApptForm({ name: '', email: '', phone: '', date: '', message: '' }); setApptTouched({}); }}
                       className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#6BAF8D] to-[#4A9B6F] text-white text-sm font-semibold shadow-md hover:shadow-lg hover:shadow-[#6BAF8D]/30 hover:scale-105 active:scale-95 transition-all duration-300"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
@@ -1433,7 +1451,7 @@ export default function Saludable() {
                 onClick={() => {
                   const name = selectedSpecialist.name.split(',')[0];
                   setSelectedSpecialist(null);
-                  setTimeout(() => { setAppointmentFor(name); setApptSuccess(false); setApptForm({ name: '', email: '', phone: '', date: '', message: '' }); }, 300);
+                  setTimeout(() => { setAppointmentFor(name); setApptSuccess(false); setApptForm({ name: '', email: '', phone: '', date: '', message: '' }); setApptTouched({}); }, 300);
                 }}
                 className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-[#6BAF8D] to-[#4A9B6F] text-white font-semibold shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all duration-300"
               >
@@ -1530,34 +1548,61 @@ export default function Saludable() {
                   </div>
                   <div>
                     <label className="block text-xs font-medium text-[#2D3B2D]/70 mb-1">Nombre completo *</label>
-                    <input
-                      required
-                      value={apptForm.name}
-                      onChange={(e) => setApptForm(p => ({ ...p, name: e.target.value }))}
-                      className="w-full px-4 py-2.5 rounded-xl border border-[#A8C5A0]/30 bg-[#F9FBF9] text-sm focus:ring-2 focus:ring-[#6BAF8D]/30 focus:border-[#6BAF8D] outline-none transition-all"
-                      placeholder="Su nombre"
-                    />
+                    <div className="relative">
+                      <input
+                        required
+                        value={apptForm.name}
+                        onChange={(e) => setApptForm(p => ({ ...p, name: e.target.value }))}
+                        onBlur={() => setApptTouched(p => ({ ...p, name: true }))}
+                        className={`w-full px-4 py-2.5 rounded-xl border bg-[#F9FBF9] text-sm focus:ring-2 outline-none transition-all pr-10 ${getFieldError('name') ? 'border-red-400 focus:ring-red-200 focus:border-red-400' : apptTouched.name && apptForm.name.length >= 2 ? 'border-green-400 focus:ring-green-200 focus:border-green-400' : 'border-[#A8C5A0]/30 focus:ring-[#6BAF8D]/30 focus:border-[#6BAF8D]'}`}
+                        placeholder="Su nombre"
+                      />
+                      {apptTouched.name && (
+                        <span className="absolute right-3 top-1/2 -translate-y-1/2">
+                          {apptForm.name.length >= 2 ? <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/></svg> : <svg className="w-4 h-4 text-red-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path strokeLinecap="round" d="M15 9l-6 6M9 9l6 6"/></svg>}
+                        </span>
+                      )}
+                    </div>
+                    {getFieldError('name') && <p className="text-[10px] text-red-500 mt-1 ml-1">{getFieldError('name')}</p>}
                   </div>
                   <div>
                     <label className="block text-xs font-medium text-[#2D3B2D]/70 mb-1">Email *</label>
-                    <input
-                      required
-                      type="email"
-                      value={apptForm.email}
-                      onChange={(e) => setApptForm(p => ({ ...p, email: e.target.value }))}
-                      className="w-full px-4 py-2.5 rounded-xl border border-[#A8C5A0]/30 bg-[#F9FBF9] text-sm focus:ring-2 focus:ring-[#6BAF8D]/30 focus:border-[#6BAF8D] outline-none transition-all"
-                      placeholder="su@email.com"
-                    />
+                    <div className="relative">
+                      <input
+                        required
+                        type="email"
+                        value={apptForm.email}
+                        onChange={(e) => setApptForm(p => ({ ...p, email: e.target.value }))}
+                        onBlur={() => setApptTouched(p => ({ ...p, email: true }))}
+                        className={`w-full px-4 py-2.5 rounded-xl border bg-[#F9FBF9] text-sm focus:ring-2 outline-none transition-all pr-10 ${getFieldError('email') ? 'border-red-400 focus:ring-red-200 focus:border-red-400' : apptTouched.email && validateEmail(apptForm.email) ? 'border-green-400 focus:ring-green-200 focus:border-green-400' : 'border-[#A8C5A0]/30 focus:ring-[#6BAF8D]/30 focus:border-[#6BAF8D]'}`}
+                        placeholder="su@email.com"
+                      />
+                      {apptTouched.email && (
+                        <span className="absolute right-3 top-1/2 -translate-y-1/2">
+                          {validateEmail(apptForm.email) ? <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/></svg> : <svg className="w-4 h-4 text-red-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path strokeLinecap="round" d="M15 9l-6 6M9 9l6 6"/></svg>}
+                        </span>
+                      )}
+                    </div>
+                    {getFieldError('email') && <p className="text-[10px] text-red-500 mt-1 ml-1">{getFieldError('email')}</p>}
                   </div>
                   <div className="grid grid-cols-2 gap-3">
                     <div>
                       <label className="block text-xs font-medium text-[#2D3B2D]/70 mb-1">Teléfono</label>
-                      <input
-                        value={apptForm.phone}
-                        onChange={(e) => setApptForm(p => ({ ...p, phone: e.target.value }))}
-                        className="w-full px-4 py-2.5 rounded-xl border border-[#A8C5A0]/30 bg-[#F9FBF9] text-sm focus:ring-2 focus:ring-[#6BAF8D]/30 focus:border-[#6BAF8D] outline-none transition-all"
-                        placeholder="787-000-0000"
-                      />
+                      <div className="relative">
+                        <input
+                          value={apptForm.phone}
+                          onChange={(e) => setApptForm(p => ({ ...p, phone: e.target.value }))}
+                          onBlur={() => setApptTouched(p => ({ ...p, phone: true }))}
+                          className={`w-full px-4 py-2.5 rounded-xl border bg-[#F9FBF9] text-sm focus:ring-2 outline-none transition-all pr-10 ${getFieldError('phone') ? 'border-red-400 focus:ring-red-200 focus:border-red-400' : apptTouched.phone && apptForm.phone && validatePhone(apptForm.phone) ? 'border-green-400 focus:ring-green-200 focus:border-green-400' : 'border-[#A8C5A0]/30 focus:ring-[#6BAF8D]/30 focus:border-[#6BAF8D]'}`}
+                          placeholder="787-000-0000"
+                        />
+                        {apptTouched.phone && apptForm.phone && (
+                          <span className="absolute right-3 top-1/2 -translate-y-1/2">
+                            {validatePhone(apptForm.phone) ? <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/></svg> : <svg className="w-4 h-4 text-red-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path strokeLinecap="round" d="M15 9l-6 6M9 9l6 6"/></svg>}
+                          </span>
+                        )}
+                      </div>
+                      {getFieldError('phone') && <p className="text-[10px] text-red-500 mt-1 ml-1">{getFieldError('phone')}</p>}
                     </div>
                     <div>
                       <label className="block text-xs font-medium text-[#2D3B2D]/70 mb-1">Fecha preferida</label>
@@ -1581,10 +1626,15 @@ export default function Saludable() {
                   </div>
                   <button
                     type="submit"
-                    disabled={apptSubmitting}
-                    className="w-full py-3 rounded-full bg-gradient-to-r from-[#6BAF8D] to-[#4A9B6F] text-white font-semibold shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled={apptSubmitting || !isApptFormValid}
+                    className="w-full py-3 rounded-full bg-gradient-to-r from-[#6BAF8D] to-[#4A9B6F] text-white font-semibold shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   >
-                    {apptSubmitting ? 'Enviando...' : 'Solicitar Cita'}
+                    {apptSubmitting ? (
+                      <>
+                        <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/></svg>
+                        Procesando...
+                      </>
+                    ) : 'Solicitar Cita'}
                   </button>
                 </form>
               </>
@@ -2765,11 +2815,197 @@ export default function Saludable() {
         </div>
       </section>
 
-      {/* ═══ TRANSITION BRIDGE: FAQ → Colaboradores ═══ */}
+            {/* ═══ TRANSITION BRIDGE: FAQ → Casos de Éxito ═══ */}
       <div className="relative h-8 -mt-1">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#F4F9F2] to-white" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#F4F9F2] to-[#F0FAF0]" />
       </div>
 
+      {/* ═══ CASOS DE ÉXITO ═══ */}
+      <section className="py-24 px-6 bg-gradient-to-b from-[#F0FAF0] to-white" data-reveal="fade-up">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-[#E8F5E9] text-[#2E7D32] text-xs font-semibold tracking-wider uppercase mb-4">Resultados Reales</span>
+            <h2 className="text-3xl md:text-4xl font-bold text-[#2D3B2D]" style={{ fontFamily: "'Playfair Display', serif" }}>
+              Casos de <span className="text-[#4A9B6F]">\u00c9xito</span>
+            </h2>
+            <p className="mt-4 text-[#2D3B2D]/60 max-w-xl mx-auto">
+              Empresas que transformaron su cultura organizacional con nuestro programa integral de bienestar.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Case 1 */}
+            <div className="group bg-white rounded-2xl p-8 shadow-lg border border-[#E8F5E9] hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-14 h-14 rounded-xl bg-[#E8F5E9] flex items-center justify-center">
+                  <svg className="w-7 h-7 text-[#4A9B6F]" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3H21m-3.75 3H21" /></svg>
+                </div>
+                <div>
+                  <h3 className="font-bold text-[#2D3B2D] text-lg">Corporaci\u00f3n Manufacturera</h3>
+                  <p className="text-xs text-[#2D3B2D]/50">Sector Industrial • 450 empleados</p>
+                </div>
+              </div>
+              <div className="space-y-4 mb-6">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-[#2D3B2D]/70">Reducci\u00f3n ausentismo</span>
+                  <span className="font-bold text-[#2E7D32]">-52%</span>
+                </div>
+                <div className="w-full h-2 bg-[#E8F5E9] rounded-full overflow-hidden">
+                  <div className="h-full bg-gradient-to-r from-[#6BAF8D] to-[#4A9B6F] rounded-full" style={{ width: '52%' }} />
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-[#2D3B2D]/70">ROI primer a\u00f1o</span>
+                  <span className="font-bold text-[#2E7D32]">4.2:1</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-[#2D3B2D]/70">Satisfacci\u00f3n empleados</span>
+                  <span className="font-bold text-[#2E7D32]">96%</span>
+                </div>
+              </div>
+              <p className="text-sm text-[#2D3B2D]/60 italic border-l-2 border-[#6BAF8D] pl-3">
+                "El programa transform\u00f3 nuestra cultura laboral. Los resultados superaron todas las expectativas."
+              </p>
+            </div>
+
+            {/* Case 2 */}
+            <div className="group bg-white rounded-2xl p-8 shadow-lg border border-[#E8F5E9] hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-14 h-14 rounded-xl bg-[#E3F2FD] flex items-center justify-center">
+                  <svg className="w-7 h-7 text-[#1976D2]" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21" /></svg>
+                </div>
+                <div>
+                  <h3 className="font-bold text-[#2D3B2D] text-lg">Grupo Financiero Regional</h3>
+                  <p className="text-xs text-[#2D3B2D]/50">Sector Bancario • 1,200 empleados</p>
+                </div>
+              </div>
+              <div className="space-y-4 mb-6">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-[#2D3B2D]/70">Retenci\u00f3n de talento</span>
+                  <span className="font-bold text-[#1976D2]">+38%</span>
+                </div>
+                <div className="w-full h-2 bg-[#E3F2FD] rounded-full overflow-hidden">
+                  <div className="h-full bg-gradient-to-r from-[#42A5F5] to-[#1976D2] rounded-full" style={{ width: '38%' }} />
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-[#2D3B2D]/70">Productividad</span>
+                  <span className="font-bold text-[#1976D2]">+31%</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-[#2D3B2D]/70">Clima laboral</span>
+                  <span className="font-bold text-[#1976D2]">9.4/10</span>
+                </div>
+              </div>
+              <p className="text-sm text-[#2D3B2D]/60 italic border-l-2 border-[#42A5F5] pl-3">
+                "Implementamos los 5 pilares y en 8 meses vimos mejoras medibles en todos los indicadores clave."
+              </p>
+            </div>
+
+            {/* Case 3 */}
+            <div className="group bg-white rounded-2xl p-8 shadow-lg border border-[#E8F5E9] hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-14 h-14 rounded-xl bg-[#FFF3E0] flex items-center justify-center">
+                  <svg className="w-7 h-7 text-[#E65100]" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016A3.001 3.001 0 0021 9.349m-18 0V7.875C3 6.839 3.839 6 4.875 6h14.25C20.161 6 21 6.839 21 7.875v1.474" /></svg>
+                </div>
+                <div>
+                  <h3 className="font-bold text-[#2D3B2D] text-lg">Cadena de Farmacias PR</h3>
+                  <p className="text-xs text-[#2D3B2D]/50">Sector Salud • 180 empleados</p>
+                </div>
+              </div>
+              <div className="space-y-4 mb-6">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-[#2D3B2D]/70">Reducci\u00f3n rotaci\u00f3n</span>
+                  <span className="font-bold text-[#E65100]">-45%</span>
+                </div>
+                <div className="w-full h-2 bg-[#FFF3E0] rounded-full overflow-hidden">
+                  <div className="h-full bg-gradient-to-r from-[#FF9800] to-[#E65100] rounded-full" style={{ width: '45%' }} />
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-[#2D3B2D]/70">Ahorro anual</span>
+                  <span className="font-bold text-[#E65100]">$340K</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-[#2D3B2D]/70">NPS empleados</span>
+                  <span className="font-bold text-[#E65100]">+72</span>
+                </div>
+              </div>
+              <p className="text-sm text-[#2D3B2D]/60 italic border-l-2 border-[#FF9800] pl-3">
+                "La inversi\u00f3n en bienestar se pag\u00f3 sola en 6 meses. Nuestro equipo est\u00e1 m\u00e1s comprometido que nunca."
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ TRANSITION BRIDGE: Casos de \u00c9xito → Recursos ═══ */}
+      <div className="relative h-8 -mt-1">
+        <div className="absolute inset-0 bg-gradient-to-b from-white to-[#FAFAFA]" />
+      </div>
+
+      {/* ═══ RECURSOS ═══ */}
+      <section className="py-24 px-6 bg-[#FAFAFA]" data-reveal="fade-up">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-[#E8F5E9] text-[#2E7D32] text-xs font-semibold tracking-wider uppercase mb-4">Conocimiento</span>
+            <h2 className="text-3xl md:text-4xl font-bold text-[#2D3B2D]" style={{ fontFamily: "'Playfair Display', serif" }}>
+              Recursos de <span className="text-[#4A9B6F]">Bienestar</span>
+            </h2>
+            <p className="mt-4 text-[#2D3B2D]/60 max-w-xl mx-auto">
+              Art\u00edculos, gu\u00edas y herramientas para implementar una cultura de bienestar en tu organizaci\u00f3n.
+            </p>
+          </div>
+
+          {/* Filter Tabs */}
+          <div className="flex flex-wrap justify-center gap-2 mb-10">
+            {['Todos', 'Salud Mental', 'Salud F\u00edsica', 'Nutrici\u00f3n', 'Finanzas', 'Corporativo'].map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setResourceFilter(tab)}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${resourceFilter === tab ? 'bg-[#4A9B6F] text-white shadow-md' : 'bg-white text-[#2D3B2D]/70 border border-[#E8F5E9] hover:border-[#6BAF8D] hover:text-[#4A9B6F]'}`}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
+
+          {/* Article Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              { title: 'C\u00f3mo Reducir el Estr\u00e9s Laboral en 5 Pasos', category: 'Salud Mental', readTime: '5 min', color: '#7C4DFF' },
+              { title: 'Gu\u00eda de Ejercicios para la Oficina', category: 'Salud F\u00edsica', readTime: '8 min', color: '#FF5722' },
+              { title: 'Nutrici\u00f3n Corporativa: Men\u00fas Saludables', category: 'Nutrici\u00f3n', readTime: '6 min', color: '#4CAF50' },
+              { title: 'Educaci\u00f3n Financiera para Empleados', category: 'Finanzas', readTime: '7 min', color: '#2196F3' },
+              { title: 'Implementando un Programa de Bienestar', category: 'Corporativo', readTime: '10 min', color: '#FF9800' },
+              { title: 'Mindfulness en el Trabajo: Gu\u00eda Pr\u00e1ctica', category: 'Salud Mental', readTime: '4 min', color: '#7C4DFF' },
+              { title: 'Ergonomía: Prevenci\u00f3n de Lesiones', category: 'Salud F\u00edsica', readTime: '6 min', color: '#FF5722' },
+              { title: 'ROI del Bienestar Corporativo', category: 'Corporativo', readTime: '12 min', color: '#FF9800' },
+              { title: 'Planificaci\u00f3n de Presupuesto Personal', category: 'Finanzas', readTime: '5 min', color: '#2196F3' },
+            ].filter(article => resourceFilter === 'Todos' || article.category === resourceFilter).map((article, idx) => (
+              <div key={idx} className="group bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer">
+                <div className="h-2 w-full" style={{ backgroundColor: article.color }} />
+                <div className="p-6">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold text-white" style={{ backgroundColor: article.color }}>{article.category}</span>
+                    <span className="text-[10px] text-[#2D3B2D]/40 flex items-center gap-1">
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                      {article.readTime}
+                    </span>
+                  </div>
+                  <h3 className="font-bold text-[#2D3B2D] text-base group-hover:text-[#4A9B6F] transition-colors">{article.title}</h3>
+                  <div className="mt-4 flex items-center text-[#4A9B6F] text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    Leer art\u00edculo
+                    <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ TRANSITION BRIDGE: Recursos → Colaboradores ═══ */}
+      <div className="relative h-8 -mt-1">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#FAFAFA] to-white" />
+      </div>
       {/* ═══ NUESTROS COLABORADORES ═══ */}
       <section className="py-20 px-6 bg-white" data-reveal="fade-up">
         <div className="max-w-6xl mx-auto">
