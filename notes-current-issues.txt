@@ -1,0 +1,4 @@
+Current page state observations:
+1. Hero image (v6) has loaded - shows group of people in wellness center. The new image appears to have generated successfully. User says the blonde woman is missing from this new version.
+2. The Pilares section (circular wheel with 5 pillars) IS visible in the screenshot - it shows the circular layout with the 5 pillar nodes. However, the user says they are broken/not visible - need to check on mobile or check if the click interaction is broken.
+3. Need to check if the pillar click-to-show-info functionality is still working after recent edits.
