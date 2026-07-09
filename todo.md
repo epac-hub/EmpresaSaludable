@@ -204,3 +204,4 @@
 - [x] Create internal blog section structured to show resource articles with full content
 - [x] Remove Solicitar Demo form from hero section (user did not request it there)
 - [x] Regenerate hero image with fewer men (3 men, 6 women instead of 5+5)
+- [x] Regenerate hero image again with fewer people total (4 women, 3 men = 7 people)
