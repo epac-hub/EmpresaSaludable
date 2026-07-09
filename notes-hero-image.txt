@@ -1,0 +1,6 @@
+Hero image: /manus-storage/hero-corporate-v4_16e0e142.jpg
+- Shows approximately 5 men and 5 women in athletic/wellness attire
+- Located in a luxury wellness center/pavilion with ocean view
+- "EMPRESA SALUDABLE" sign visible in background
+- User wants to remove 2 men from this image
+- Need to generate a new image with fewer men (3 men, 5+ women)
