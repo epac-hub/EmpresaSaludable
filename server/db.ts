@@ -125,3 +125,24 @@ export async function deleteContactSubmission(id: number) {
   await db.delete(contactSubmissions).where(eq(contactSubmissions.id, id));
   return { success: true };
 }
+
+// ─── Demo Requests ───────────────────────────────────────────────────────────────────────────────────────────────────────────────
+export async function createDemoRequest(data: {
+  companyName: string;
+  email: string;
+  phone: string;
+  employeeCount: string;
+}) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+  const { demoRequests } = await import("../drizzle/schema");
+  await db.insert(demoRequests).values({
+    companyName: data.companyName,
+    email: data.email,
+    phone: data.phone,
+    employeeCount: data.employeeCount,
+  });
+  return { success: true };
+}

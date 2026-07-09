@@ -15,6 +15,13 @@
       "when": 1783144521138,
       "tag": "0001_solid_wrecking_crew",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1783570594744,
+      "tag": "0002_petite_sunfire",
+      "breakpoints": true
     }
   ]
 }

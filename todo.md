@@ -199,3 +199,6 @@
 - [x] Agendar Cita form: add real-time validation (email format, phone format) + loading spinner on submit
 - [x] New section: Casos de Éxito with client logos and specific result metrics
 - [x] New section: Recursos with interactive article cards filterable by bienestar corporativo theme
+- [x] Add smooth transition animation when pillar info card appears (slide-up + fade-in)
+- [x] Add Solicitar Demo form in the hero/main section to capture leads
+- [x] Create internal blog section structured to show resource articles with full content

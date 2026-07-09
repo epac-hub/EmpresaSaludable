@@ -3,7 +3,7 @@ import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { adminProcedure, publicProcedure, router } from "./_core/trpc";
 import { z } from "zod";
-import { createContactSubmission, deleteContactSubmission, listContactSubmissions } from "./db";
+import { createContactSubmission, deleteContactSubmission, listContactSubmissions, createDemoRequest } from "./db";
 import { notifyOwner } from "./_core/notification";
 
 export const appRouter = router({
@@ -37,6 +37,27 @@ export const appRouter = router({
         await notifyOwner({
           title: `Nuevo contacto: ${input.name}`,
           content: `Email: ${input.email}\nEmpresa: ${input.company || "No especificada"}\nMensaje: ${input.message}`,
+        });
+
+        return { success: true };
+      }),
+  }),
+
+  // ─── Solicitar Demo ───
+  demo: router({
+    request: publicProcedure
+      .input(z.object({
+        companyName: z.string().min(2, "Nombre de empresa requerido"),
+        email: z.string().email("Email corporativo inv\u00e1lido"),
+        phone: z.string().min(7, "Tel\u00e9fono inv\u00e1lido"),
+        employeeCount: z.string().min(1, "Seleccione cantidad de empleados"),
+      }))
+      .mutation(async ({ input }) => {
+        await createDemoRequest(input);
+
+        await notifyOwner({
+          title: `Nueva solicitud de demo: ${input.companyName}`,
+          content: `Empresa: ${input.companyName}\nEmail: ${input.email}\nTel: ${input.phone}\nEmpleados: ${input.employeeCount}`,
         });
 
         return { success: true };

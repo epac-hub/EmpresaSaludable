@@ -14,6 +14,7 @@ import FuturisticCursor from "@/components/saludable/FuturisticCursor";
 import MagneticButton from "@/components/saludable/MagneticButton";
 import { trpc } from "@/lib/trpc";
 import TestimonialCarousel from "@/components/saludable/TestimonialCarousel";
+import { BLOG_ARTICLES } from "./blogArticles";
 // GreenParticles removed from hero (video background now)
 // Interactive3DParticles removed — replaced with lightweight CSS floating dots
 
@@ -348,6 +349,15 @@ export default function Saludable() {
   // Recursos filter state
   const [resourceFilter, setResourceFilter] = useState('Todos');
 
+  // Solicitar Demo form state
+  const [showDemoForm, setShowDemoForm] = useState(false);
+  const [demoForm, setDemoForm] = useState({ companyName: '', email: '', phone: '', employeeCount: '' });
+  const [demoTouched, setDemoTouched] = useState<Record<string, boolean>>({});
+  const [demoSuccess, setDemoSuccess] = useState(false);
+
+  // Blog article modal state
+  const [selectedArticle, setSelectedArticle] = useState<number | null>(null);
+
   // Testimonial category filter
   const [testimonialFilter, setTestimonialFilter] = useState<typeof TESTIMONIAL_CATEGORIES[number]>("Todos");
   const filteredTestimonials = testimonialFilter === "Todos"
@@ -428,6 +438,25 @@ export default function Saludable() {
       setFormError("Error al enviar. Intente de nuevo o escr\u00edba a hola@empresasaludable.org");
     },
   });
+
+  // ─── Demo Request Mutation ───
+  const demoMutation = trpc.demo.request.useMutation({
+    onSuccess: () => {
+      setDemoSuccess(true);
+    },
+    onError: (err) => {
+      console.error("Demo request error:", err);
+    },
+  });
+
+  const handleDemoSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setDemoTouched({ companyName: true, email: true, phone: true, employeeCount: true });
+    // Basic validation
+    if (!demoForm.companyName || !demoForm.email || !demoForm.phone || !demoForm.employeeCount) return;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(demoForm.email)) return;
+    demoMutation.mutate(demoForm);
+  };
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -1202,7 +1231,167 @@ export default function Saludable() {
         {/* Dark overlay for text readability — people still visible through it */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/5 via-transparent to-black/10" />
 
+        {/* ═══ Solicitar Demo Form — glassmorphism card ═══ */}
+        <div className="relative z-10 w-full max-w-md mx-auto px-4">
+          {!showDemoForm ? (
+            <div className="text-center">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>
+                Bienvenido a<br />Empresa Saludable
+              </h2>
+              <p className="text-white/70 text-sm mb-6" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                Bienestar corporativo integral para su equipo
+              </p>
+              <button
+                onClick={() => setShowDemoForm(true)}
+                className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-full bg-gradient-to-r from-[#1B5E20] to-[#43A047] text-white font-semibold text-base tracking-wide overflow-hidden transition-all duration-500 hover:shadow-[0_0_40px_rgba(67,160,71,0.5)] hover:scale-105 active:scale-95"
+                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+              >
+                <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                <span className="relative z-10">Solicitar Demo Gratuita</span>
+                <svg className="relative z-10 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </button>
+            </div>
+          ) : demoSuccess ? (
+            <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-8 text-center shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-[#43A047] to-[#66BB6A] flex items-center justify-center">
+                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>Solicitud Recibida</h3>
+              <p className="text-white/70 text-sm" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                Nuestro equipo se comunicar\u00e1 con usted dentro de 24 horas h\u00e1biles para coordinar su demo personalizada.
+              </p>
+            </div>
+          ) : (
+            <form
+              onSubmit={handleDemoSubmit}
+              className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6 shadow-[0_8px_32px_rgba(0,0,0,0.3)]"
+            >
+              <h3 className="text-xl font-bold text-white mb-1 text-center" style={{ fontFamily: "'Playfair Display', serif" }}>
+                Solicitar Demo Gratuita
+              </h3>
+              <p className="text-white/60 text-xs text-center mb-5" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                Complete el formulario y reciba una propuesta personalizada
+              </p>
 
+              <div className="space-y-3">
+                {/* Company Name */}
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Nombre de la empresa"
+                    value={demoForm.companyName}
+                    onChange={(e) => setDemoForm(prev => ({ ...prev, companyName: e.target.value }))}
+                    onBlur={() => setDemoTouched(prev => ({ ...prev, companyName: true }))}
+                    className={`w-full px-4 py-3 rounded-lg bg-white/10 border text-white placeholder-white/40 text-sm focus:outline-none focus:ring-2 focus:ring-[#43A047]/50 transition-all ${
+                      demoTouched.companyName && !demoForm.companyName ? 'border-red-400/60' : 'border-white/20 focus:border-[#43A047]/60'
+                    }`}
+                    style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                  />
+                  {demoTouched.companyName && !demoForm.companyName && (
+                    <p className="text-red-400 text-xs mt-1">Requerido</p>
+                  )}
+                </div>
+
+                {/* Email */}
+                <div>
+                  <input
+                    type="email"
+                    placeholder="Email corporativo"
+                    value={demoForm.email}
+                    onChange={(e) => setDemoForm(prev => ({ ...prev, email: e.target.value }))}
+                    onBlur={() => setDemoTouched(prev => ({ ...prev, email: true }))}
+                    className={`w-full px-4 py-3 rounded-lg bg-white/10 border text-white placeholder-white/40 text-sm focus:outline-none focus:ring-2 focus:ring-[#43A047]/50 transition-all ${
+                      demoTouched.email && (!demoForm.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(demoForm.email)) ? 'border-red-400/60' : 'border-white/20 focus:border-[#43A047]/60'
+                    }`}
+                    style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                  />
+                  {demoTouched.email && !demoForm.email && (
+                    <p className="text-red-400 text-xs mt-1">Requerido</p>
+                  )}
+                  {demoTouched.email && demoForm.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(demoForm.email) && (
+                    <p className="text-red-400 text-xs mt-1">Email inv\u00e1lido</p>
+                  )}
+                </div>
+
+                {/* Phone */}
+                <div>
+                  <input
+                    type="tel"
+                    placeholder="Tel\u00e9fono (787-000-0000)"
+                    value={demoForm.phone}
+                    onChange={(e) => setDemoForm(prev => ({ ...prev, phone: e.target.value }))}
+                    onBlur={() => setDemoTouched(prev => ({ ...prev, phone: true }))}
+                    className={`w-full px-4 py-3 rounded-lg bg-white/10 border text-white placeholder-white/40 text-sm focus:outline-none focus:ring-2 focus:ring-[#43A047]/50 transition-all ${
+                      demoTouched.phone && !demoForm.phone ? 'border-red-400/60' : 'border-white/20 focus:border-[#43A047]/60'
+                    }`}
+                    style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                  />
+                  {demoTouched.phone && !demoForm.phone && (
+                    <p className="text-red-400 text-xs mt-1">Requerido</p>
+                  )}
+                </div>
+
+                {/* Employee Count */}
+                <div>
+                  <select
+                    value={demoForm.employeeCount}
+                    onChange={(e) => setDemoForm(prev => ({ ...prev, employeeCount: e.target.value }))}
+                    onBlur={() => setDemoTouched(prev => ({ ...prev, employeeCount: true }))}
+                    className={`w-full px-4 py-3 rounded-lg bg-white/10 border text-sm focus:outline-none focus:ring-2 focus:ring-[#43A047]/50 transition-all appearance-none ${
+                      demoTouched.employeeCount && !demoForm.employeeCount ? 'border-red-400/60 text-white/40' : 'border-white/20 focus:border-[#43A047]/60'
+                    } ${demoForm.employeeCount ? 'text-white' : 'text-white/40'}`}
+                    style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                  >
+                    <option value="" className="bg-[#1a1a1a] text-white/60">N\u00famero de empleados</option>
+                    <option value="1-25" className="bg-[#1a1a1a] text-white">1 - 25 empleados</option>
+                    <option value="26-50" className="bg-[#1a1a1a] text-white">26 - 50 empleados</option>
+                    <option value="51-100" className="bg-[#1a1a1a] text-white">51 - 100 empleados</option>
+                    <option value="101-250" className="bg-[#1a1a1a] text-white">101 - 250 empleados</option>
+                    <option value="251-500" className="bg-[#1a1a1a] text-white">251 - 500 empleados</option>
+                    <option value="500+" className="bg-[#1a1a1a] text-white">M\u00e1s de 500 empleados</option>
+                  </select>
+                  {demoTouched.employeeCount && !demoForm.employeeCount && (
+                    <p className="text-red-400 text-xs mt-1">Seleccione una opci\u00f3n</p>
+                  )}
+                </div>
+              </div>
+
+              {/* Submit Button */}
+              <button
+                type="submit"
+                disabled={demoMutation.isPending}
+                className="w-full mt-5 py-3 rounded-lg bg-gradient-to-r from-[#1B5E20] to-[#43A047] text-white font-semibold text-sm tracking-wide transition-all duration-300 hover:shadow-[0_0_24px_rgba(67,160,71,0.4)] hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+              >
+                {demoMutation.isPending ? (
+                  <>
+                    <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                    </svg>
+                    Enviando...
+                  </>
+                ) : (
+                  'Solicitar Demo'
+                )}
+              </button>
+
+              {/* Back link */}
+              <button
+                type="button"
+                onClick={() => setShowDemoForm(false)}
+                className="w-full mt-3 text-white/50 text-xs hover:text-white/80 transition-colors text-center"
+                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+              >
+                Volver
+              </button>
+            </form>
+          )}
+        </div>
 
         {/* Interactive CTA Button */}
         <div className="absolute bottom-24 left-1/2 -translate-x-1/2 z-10">
@@ -1827,7 +2016,7 @@ export default function Saludable() {
 
           {/* Mobile: full-width card below the wheel when a pillar is tapped */}
           {selectedPillar && (
-            <div className="mt-8 mx-auto max-w-md animate-in fade-in slide-in-from-bottom-4 duration-400">
+            <div key={selectedPillar} className="mt-8 mx-auto max-w-md" style={{ animation: 'pillarCardIn 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards' }}>
               {(() => {
                 const pillar = PILLARS.find(p => p.id === selectedPillar);
                 if (!pillar) return null;
@@ -2969,18 +3158,12 @@ export default function Saludable() {
 
           {/* Article Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              { title: 'C\u00f3mo Reducir el Estr\u00e9s Laboral en 5 Pasos', category: 'Salud Mental', readTime: '5 min', color: '#7C4DFF' },
-              { title: 'Gu\u00eda de Ejercicios para la Oficina', category: 'Salud F\u00edsica', readTime: '8 min', color: '#FF5722' },
-              { title: 'Nutrici\u00f3n Corporativa: Men\u00fas Saludables', category: 'Nutrici\u00f3n', readTime: '6 min', color: '#4CAF50' },
-              { title: 'Educaci\u00f3n Financiera para Empleados', category: 'Finanzas', readTime: '7 min', color: '#2196F3' },
-              { title: 'Implementando un Programa de Bienestar', category: 'Corporativo', readTime: '10 min', color: '#FF9800' },
-              { title: 'Mindfulness en el Trabajo: Gu\u00eda Pr\u00e1ctica', category: 'Salud Mental', readTime: '4 min', color: '#7C4DFF' },
-              { title: 'Ergonomía: Prevenci\u00f3n de Lesiones', category: 'Salud F\u00edsica', readTime: '6 min', color: '#FF5722' },
-              { title: 'ROI del Bienestar Corporativo', category: 'Corporativo', readTime: '12 min', color: '#FF9800' },
-              { title: 'Planificaci\u00f3n de Presupuesto Personal', category: 'Finanzas', readTime: '5 min', color: '#2196F3' },
-            ].filter(article => resourceFilter === 'Todos' || article.category === resourceFilter).map((article, idx) => (
-              <div key={idx} className="group bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer">
+            {BLOG_ARTICLES.filter(article => resourceFilter === 'Todos' || article.category === resourceFilter).map((article) => (
+              <div
+                key={article.id}
+                onClick={() => setSelectedArticle(article.id)}
+                className="group bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+              >
                 <div className="h-2 w-full" style={{ backgroundColor: article.color }} />
                 <div className="p-6">
                   <div className="flex items-center gap-2 mb-3">
@@ -2991,8 +3174,9 @@ export default function Saludable() {
                     </span>
                   </div>
                   <h3 className="font-bold text-[#2D3B2D] text-base group-hover:text-[#4A9B6F] transition-colors">{article.title}</h3>
+                  <p className="mt-2 text-[#2D3B2D]/50 text-sm line-clamp-2">{article.excerpt}</p>
                   <div className="mt-4 flex items-center text-[#4A9B6F] text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    Leer art\u00edculo
+                    Leer art\u00edculo completo
                     <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
                   </div>
                 </div>
@@ -3001,6 +3185,79 @@ export default function Saludable() {
           </div>
         </div>
       </section>
+
+      {/* ═══ ARTICLE MODAL ═══ */}
+      {selectedArticle !== null && (() => {
+        const article = BLOG_ARTICLES.find(a => a.id === selectedArticle);
+        if (!article) return null;
+        return (
+          <div
+            className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
+            onClick={() => setSelectedArticle(null)}
+          >
+            {/* Backdrop */}
+            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+            {/* Modal Content */}
+            <div
+              className="relative bg-white rounded-2xl max-w-3xl w-full max-h-[85vh] overflow-y-auto shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+              style={{ animation: 'pillarCardIn 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards' }}
+            >
+              {/* Color bar */}
+              <div className="h-2 w-full rounded-t-2xl" style={{ backgroundColor: article.color }} />
+              {/* Close button */}
+              <button
+                onClick={() => setSelectedArticle(null)}
+                className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors z-10"
+              >
+                <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+              {/* Article Header */}
+              <div className="p-8 pb-4">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="px-3 py-1 rounded-full text-xs font-semibold text-white" style={{ backgroundColor: article.color }}>{article.category}</span>
+                  <span className="text-xs text-[#2D3B2D]/40 flex items-center gap-1">
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                    {article.readTime} de lectura
+                  </span>
+                </div>
+                <h2 className="text-2xl md:text-3xl font-bold text-[#2D3B2D]" style={{ fontFamily: "'Playfair Display', serif" }}>
+                  {article.title}
+                </h2>
+              </div>
+              {/* Article Body */}
+              <div className="px-8 pb-8">
+                <div className="space-y-4">
+                  {article.content.map((paragraph, pIdx) => {
+                    // Parse bold markers
+                    const parts = paragraph.split(/\*\*(.*?)\*\*/);
+                    return (
+                      <p key={pIdx} className="text-[#2D3B2D]/80 text-[15px] leading-relaxed" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                        {parts.map((part, partIdx) =>
+                          partIdx % 2 === 1
+                            ? <strong key={partIdx} className="text-[#2D3B2D] font-semibold">{part}</strong>
+                            : <span key={partIdx}>{part}</span>
+                        )}
+                      </p>
+                    );
+                  })}
+                </div>
+                {/* CTA at bottom */}
+                <div className="mt-8 pt-6 border-t border-gray-100 text-center">
+                  <p className="text-sm text-[#2D3B2D]/50 mb-3">\u00bfDesea implementar estas estrategias en su empresa?</p>
+                  <button
+                    onClick={() => { setSelectedArticle(null); setShowDemoForm(true); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-[#1B5E20] to-[#43A047] text-white font-semibold text-sm hover:shadow-lg hover:scale-105 transition-all duration-300"
+                  >
+                    Solicitar Demo Gratuita
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
 
       {/* ═══ TRANSITION BRIDGE: Recursos → Colaboradores ═══ */}
       <div className="relative h-8 -mt-1">
