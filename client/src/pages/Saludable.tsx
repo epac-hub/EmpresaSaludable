@@ -1737,7 +1737,7 @@ export default function Saludable() {
             <div className="absolute inset-[18%] rounded-full border border-[#81C784]/15" />
             
             {/* Center hub */}
-            <div className="absolute inset-0 flex items-center justify-center z-20">
+            <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
               <div className="text-center">
                 <button
                   onClick={() => {
@@ -1745,7 +1745,7 @@ export default function Saludable() {
                     const el = document.getElementById('bienestar-integral-info');
                     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
                   }}
-                  className="w-28 h-28 md:w-36 md:h-36 rounded-full bg-white/90 backdrop-blur-xl shadow-2xl flex items-center justify-center border-2 border-[#66BB6A]/30 mx-auto cursor-pointer hover:scale-110 hover:shadow-[0_0_40px_rgba(102,187,106,0.4)] transition-all duration-500"
+                  className="pointer-events-auto w-28 h-28 md:w-36 md:h-36 rounded-full bg-white/90 backdrop-blur-xl shadow-2xl flex items-center justify-center border-2 border-[#66BB6A]/30 mx-auto cursor-pointer hover:scale-110 hover:shadow-[0_0_40px_rgba(102,187,106,0.4)] transition-all duration-500"
                   data-cursor-hover
                 >
                   <svg className="w-12 h-12 md:w-14 md:h-14 text-[#2E7D32]" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 3c4.97 0 9 4.03 9 9-4.97 0-9-4.03-9-9zM12 3c-4.97 0-9 4.03-9 9 4.97 0 9-4.03 9-9z"/><path strokeLinecap="round" strokeLinejoin="round" d="M12 3v18"/><path strokeLinecap="round" d="M12 8c-2 2-3 4-3 6"/><path strokeLinecap="round" d="M12 8c2 2 3 4 3 6"/></svg>
