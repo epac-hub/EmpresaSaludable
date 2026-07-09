@@ -202,3 +202,4 @@
 - [x] Add smooth transition animation when pillar info card appears (slide-up + fade-in)
 - [x] Add Solicitar Demo form in the hero/main section to capture leads
 - [x] Create internal blog section structured to show resource articles with full content
+- [x] Remove Solicitar Demo form from hero section (user did not request it there)
