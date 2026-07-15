@@ -261,7 +261,6 @@ const PLANS = [
   },
 ];
 
-const TESTIMONIAL_CATEGORIES = ["Todos", "Bienestar", "Farmacias", "Finanzas", "Cumplimiento"] as const;
 
 const TESTIMONIALS = [
   {
@@ -298,6 +297,13 @@ const TESTIMONIALS = [
     role: "CEO, Grupo Salud Integral",
     municipality: "Ponce",
     category: "Cumplimiento" as const,
+  },
+  {
+    quote: "Implementamos el programa hace 6 meses y ya vemos resultados: menos ausentismo, mejor clima laboral y empleados más comprometidos con su salud.",
+    name: "Lcda. Patricia Vázquez",
+    role: "Gerente General, Distribuidora Nacional",
+    municipality: "Bayamón",
+    category: "Bienestar" as const,
   },
 ];
 
@@ -358,11 +364,6 @@ export default function Saludable() {
   // Blog article modal state
   const [selectedArticle, setSelectedArticle] = useState<number | null>(null);
 
-  // Testimonial category filter
-  const [testimonialFilter, setTestimonialFilter] = useState<typeof TESTIMONIAL_CATEGORIES[number]>("Todos");
-  const filteredTestimonials = testimonialFilter === "Todos"
-    ? TESTIMONIALS
-    : TESTIMONIALS.filter(t => t.category === testimonialFilter);
 
   // Preloader state
   const [preloaderDone, setPreloaderDone] = useState(false);
@@ -2162,32 +2163,13 @@ export default function Saludable() {
             </p>
           </div>
 
-          {/* Category Filter Buttons — Elegant Premium Health Style */}
-          <div className="flex flex-wrap justify-center gap-4 mb-12">
-            {TESTIMONIAL_CATEGORIES.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setTestimonialFilter(cat)}
-                className={`relative px-7 py-2.5 rounded-[2rem] text-sm font-semibold tracking-wide transition-all duration-400 ease-[cubic-bezier(0.23,1,0.32,1)] overflow-hidden ${
-                  testimonialFilter === cat
-                    ? 'bg-gradient-to-r from-[#2E7D32] via-[#43A047] to-[#66BB6A] text-white shadow-[0_8px_32px_rgba(46,125,50,0.35)] scale-[1.05] ring-2 ring-white/30'
-                    : 'bg-white/80 text-[#2E7D32] border border-[#81C784]/40 shadow-[0_2px_12px_rgba(46,125,50,0.08)] hover:shadow-[0_6px_24px_rgba(46,125,50,0.2)] hover:border-[#43A047]/60 hover:scale-[1.03] hover:bg-gradient-to-r hover:from-[#E8F5E9] hover:to-white'
-                }`}
-              >
-                {/* Subtle shine sweep on active */}
-                {testimonialFilter === cat && (
-                  <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-[shimmer_2s_infinite]" />
-                )}
-                <span className="relative z-10">{cat}</span>
-              </button>
-            ))}
-          </div>
+
 
           {/* RESPONSIVE GRID — all cards fully visible, no clipping */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
-            {filteredTestimonials.map((testimonial, i) => (
+            {TESTIMONIALS.map((testimonial, i) => (
               <div
-                key={`${testimonialFilter}-${i}`}
+                key={i}
                 className="p-8 rounded-2xl bg-white/60 backdrop-blur-md border border-[#66BB6A]/25 shadow-lg hover:shadow-[0_20px_60px_rgba(67,160,71,0.3)] hover:-translate-y-3 hover:scale-[1.03] hover:bg-white/85 hover:border-[#43A047]/50 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group cursor-pointer relative overflow-hidden"
                 style={{ animationDelay: `${i * 80}ms` }}
               >

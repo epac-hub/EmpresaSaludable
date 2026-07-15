@@ -209,3 +209,5 @@
 - [x] Add Farmacia Isla Verde (www.farmaciaislaverde.com) to sponsors section
 - [x] Add Farmacia Isla Verde to the pharmacy map
 - [x] Move pillar info card to popup/overlay on top of the wheel (not below it)
+- [x] Remove category filter buttons (Todos, Bienestar, Farmacias, Finanzas, Cumplimiento) from Historias Reales de Transformación
+- [x] Add a 6th testimonial story to complete the 3x2 grid
