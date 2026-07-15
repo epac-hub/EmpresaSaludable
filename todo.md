@@ -208,3 +208,4 @@
 - [x] Regenerate hero image v7 with clearly blonde woman (platinum/golden blonde hair)
 - [x] Add Farmacia Isla Verde (www.farmaciaislaverde.com) to sponsors section
 - [x] Add Farmacia Isla Verde to the pharmacy map
+- [x] Move pillar info card to popup/overlay on top of the wheel (not below it)

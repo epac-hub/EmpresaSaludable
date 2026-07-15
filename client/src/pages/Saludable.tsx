@@ -1850,11 +1850,11 @@ export default function Saludable() {
                 </div>
               );
             })}
-          </div>
 
-          {/* Mobile: full-width card below the wheel when a pillar is tapped */}
-          {selectedPillar && (
-            <div key={selectedPillar} className="mt-8 mx-auto max-w-md" style={{ animation: 'pillarCardIn 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards' }}>
+            {/* Pillar info card — overlays centered on top of the wheel */}
+            {selectedPillar && (
+              <div key={selectedPillar} className="absolute inset-0 flex items-center justify-center z-[300] pointer-events-none">
+              <div className="pointer-events-auto w-[85%] max-w-sm" style={{ animation: 'pillarCardIn 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards' }}>
               {(() => {
                 const pillar = PILLARS.find(p => p.id === selectedPillar);
                 if (!pillar) return null;
@@ -1896,8 +1896,10 @@ export default function Saludable() {
                   </div>
                 );
               })()}
-            </div>
-          )}
+              </div>
+              </div>
+            )}
+          </div>
 
           {/* Holistic instruction */}
           <p className="text-center text-[#2E7D32]/60 mt-12 text-sm italic max-w-2xl mx-auto">

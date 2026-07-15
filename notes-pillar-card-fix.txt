@@ -1,0 +1,12 @@
+Pillar Card Overlay Fix Status:
+- The card IS appearing as an overlay on top of the wheel now
+- However, it's positioned at the TOP of the wheel container (near the top edge)
+- The card content is partially cut off at the top (only showing bullet points and "Cerrar" button)
+- Need to ensure the card is truly centered vertically within the wheel
+- The absolute inset-0 + flex items-center justify-center should center it, but it seems the card is being pushed up
+
+Issue: The overlay container has "absolute inset-0" which covers the entire wheel container.
+The card should be centered but appears to be at the top. This could be because the 
+aspect-square container is very tall and the card is positioned relative to the viewport visible area.
+
+Fix needed: Make the card overlay truly centered within the visible wheel area.
