@@ -193,6 +193,7 @@ export default function PharmacyMap() {
               <p style="margin: 0 0 4px; color: #6BAF8D; font-size: 12px; font-weight: 500;">${pharmacy.municipality}</p>
               <p style="margin: 0 0 4px; color: #666; font-size: 11px;">${pharmacy.address}</p>
               <a href="tel:${pharmacy.phone.replace(/[^+\d]/g, '')}" style="color: #6BAF8D; font-size: 12px; text-decoration: none; font-weight: 500;">${pharmacy.phone}</a>
+              ${pharmacy.website ? `<br/><a href="${pharmacy.website}" target="_blank" rel="noopener noreferrer" style="color: #2E7D32; font-size: 11px; text-decoration: underline; font-weight: 500; margin-top: 4px; display: inline-block;">Visitar sitio web</a>` : ''}
             </div>
           `);
           infoWindowRef.current.open(map, marker);

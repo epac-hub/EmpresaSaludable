@@ -206,3 +206,5 @@
 - [x] Regenerate hero image with fewer men (3 men, 6 women instead of 5+5)
 - [x] Regenerate hero image again with fewer people total (4 women, 3 men = 7 people)
 - [x] Regenerate hero image v7 with clearly blonde woman (platinum/golden blonde hair)
+- [x] Add Farmacia Isla Verde (www.farmaciaislaverde.com) to sponsors section
+- [x] Add Farmacia Isla Verde to the pharmacy map
