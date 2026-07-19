@@ -269,6 +269,7 @@ const TESTIMONIALS = [
     role: "Directora de RRHH, Corporación del Caribe",
     municipality: "San Juan",
     category: "Bienestar" as const,
+    metric: "+35% productividad del equipo",
   },
   {
     quote: "La red de farmacias me permite acceder a mis medicamentos y consultas nutricionales cerca de casa. Es un servicio que realmente funciona.",
@@ -276,6 +277,7 @@ const TESTIMONIALS = [
     role: "Beneficiario, Plan Profesional",
     municipality: "Carolina",
     category: "Farmacias" as const,
+    metric: "92% adherencia a tratamientos",
   },
   {
     quote: "El programa de salud financiera me ayudó a planificar mi retiro con confianza. Nunca pensé que un programa de bienestar incluyera eso.",
@@ -283,6 +285,7 @@ const TESTIMONIALS = [
     role: "Empleada, Sector Farmacéutico",
     municipality: "Caguas",
     category: "Finanzas" as const,
+    metric: "-60% estrés financiero reportado",
   },
   {
     quote: "Como farmacéutica aliada, veo el impacto directo en mis pacientes. Llegan más informados y comprometidos con su salud.",
@@ -290,6 +293,7 @@ const TESTIMONIALS = [
     role: "Farmacéutica, Red Aliada",
     municipality: "Carolina",
     category: "Farmacias" as const,
+    metric: "+48% consultas preventivas",
   },
   {
     quote: "El cumplimiento regulatorio ya no es una carga. El equipo nos guía paso a paso y nos mantiene al día con cada requisito.",
@@ -297,6 +301,7 @@ const TESTIMONIALS = [
     role: "CEO, Grupo Salud Integral",
     municipality: "Ponce",
     category: "Cumplimiento" as const,
+    metric: "100% cumplimiento regulatorio",
   },
   {
     quote: "Implementamos el programa hace 6 meses y ya vemos resultados: menos ausentismo, mejor clima laboral y empleados más comprometidos con su salud.",
@@ -304,6 +309,7 @@ const TESTIMONIALS = [
     role: "Gerente General, Distribuidora Nacional",
     municipality: "Bayamón",
     category: "Bienestar" as const,
+    metric: "-42% ausentismo laboral",
   },
 ];
 
@@ -2178,9 +2184,18 @@ export default function Saludable() {
                 {/* Shimmer sweep on hover */}
                 <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-[cubic-bezier(0.23,1,0.32,1)] bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none" />
                 <div className="relative z-10">
-                  <svg className="w-7 h-7 text-[#43A047]/40 mb-4 group-hover:text-[#2E7D32] group-hover:scale-110 group-hover:rotate-6 transition-all duration-500" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983z" />
-                  </svg>
+                  {/* Impact metric badge */}
+                  <div className="flex items-center justify-between mb-4">
+                    <svg className="w-7 h-7 text-[#43A047]/40 group-hover:text-[#2E7D32] group-hover:scale-110 group-hover:rotate-6 transition-all duration-500" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983z" />
+                    </svg>
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-[#2E7D32]/10 to-[#43A047]/10 border border-[#43A047]/25 group-hover:from-[#2E7D32]/20 group-hover:to-[#43A047]/20 group-hover:border-[#43A047]/40 transition-all duration-500">
+                      <svg className="w-3.5 h-3.5 text-[#2E7D32]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                      </svg>
+                      <span className="text-xs font-bold text-[#1B5E20] tracking-tight">{testimonial.metric}</span>
+                    </span>
+                  </div>
                   <p className="text-[#2D3B2D]/80 text-sm leading-relaxed mb-6 italic group-hover:text-[#1B5E20] transition-colors duration-500">
                     "{testimonial.quote}"
                   </p>
