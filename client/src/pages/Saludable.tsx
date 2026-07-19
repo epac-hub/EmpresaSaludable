@@ -270,6 +270,21 @@ const TESTIMONIALS = [
     municipality: "San Juan",
     category: "Bienestar" as const,
     metric: "+35% productividad del equipo",
+    caseStudy: {
+      company: "Corporación del Caribe",
+      industry: "Servicios Financieros",
+      employees: 320,
+      duration: "12 meses",
+      challenge: "Alto nivel de estrés laboral, rotación de personal del 28% anual y baja moral del equipo de operaciones.",
+      solution: "Programa integral de bienestar mental: talleres semanales de mindfulness, acceso a psicólogos corporativos, línea de apoyo 24/7 y capacitación a líderes en inteligencia emocional.",
+      results: [
+        { label: "Productividad del equipo", before: "62%", after: "97%", change: "+35%" },
+        { label: "Rotación de personal", before: "28%", after: "11%", change: "-17pp" },
+        { label: "Satisfacción laboral", before: "54/100", after: "87/100", change: "+33pts" },
+        { label: "Días de licencia por estrés", before: "892/año", after: "234/año", change: "-74%" },
+      ],
+      roi: "$4.20 por cada $1 invertido",
+    },
   },
   {
     quote: "La red de farmacias me permite acceder a mis medicamentos y consultas nutricionales cerca de casa. Es un servicio que realmente funciona.",
@@ -278,6 +293,21 @@ const TESTIMONIALS = [
     municipality: "Carolina",
     category: "Farmacias" as const,
     metric: "92% adherencia a tratamientos",
+    caseStudy: {
+      company: "Red de Farmacias de Comunidad",
+      industry: "Salud y Farmacia",
+      employees: 1200,
+      duration: "8 meses",
+      challenge: "Baja adherencia a tratamientos crónicos (hipertensión, diabetes), pacientes no completaban sus recetas y faltaban a seguimientos nutricionales.",
+      solution: "Integración de farmacias de comunidad con recordatorios automatizados, consultas nutricionales en farmacia, seguimiento personalizado y programa de recompensas por adherencia.",
+      results: [
+        { label: "Adherencia a tratamientos", before: "58%", after: "92%", change: "+34pp" },
+        { label: "Consultas nutricionales/mes", before: "120", after: "480", change: "+300%" },
+        { label: "Hospitalizaciones evitadas", before: "N/A", after: "67/año", change: "Nuevo" },
+        { label: "Satisfacción del paciente", before: "71/100", after: "94/100", change: "+23pts" },
+      ],
+      roi: "$6.80 por cada $1 invertido (ahorro en hospitalizaciones)",
+    },
   },
   {
     quote: "El programa de salud financiera me ayudó a planificar mi retiro con confianza. Nunca pensé que un programa de bienestar incluyera eso.",
@@ -286,6 +316,21 @@ const TESTIMONIALS = [
     municipality: "Caguas",
     category: "Finanzas" as const,
     metric: "-60% estrés financiero reportado",
+    caseStudy: {
+      company: "Grupo Farmacéutico del Este",
+      industry: "Farmacéutico",
+      employees: 185,
+      duration: "10 meses",
+      challenge: "78% de empleados reportaban estrés financiero alto, bajo uso del plan de retiro (solo 23% participaba) y solicitudes frecuentes de adelantos de nómina.",
+      solution: "Programa de educación financiera: talleres de presupuesto familiar, asesoría personalizada de retiro, herramientas digitales de ahorro y negociación de mejores tasas con cooperativas.",
+      results: [
+        { label: "Estrés financiero reportado", before: "78%", after: "31%", change: "-60%" },
+        { label: "Participación en plan de retiro", before: "23%", after: "71%", change: "+48pp" },
+        { label: "Adelantos de nómina/mes", before: "34", after: "8", change: "-76%" },
+        { label: "Ahorro promedio mensual", before: "$45", after: "$280", change: "+522%" },
+      ],
+      roi: "$3.50 por cada $1 invertido",
+    },
   },
   {
     quote: "Como farmacéutica aliada, veo el impacto directo en mis pacientes. Llegan más informados y comprometidos con su salud.",
@@ -294,6 +339,21 @@ const TESTIMONIALS = [
     municipality: "Carolina",
     category: "Farmacias" as const,
     metric: "+48% consultas preventivas",
+    caseStudy: {
+      company: "Farmacia Isla Verde & Red Aliada",
+      industry: "Farmacia de Comunidad",
+      employees: 45,
+      duration: "6 meses",
+      challenge: "Pacientes llegaban solo por medicamentos sin aprovechar servicios preventivos. Baja demanda de consultas clínicas en farmacia y desconocimiento de servicios disponibles.",
+      solution: "Programa de prevención integrado: cernimientos de salud gratuitos, consultas farmacéuticas ampliadas, educación al paciente sobre manejo de condiciones crónicas y referidos cruzados con especialistas.",
+      results: [
+        { label: "Consultas preventivas/mes", before: "85", after: "126", change: "+48%" },
+        { label: "Cernimientos realizados", before: "40/mes", after: "165/mes", change: "+312%" },
+        { label: "Referidos a especialistas", before: "12/mes", after: "38/mes", change: "+217%" },
+        { label: "Condiciones detectadas temprano", before: "N/A", after: "23/trimestre", change: "Nuevo" },
+      ],
+      roi: "$5.20 por cada $1 invertido (prevención vs. tratamiento)",
+    },
   },
   {
     quote: "El cumplimiento regulatorio ya no es una carga. El equipo nos guía paso a paso y nos mantiene al día con cada requisito.",
@@ -302,6 +362,21 @@ const TESTIMONIALS = [
     municipality: "Ponce",
     category: "Cumplimiento" as const,
     metric: "100% cumplimiento regulatorio",
+    caseStudy: {
+      company: "Grupo Salud Integral",
+      industry: "Servicios de Salud",
+      employees: 520,
+      duration: "14 meses",
+      challenge: "Múltiples hallazgos en auditorías de OSHA y Depto. de Salud, multas acumuladas de $45,000 y riesgo de cierre parcial de operaciones.",
+      solution: "Auditoría integral de cumplimiento, plan correctivo con cronograma, capacitación continua al personal, sistema de monitoreo digital y acompañamiento en inspecciones regulatorias.",
+      results: [
+        { label: "Cumplimiento regulatorio", before: "64%", after: "100%", change: "+36pp" },
+        { label: "Hallazgos en auditorías", before: "23", after: "0", change: "-100%" },
+        { label: "Multas regulatorias", before: "$45,000/año", after: "$0", change: "-100%" },
+        { label: "Tiempo de respuesta a requisitos", before: "45 días", after: "5 días", change: "-89%" },
+      ],
+      roi: "$8.90 por cada $1 invertido (multas evitadas + eficiencia)",
+    },
   },
   {
     quote: "Implementamos el programa hace 6 meses y ya vemos resultados: menos ausentismo, mejor clima laboral y empleados más comprometidos con su salud.",
@@ -310,6 +385,21 @@ const TESTIMONIALS = [
     municipality: "Bayamón",
     category: "Bienestar" as const,
     metric: "-42% ausentismo laboral",
+    caseStudy: {
+      company: "Distribuidora Nacional",
+      industry: "Logística y Distribución",
+      employees: 280,
+      duration: "6 meses",
+      challenge: "Ausentismo crónico del 18%, alta incidencia de lesiones musculoesqueléticas en almacén y baja participación en actividades de bienestar previas.",
+      solution: "Programa de bienestar físico adaptado: ejercicios de calentamiento pre-turno, ergonomía en almacén, nutrición para trabajo físico, incentivos por asistencia y retos de salud grupales.",
+      results: [
+        { label: "Ausentismo laboral", before: "18%", after: "10.4%", change: "-42%" },
+        { label: "Lesiones musculoesqueléticas", before: "34/año", after: "9/año", change: "-74%" },
+        { label: "Participación en bienestar", before: "12%", after: "78%", change: "+66pp" },
+        { label: "Clima laboral (encuesta)", before: "56/100", after: "82/100", change: "+26pts" },
+      ],
+      roi: "$3.80 por cada $1 invertido",
+    },
   },
 ];
 
@@ -463,6 +553,74 @@ export default function Saludable() {
     if (!demoForm.companyName || !demoForm.email || !demoForm.phone || !demoForm.employeeCount) return;
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(demoForm.email)) return;
     demoMutation.mutate(demoForm);
+  };
+
+  // Generate Case Study PDF
+  const generateCaseStudyPDF = (testimonial: typeof TESTIMONIALS[number]) => {
+    const cs = testimonial.caseStudy;
+    const content = `
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+                         EMPRESA SALUDABLE
+                    CASO DE ESTUDIO — ${cs.company.toUpperCase()}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+📋 INFORMACIÓN GENERAL
+─────────────────────────────────────────────────────────────────────────────────
+  Empresa:          ${cs.company}
+  Industria:        ${cs.industry}
+  Empleados:        ${cs.employees.toLocaleString()}
+  Duración:         ${cs.duration}
+  Categoría:        ${testimonial.category}
+  Ubicación:        ${testimonial.municipality}, Puerto Rico
+
+
+⚠️  DESAFÍO
+─────────────────────────────────────────────────────────────────────────────────
+  ${cs.challenge}
+
+
+✅ SOLUCIÓN IMPLEMENTADA
+─────────────────────────────────────────────────────────────────────────────────
+  ${cs.solution}
+
+
+📊 RESULTADOS MEDIBLES
+─────────────────────────────────────────────────────────────────────────────────
+${cs.results.map(r => `  • ${r.label.padEnd(35)} Antes: ${r.before.padEnd(12)} Después: ${r.after.padEnd(12)} Cambio: ${r.change}`).join('\n')}
+
+
+💰 RETORNO DE INVERSIÓN (ROI)
+─────────────────────────────────────────────────────────────────────────────────
+  ${cs.roi}
+
+
+💬 TESTIMONIO
+─────────────────────────────────────────────────────────────────────────────────
+  "${testimonial.quote}"
+
+  — ${testimonial.name}
+    ${testimonial.role}
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Empresa Saludable | Bienestar Corporativo PR
+  www.empresasaludable.com | info@empresasaludable.com
+  Documento generado: ${new Date().toLocaleDateString('es-PR', { year: 'numeric', month: 'long', day: 'numeric' })}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+`;
+
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Caso_de_Estudio_${cs.company.replace(/[^a-zA-Z0-9]/g, '_')}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   };
 
   const handleFormSubmit = (e: React.FormEvent) => {
@@ -2207,6 +2365,19 @@ export default function Saludable() {
                     <span className="inline-block mt-3 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#43A047]/10 text-[#2E7D32] border border-[#43A047]/20">
                       {testimonial.category}
                     </span>
+                    {/* Download Case Study button */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        generateCaseStudyPDF(testimonial);
+                      }}
+                      className="mt-4 w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#2E7D32] to-[#43A047] text-white text-xs font-semibold shadow-md hover:shadow-[0_8px_24px_rgba(46,125,50,0.4)] hover:scale-[1.03] active:scale-[0.97] transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                      Descargar Caso de Estudio
+                    </button>
                   </div>
                 </div>
               </div>

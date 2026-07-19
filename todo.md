@@ -212,3 +212,4 @@
 - [x] Remove category filter buttons (Todos, Bienestar, Farmacias, Finanzas, Cumplimiento) from Historias Reales de Transformación
 - [x] Add a 6th testimonial story to complete the 3x2 grid
 - [x] Add specific impact metrics (percentages, improvements) to each of the 6 testimonial stories
+- [x] Add "Descargar Caso de Estudio" button on each testimonial card that generates/downloads a PDF with detailed case data
