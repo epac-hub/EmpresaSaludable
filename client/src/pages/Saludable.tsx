@@ -437,8 +437,8 @@ export default function Saludable() {
   const getFieldError = (field: string) => {
     if (!apptTouched[field]) return '';
     switch (field) {
-      case 'name': return apptForm.name.length < 2 ? 'Nombre requerido (m\u00ednimo 2 caracteres)' : '';
-      case 'email': return !apptForm.email ? 'Email requerido' : !validateEmail(apptForm.email) ? 'Formato de email inv\u00e1lido' : '';
+      case 'name': return apptForm.name.length < 2 ? 'Nombre requerido (mínimo 2 caracteres)' : '';
+      case 'email': return !apptForm.email ? 'Email requerido' : !validateEmail(apptForm.email) ? 'Formato de email inválido' : '';
       case 'phone': return !validatePhone(apptForm.phone) ? 'Formato: 787-000-0000' : '';
       default: return '';
     }
@@ -532,7 +532,7 @@ export default function Saludable() {
     },
     onError: (err) => {
       console.error("Contact form error:", err);
-      setFormError("Error al enviar. Intente de nuevo o escr\u00edba a hola@empresasaludable.org");
+      setFormError("Error al enviar. Intente de nuevo o escriba a hola@empresasaludable.org");
     },
   });
 
@@ -3023,7 +3023,7 @@ ${cs.results.map(r => `  • ${r.label.padEnd(35)} Antes: ${r.before.padEnd(12)}
           <div className="text-center mb-16">
             <span className="inline-block px-4 py-1.5 rounded-full bg-[#E8F5E9] text-[#2E7D32] text-xs font-semibold tracking-wider uppercase mb-4">Resultados Reales</span>
             <h2 className="text-3xl md:text-4xl font-bold text-[#2D3B2D]" style={{ fontFamily: "'Playfair Display', serif" }}>
-              Casos de <span className="text-[#4A9B6F]">\u00c9xito</span>
+              Casos de <span className="text-[#4A9B6F]">Éxito</span>
             </h2>
             <p className="mt-4 text-[#2D3B2D]/60 max-w-xl mx-auto">
               Empresas que transformaron su cultura organizacional con nuestro programa integral de bienestar.
@@ -3038,29 +3038,29 @@ ${cs.results.map(r => `  • ${r.label.padEnd(35)} Antes: ${r.before.padEnd(12)}
                   <svg className="w-7 h-7 text-[#4A9B6F]" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3H21m-3.75 3H21" /></svg>
                 </div>
                 <div>
-                  <h3 className="font-bold text-[#2D3B2D] text-lg">Corporaci\u00f3n Manufacturera</h3>
+                  <h3 className="font-bold text-[#2D3B2D] text-lg">Corporación Manufacturera</h3>
                   <p className="text-xs text-[#2D3B2D]/50">Sector Industrial • 450 empleados</p>
                 </div>
               </div>
               <div className="space-y-4 mb-6">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-[#2D3B2D]/70">Reducci\u00f3n ausentismo</span>
+                  <span className="text-sm text-[#2D3B2D]/70">Reducción ausentismo</span>
                   <span className="font-bold text-[#2E7D32]">-52%</span>
                 </div>
                 <div className="w-full h-2 bg-[#E8F5E9] rounded-full overflow-hidden">
                   <div className="h-full bg-gradient-to-r from-[#6BAF8D] to-[#4A9B6F] rounded-full" style={{ width: '52%' }} />
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-[#2D3B2D]/70">ROI primer a\u00f1o</span>
+                  <span className="text-sm text-[#2D3B2D]/70">ROI primer año</span>
                   <span className="font-bold text-[#2E7D32]">4.2:1</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-[#2D3B2D]/70">Satisfacci\u00f3n empleados</span>
+                  <span className="text-sm text-[#2D3B2D]/70">Satisfacción empleados</span>
                   <span className="font-bold text-[#2E7D32]">96%</span>
                 </div>
               </div>
               <p className="text-sm text-[#2D3B2D]/60 italic border-l-2 border-[#6BAF8D] pl-3">
-                "El programa transform\u00f3 nuestra cultura laboral. Los resultados superaron todas las expectativas."
+                "El programa transformó nuestra cultura laboral. Los resultados superaron todas las expectativas."
               </p>
             </div>
 
@@ -3077,7 +3077,7 @@ ${cs.results.map(r => `  • ${r.label.padEnd(35)} Antes: ${r.before.padEnd(12)}
               </div>
               <div className="space-y-4 mb-6">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-[#2D3B2D]/70">Retenci\u00f3n de talento</span>
+                  <span className="text-sm text-[#2D3B2D]/70">Retención de talento</span>
                   <span className="font-bold text-[#1976D2]">+38%</span>
                 </div>
                 <div className="w-full h-2 bg-[#E3F2FD] rounded-full overflow-hidden">
@@ -3110,7 +3110,7 @@ ${cs.results.map(r => `  • ${r.label.padEnd(35)} Antes: ${r.before.padEnd(12)}
               </div>
               <div className="space-y-4 mb-6">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-[#2D3B2D]/70">Reducci\u00f3n rotaci\u00f3n</span>
+                  <span className="text-sm text-[#2D3B2D]/70">Reducción rotación</span>
                   <span className="font-bold text-[#E65100]">-45%</span>
                 </div>
                 <div className="w-full h-2 bg-[#FFF3E0] rounded-full overflow-hidden">
@@ -3126,14 +3126,14 @@ ${cs.results.map(r => `  • ${r.label.padEnd(35)} Antes: ${r.before.padEnd(12)}
                 </div>
               </div>
               <p className="text-sm text-[#2D3B2D]/60 italic border-l-2 border-[#FF9800] pl-3">
-                "La inversi\u00f3n en bienestar se pag\u00f3 sola en 6 meses. Nuestro equipo est\u00e1 m\u00e1s comprometido que nunca."
+                "La inversión en bienestar se pagó sola en 6 meses. Nuestro equipo está más comprometido que nunca."
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ═══ TRANSITION BRIDGE: Casos de \u00c9xito → Recursos ═══ */}
+      {/* ═══ TRANSITION BRIDGE: Casos de Éxito → Recursos ═══ */}
       <div className="relative h-8 -mt-1">
         <div className="absolute inset-0 bg-gradient-to-b from-white to-[#FAFAFA]" />
       </div>
@@ -3147,13 +3147,13 @@ ${cs.results.map(r => `  • ${r.label.padEnd(35)} Antes: ${r.before.padEnd(12)}
               Recursos de <span className="text-[#4A9B6F]">Bienestar</span>
             </h2>
             <p className="mt-4 text-[#2D3B2D]/60 max-w-xl mx-auto">
-              Art\u00edculos, gu\u00edas y herramientas para implementar una cultura de bienestar en tu organizaci\u00f3n.
+              Artículos, guías y herramientas para implementar una cultura de bienestar en tu organización.
             </p>
           </div>
 
           {/* Filter Tabs */}
           <div className="flex flex-wrap justify-center gap-2 mb-10">
-            {['Todos', 'Salud Mental', 'Salud F\u00edsica', 'Nutrici\u00f3n', 'Finanzas', 'Corporativo'].map((tab) => (
+            {['Todos', 'Salud Mental', 'Salud Física', 'Nutrición', 'Finanzas', 'Corporativo'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setResourceFilter(tab)}
@@ -3184,7 +3184,7 @@ ${cs.results.map(r => `  • ${r.label.padEnd(35)} Antes: ${r.before.padEnd(12)}
                   <h3 className="font-bold text-[#2D3B2D] text-base group-hover:text-[#4A9B6F] transition-colors">{article.title}</h3>
                   <p className="mt-2 text-[#2D3B2D]/50 text-sm line-clamp-2">{article.excerpt}</p>
                   <div className="mt-4 flex items-center text-[#4A9B6F] text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    Leer art\u00edculo completo
+                    Leer artículo completo
                     <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
                   </div>
                 </div>
@@ -3252,7 +3252,7 @@ ${cs.results.map(r => `  • ${r.label.padEnd(35)} Antes: ${r.before.padEnd(12)}
                 </div>
                 {/* CTA at bottom */}
                 <div className="mt-8 pt-6 border-t border-gray-100 text-center">
-                  <p className="text-sm text-[#2D3B2D]/50 mb-3">\u00bfDesea implementar estas estrategias en su empresa?</p>
+                  <p className="text-sm text-[#2D3B2D]/50 mb-3">¿Desea implementar estas estrategias en su empresa?</p>
                   <button
                     onClick={() => { setSelectedArticle(null); setShowDemoForm(true); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                     className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-[#1B5E20] to-[#43A047] text-white font-semibold text-sm hover:shadow-lg hover:scale-105 transition-all duration-300"
@@ -3284,6 +3284,20 @@ ${cs.results.map(r => `  • ${r.label.padEnd(35)} Antes: ${r.before.padEnd(12)}
             <p className="text-[#2D3B2D]/60 max-w-xl mx-auto">
               Organizaciones líderes que confían en nuestro programa de bienestar corporativo.
             </p>
+          </div>
+
+          {/* ─── AUSPICIADOR PRINCIPAL ─── */}
+          <div className="mb-12 text-center">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-gradient-to-r from-[#2E7D32]/10 to-[#43A047]/10 text-[#1B5E20] text-xs font-bold tracking-wider uppercase mb-6 border border-[#43A047]/25">
+              ★ Auspiciador Principal
+            </span>
+            <a href="https://www.farmaciaislaverde.com/" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center gap-3 group">
+              <div className="p-6 rounded-2xl bg-white shadow-lg border-2 border-[#43A047]/30 group-hover:shadow-[0_12px_40px_rgba(46,125,50,0.2)] group-hover:border-[#2E7D32]/50 transition-all duration-500">
+                <img src="/manus-storage/logo-farmacia-isla-verde_f8abca09.jpg" alt="Farmacia Isla Verde" className="h-20 w-auto object-contain group-hover:scale-105 transition-transform duration-500" />
+              </div>
+              <span className="text-sm font-semibold text-[#1B5E20] group-hover:text-[#2E7D32] transition-colors">Farmacia Isla Verde</span>
+              <span className="text-xs text-[#2D3B2D]/50">www.farmaciaislaverde.com</span>
+            </a>
           </div>
 
           {/* Auto-scrolling marquee at medium speed */}

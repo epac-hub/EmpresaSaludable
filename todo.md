@@ -213,3 +213,5 @@
 - [x] Add a 6th testimonial story to complete the 3x2 grid
 - [x] Add specific impact metrics (percentages, improvements) to each of the 6 testimonial stories
 - [x] Add "Descargar Caso de Estudio" button on each testimonial card that generates/downloads a PDF with detailed case data
+- [x] Fix broken unicode characters in Recursos de Bienestar section (showing \u00ed instead of í)
+- [x] Ensure Farmacia Isla Verde is prominently displayed as main sponsor/auspiciador (NEVER remove)
