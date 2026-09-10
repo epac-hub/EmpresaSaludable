@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex" />
+<title>Firma de correo · Empresa Saludable</title>
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap">
+<style>
+  :root{--bg:#F4F9F2;--paper:#fff;--ink:#14261A;--ink2:#3F5843;--muted:#6F8472;--line:#D6E4D3;--brand:#1B5E20;--brand2:#43A047;--accent:#E07B4C}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:16px;line-height:1.55;padding-block:40px 80px;padding-inline:clamp(16px,4vw,48px)}
+  .wrap{max-width:980px;margin:0 auto}
+  h1{font-family:"Playfair Display",Georgia,serif;font-size:clamp(30px,4.5vw,44px);margin:0;line-height:1.08}
+  h1 em{color:var(--brand2)}
+  h2{font-family:"Playfair Display",Georgia,serif;font-size:24px;margin:0 0 6px}
+  .eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:0 0 8px}
+  .intro{color:var(--ink2);max-width:64ch;margin:12px 0 0}
+  section{margin-top:44px;padding-top:32px;border-top:1px solid var(--line)}
+  .panel{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:28px;align-items:start}
+  @media (max-width:820px){.panel{grid-template-columns:1fr}}
+  .preview{background:#fff;border:1px solid var(--line);border-radius:12px;padding:28px;overflow-x:auto}
+  .preview .mail{font:14px/1.4 Arial,Helvetica,sans-serif;color:#333}
+  .preview .mail p{margin:0 0 14px}
+  form{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:20px;display:grid;gap:12px}
+  label{display:grid;gap:4px;font-size:13px;font-weight:600;color:var(--ink2)}
+  input{font:15px "DM Sans",system-ui,sans-serif;padding:9px 11px;border:1px solid var(--line);border-radius:8px;color:var(--ink);background:#fff}
+  input:focus-visible{outline:2px solid var(--brand2);outline-offset:1px}
+  button{font:600 15px "DM Sans",system-ui,sans-serif;padding:11px 16px;border:0;border-radius:999px;background:var(--brand);color:#fff;cursor:pointer}
+  button:hover,button:focus-visible{background:#2E7D32;outline:none}
+  button.secondary{background:transparent;color:var(--brand);border:1px solid var(--brand)}
+  .hint{font-size:13px;color:var(--muted);margin:0}
+  .status{font-size:13px;color:var(--brand);min-height:1.2em;margin:0}
+  ol{color:var(--ink2);padding-left:20px;margin:10px 0 0}
+  ol li{margin:6px 0}
+  code{background:#fff;border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:13px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">Marca · Uso interno</p>
+  <h1>Firma de correo <em>Empresa Saludable</em></h1>
+  <p class="intro">Dos firmas listas para Gmail, Outlook y Apple Mail. El logo se carga desde www.empresasaludable.net, por lo que se ve igual en todos los dispositivos sin adjuntar archivos. Complete sus datos, pulse «Copiar firma» y péguela en la configuración de firmas de su correo.</p>
+
+  <section>
+    <p class="eyebrow">1</p>
+    <h2>Firma personal</h2>
+    <div class="panel">
+      <div class="preview"><div class="mail"><p>Saludos cordiales,</p><div id="sig-personal"></div></div></div>
+      <form onsubmit="return false">
+        <label>Nombre y apellidos<input id="f-nombre" value="Nombre Apellido" autocomplete="name"></label>
+        <label>Cargo<input id="f-cargo" value="Director(a) de Bienestar Corporativo" autocomplete="organization-title"></label>
+        <label>Teléfono (opcional)<input id="f-tel" value="+1 (787) 000-0000" autocomplete="tel"></label>
+        <label>Correo<input id="f-email" value="hello@empresasaludable.net" autocomplete="email"></label>
+        <button id="copy-personal" type="button">Copiar firma personal</button>
+        <p class="status" id="st-personal"></p>
+        <p class="hint">Se copia con formato. En Gmail: Configuración → Ver todos los ajustes → Firma → Crear nueva → pegar.</p>
+      </form>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">2</p>
+    <h2>Firma corporativa (buzón hello@)</h2>
+    <div class="panel">
+      <div class="preview"><div class="mail"><p>Gracias por escribirnos,</p><div id="sig-corp"></div></div></div>
+      <form onsubmit="return false">
+        <button id="copy-corp" type="button">Copiar firma corporativa</button>
+        <button id="copy-corp-html" type="button" class="secondary">Copiar código HTML</button>
+        <p class="status" id="st-corp"></p>
+        <p class="hint">El código HTML sirve para Outlook de escritorio, plataformas de correo masivo o para que un administrador la asigne a todo el equipo.</p>
+      </form>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">Instalación</p>
+    <h2>Dónde pegarla</h2>
+    <ol>
+      <li><strong>Gmail (web):</strong> rueda dentada → «Ver todos los ajustes» → pestaña «General» → «Firma» → «Crear nueva» → pegue con Ctrl+V / ⌘V → «Guardar cambios».</li>
+      <li><strong>Outlook (web y nuevo Outlook):</strong> Configuración → Cuentas → Firmas → «Nueva firma» → pegue → Guardar.</li>
+      <li><strong>Apple Mail:</strong> Mail → Ajustes → Firmas → «+» → pegue. Desmarque «Usar siempre mi tipo de letra predeterminado».</li>
+      <li><strong>Móvil:</strong> la app de Gmail solo admite texto; use la firma desde la web para que aplique en escritorio y deje en el móvil «Empresa Saludable · www.empresasaludable.net».</li>
+    </ol>
+  </section>
+</div>
+
+<script>
+(function(){
+  const BASE = "https://www.empresasaludable.net";
+  const LOGO = BASE + "/brand/email-logo.png";
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+  function signature({nombre, cargo, tel, email}) {
+    const rows = [];
+    if (nombre) rows.push(`<div style="font-family:Georgia,'Times New Roman',serif;font-size:17px;line-height:1.25;color:#1B5E20;font-weight:bold;margin:0 0 2px 0;">${esc(nombre)}</div>`);
+    if (cargo) rows.push(`<div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.35;color:#3F5843;margin:0 0 10px 0;">${esc(cargo)}</div>`);
+    const contact = [];
+    if (tel) contact.push(`<span style="color:#3F5843;">${esc(tel)}</span>`);
+    if (email) contact.push(`<a href="mailto:${esc(email)}" style="color:#2E7D32;text-decoration:none;">${esc(email)}</a>`);
+    contact.push(`<a href="${BASE}/" style="color:#2E7D32;text-decoration:none;font-weight:bold;">www.empresasaludable.net</a>`);
+    rows.push(`<div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.7;margin:0;">${contact.join('<br>')}</div>`);
+    return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;font-family:Arial,Helvetica,sans-serif;">
+  <tr>
+    <td style="padding:0 18px 0 0;vertical-align:middle;border-right:2px solid #A8D5A2;">
+      <a href="${BASE}/" style="text-decoration:none;"><img src="${LOGO}" width="220" height="66" alt="Empresa Saludable" style="display:block;width:220px;height:66px;border:0;"></a>
+    </td>
+    <td style="padding:0 0 0 18px;vertical-align:middle;">${rows.join('')}</td>
+  </tr>
+  <tr>
+    <td colspan="2" style="padding:12px 0 0 0;font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#6F8472;">Bienestar Corporativo &middot; Puerto Rico</td>
+  </tr>
+</table>`;
+  }
+
+  const personalEl = document.getElementById('sig-personal');
+  const corpEl = document.getElementById('sig-corp');
+  const fields = ['nombre','cargo','tel','email'].map(k => document.getElementById('f-' + k));
+  function personalData(){ const [n,c,t,e] = fields.map(i => i.value.trim()); return {nombre:n, cargo:c, tel:t, email:e}; }
+  function render(){ personalEl.innerHTML = signature(personalData()); }
+  fields.forEach(i => i.addEventListener('input', render));
+  render();
+  corpEl.innerHTML = signature({nombre:'Empresa Saludable', cargo:'Programa de Bienestar Corporativo', tel:'', email:'hello@empresasaludable.net'});
+
+  async function copyHtml(html, plain, statusEl){
+    try {
+      if (navigator.clipboard && window.ClipboardItem) {
+        await navigator.clipboard.write([new ClipboardItem({'text/html': new Blob([html], {type:'text/html'}), 'text/plain': new Blob([plain], {type:'text/plain'})})]);
+      } else {
+        const tmp = document.createElement('div'); tmp.innerHTML = html; document.body.appendChild(tmp);
+        const range = document.createRange(); range.selectNodeContents(tmp); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(range);
+        document.execCommand('copy'); sel.removeAllRanges(); tmp.remove();
+      }
+      statusEl.textContent = 'Firma copiada. Ahora péguela en su cliente de correo.';
+    } catch (e) { statusEl.textContent = 'No se pudo copiar automáticamente. Seleccione la firma con el ratón y cópiela.'; }
+  }
+  const plain = d => [d.nombre, d.cargo, d.tel, d.email, 'www.empresasaludable.net'].filter(Boolean).join('\n');
+  document.getElementById('copy-personal').addEventListener('click', () => copyHtml(personalEl.innerHTML, plain(personalData()), document.getElementById('st-personal')));
+  document.getElementById('copy-corp').addEventListener('click', () => copyHtml(corpEl.innerHTML, 'Empresa Saludable\nhello@empresasaludable.net\nwww.empresasaludable.net', document.getElementById('st-corp')));
+  document.getElementById('copy-corp-html').addEventListener('click', async () => { try { await navigator.clipboard.writeText(corpEl.innerHTML); document.getElementById('st-corp').textContent = 'Código HTML copiado.'; } catch(e) { document.getElementById('st-corp').textContent = 'No se pudo copiar.'; } });
+})();
+</script>
+</body>
+</html>
