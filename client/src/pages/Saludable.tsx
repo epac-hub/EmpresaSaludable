@@ -415,6 +415,7 @@ export default function Saludable() {
   const plansRef = useRef<HTMLElement>(null);
   const mapRef = useRef<HTMLElement>(null);
   const contactRef = useRef<HTMLElement>(null);
+  const lenisRef = useRef<Lenis | null>(null);
 
   const [formData, setFormData] = useState({ name: "", email: "", company: "", message: "" });
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
@@ -649,6 +650,7 @@ ${cs.results.map(r => `  • ${r.label.padEnd(35)} Antes: ${r.before.padEnd(12)}
       smoothWheel: true,
       touchMultiplier: 2,
     });
+    lenisRef.current = lenis;
 
     lenis.on("scroll", ScrollTrigger.update);
     const rafCallback = (time: number) => lenis.raf(time * 1000);
@@ -664,9 +666,68 @@ ${cs.results.map(r => `  • ${r.label.padEnd(35)} Antes: ${r.before.padEnd(12)}
     return () => {
       gsap.ticker.remove(rafCallback);
       lenis.destroy();
+      lenisRef.current = null;
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+  // ─── Hash navigation (deep links like /#pilares + in-page anchor links) ──
+  // The browser's native hash jump fires before React has rendered the
+  // sections, so a deep link used to land on the hero. Also, native anchor
+  // jumps bypass Lenis, leaving ScrollTrigger-driven reveals (the Pilares
+  // clip-path portal, fade-ups) out of sync. Everything now goes through
+  // Lenis, which keeps ScrollTrigger updated via its scroll event.
+  // NOTE: do not call ScrollTrigger.refresh() here — a refresh while a
+  // from() reveal tween is mid-flight leaves the section stuck invisible.
+  useEffect(() => {
+    if (!preloaderDone) return;
+    const NAV_OFFSET = -80; // fixed frosted-glass nav height
+
+    const scrollToHash = (hash: string, immediate = false) => {
+      const id = decodeURIComponent(hash.replace(/^#/, ""));
+      if (!id) return false;
+      const target = document.getElementById(id);
+      if (!target) return false;
+      // Absolute document position from window.scrollY — Lenis' internal
+      // scroll value can be stale right after a native hash jump (back/forward).
+      const top = Math.max(0, target.getBoundingClientRect().top + window.scrollY + NAV_OFFSET);
+      const lenis = lenisRef.current;
+      if (lenis) {
+        lenis.scrollTo(top, { immediate, duration: 1.4 });
+      } else {
+        window.scrollTo({ top, behavior: immediate ? "auto" : "smooth" });
+      }
+      return true;
+    };
+
+    // 1) Deep link on first load — jump straight there once the preloader is gone.
+    if (window.location.hash) {
+      scrollToHash(window.location.hash, true);
+    }
+
+    // 2) In-page anchor clicks (nav, footer, CTAs) — smooth scroll via Lenis
+    const onClick = (e: MouseEvent) => {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const anchor = (e.target as HTMLElement | null)?.closest?.('a[href^="#"]') as HTMLAnchorElement | null;
+      if (!anchor) return;
+      const hash = anchor.getAttribute("href") || "";
+      if (hash.length < 2 || !document.getElementById(hash.slice(1))) return;
+      e.preventDefault();
+      if (window.location.hash !== hash) window.history.pushState(null, "", hash);
+      scrollToHash(hash);
+    };
+
+    // 3) Back / forward navigation between hashes — the browser has already
+    //    jumped natively, so just re-align immediately under the fixed nav.
+    const onHashChange = () => { scrollToHash(window.location.hash, true); };
+
+    document.addEventListener("click", onClick);
+    window.addEventListener("hashchange", onHashChange);
+    return () => {
+      document.removeEventListener("click", onClick);
+      window.removeEventListener("hashchange", onHashChange);
+    };
+  }, [preloaderDone]);
 
   // ─── Preloader Animation (transitions into cosmic portal) ─────────────────
   useEffect(() => {
@@ -894,13 +955,16 @@ ${cs.results.map(r => `  • ${r.label.padEnd(35)} Antes: ${r.before.padEnd(12)}
       // Pillars WOW entrance — 3D flip + stagger + glow burst
       if (pillarsRef.current) {
         // CLIP-PATH CIRCLE PORTAL REVEAL — cosmic portal opens on scroll
+        // scrub:true (no lag) — Lenis already smooths the scroll, and an anchor
+        // jump straight to #pilares must snap the portal fully open instead of
+        // leaving the section clipped for a second or more.
         gsap.set(pillarsRef.current, { clipPath: "circle(0% at 50% 50%)" });
         gsap.to(pillarsRef.current, {
           scrollTrigger: {
             trigger: pillarsRef.current,
             start: "top 90%",
             end: "top 40%",
-            scrub: 1,
+            scrub: true,
           },
           clipPath: "circle(100% at 50% 50%)",
           ease: "power2.inOut",
