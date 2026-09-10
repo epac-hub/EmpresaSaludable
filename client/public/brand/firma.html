@@ -96,17 +96,17 @@
 
   function signature({nombre, cargo, tel, email}) {
     const rows = [];
-    if (nombre) rows.push(`<div style="font-family:Georgia,'Times New Roman',serif;font-size:17px;line-height:1.25;color:#1B5E20;font-weight:bold;margin:0 0 2px 0;">${esc(nombre)}</div>`);
-    if (cargo) rows.push(`<div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.35;color:#3F5843;margin:0 0 10px 0;">${esc(cargo)}</div>`);
+    if (nombre) rows.push(`<div style="font-family:Georgia,'Times New Roman',serif;font-size:19px;line-height:1.25;color:#1B5E20;font-weight:bold;margin:0 0 3px 0;">${esc(nombre)}</div>`);
+    if (cargo) rows.push(`<div style="font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.35;color:#3F5843;margin:0 0 10px 0;">${esc(cargo)}</div>`);
     const contact = [];
     if (tel) contact.push(`<span style="color:#3F5843;">${esc(tel)}</span>`);
     if (email) contact.push(`<a href="mailto:${esc(email)}" style="color:#2E7D32;text-decoration:none;">${esc(email)}</a>`);
     contact.push(`<a href="${BASE}/" style="color:#2E7D32;text-decoration:none;font-weight:bold;">www.empresasaludable.net</a>`);
-    rows.push(`<div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.7;margin:0;">${contact.join('<br>')}</div>`);
+    rows.push(`<div style="font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.7;margin:0;">${contact.join('<br>')}</div>`);
     return `<table role="presentation" align="center" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;margin:0 auto;font-family:Arial,Helvetica,sans-serif;">
   <tr>
     <td align="center" style="padding:6px 22px 6px 0;vertical-align:middle;text-align:center;border-right:2px solid #A8D5A2;">
-      <a href="${BASE}/" style="text-decoration:none;"><img src="${LOGO}" width="300" height="90" alt="Empresa Saludable" style="display:block;width:300px;height:90px;border:0;margin:0 auto;"></a>
+      <a href="${BASE}/" style="text-decoration:none;"><img src="${LOGO}" width="360" height="108" alt="Empresa Saludable" style="display:block;width:360px;height:108px;border:0;margin:0 auto;"></a>
     </td>
     <td style="padding:6px 0 6px 22px;vertical-align:middle;">${rows.join('')}</td>
   </tr>
