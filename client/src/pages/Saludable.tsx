@@ -1357,7 +1357,7 @@ ${cs.results.map(r => `  • ${r.label.padEnd(35)} Antes: ${r.before.padEnd(12)}
           <div className="absolute w-[140px] h-[140px] rounded-full bg-gradient-radial from-[#43A047]/20 to-transparent" />
         </div>
         <div className="preloader-logo opacity-0 scale-[0.6] mb-6 relative z-10">
-          <img src="/manus-storage/saludable-logo_630e22f3.png" alt="" className="w-24 h-24 drop-shadow-xl" />
+          <img src="/brand/icon-512.png" alt="" className="w-24 h-24 drop-shadow-xl" />
         </div>
         <div className="preloader-text opacity-0 translate-y-4 relative z-10">
           <h2 className="text-3xl font-bold text-[#1B5E20]" style={{ fontFamily: "'Playfair Display', serif" }}>
@@ -1409,7 +1409,7 @@ ${cs.results.map(r => `  • ${r.label.padEnd(35)} Antes: ${r.before.padEnd(12)}
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-xl bg-white/80 p-1.5 shadow-md border border-[#6BAF8D]/20 hover:scale-110 hover:shadow-lg transition-all duration-300">
             <img
-              src="/manus-storage/saludable-logo_630e22f3.png"
+              src="/brand/icon-512.png"
               alt="Empresa Saludable"
               className="w-full h-full object-contain"
             />
@@ -3487,7 +3487,7 @@ ${cs.results.map(r => `  • ${r.label.padEnd(35)} Antes: ${r.before.padEnd(12)}
         <div className="max-w-4xl mx-auto text-center flex flex-col items-center">
           {/* Logo + Brand */}
           <div className="flex items-center justify-center gap-3 mb-4">
-            <img src="/manus-storage/saludable-logo_630e22f3.png" alt="Empresa Saludable" className="w-10 h-10 rounded-lg" />
+            <img src="/brand/icon-512.png" alt="Empresa Saludable" className="w-10 h-10 rounded-lg" />
             <span className="text-xl font-bold text-[#1B3B1B]" style={{ fontFamily: "'Playfair Display', serif" }}>
               Empresa <span className="text-[#2E7D32]">Saludable</span>
             </span>
