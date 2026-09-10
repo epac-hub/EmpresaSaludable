@@ -1,0 +1,60 @@
+name: Build & deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main, "claude/pilares-showcase-iyzowe"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.4.1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run check
+      - run: pnpm run build:static
+        env:
+          NODE_ENV: production
+      - name: Custom domain for GitHub Pages
+        run: echo "www.empresasaludable.net" > dist/public/CNAME
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/public
+
+  deploy:
+    # The github-pages environment only accepts deployments from the default branch.
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - id: deployment
+        uses: actions/deploy-pages@v4
+      - name: Set custom domain and enforce HTTPS
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api -X PUT "repos/${GITHUB_REPOSITORY}/pages" -f cname=www.empresasaludable.net || true
+          # HTTPS enforcement only succeeds once the certificate has been issued (after DNS propagates).
+          gh api -X PUT "repos/${GITHUB_REPOSITORY}/pages" -F https_enforced=true || true

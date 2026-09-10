@@ -12,7 +12,7 @@ import Lenis from "lenis";
 import MusicPlayer from "@/components/saludable/MusicPlayer";
 import FuturisticCursor from "@/components/saludable/FuturisticCursor";
 import MagneticButton from "@/components/saludable/MagneticButton";
-import { trpc } from "@/lib/trpc";
+import { submitContact, submitDemoRequest, useLeadMutation } from "@/lib/leads";
 import TestimonialCarousel from "@/components/saludable/TestimonialCarousel";
 import { BLOG_ARTICLES } from "./blogArticles";
 // GreenParticles removed from hero (video background now)
@@ -526,23 +526,23 @@ export default function Saludable() {
 
   const [formError, setFormError] = useState("");
 
-  const contactMutation = trpc.contact.submit.useMutation({
+  const contactMutation = useLeadMutation(submitContact, {
     onSuccess: () => {
       setFormSubmitted(true);
       setFormError("");
     },
-    onError: (err) => {
+    onError: (err: unknown) => {
       console.error("Contact form error:", err);
       setFormError("Error al enviar. Intente de nuevo o escriba a hola@empresasaludable.org");
     },
   });
 
   // ─── Demo Request Mutation ───
-  const demoMutation = trpc.demo.request.useMutation({
+  const demoMutation = useLeadMutation(submitDemoRequest, {
     onSuccess: () => {
       setDemoSuccess(true);
     },
-    onError: (err) => {
+    onError: (err: unknown) => {
       console.error("Demo request error:", err);
     },
   });

@@ -1,8 +1,9 @@
 /**
- * PharmacyMap — Interactive Google Maps pharmacy locator for Puerto Rico
+ * PharmacyMap — Interactive Leaflet pharmacy locator for Puerto Rico (no API key)
  * Design: Light Botanical Sanctuary — sage markers, clean info windows
  * Shows map + municipality dropdown only (no featured pharmacy banner)
  */
+import L from "leaflet";
 import { useEffect, useRef, useState } from "react";
 import { MapView } from "@/components/Map";
 import { PHARMACIES } from "./pharmacyData";
@@ -11,9 +12,8 @@ export default function PharmacyMap() {
   const [selectedMunicipio, setSelectedMunicipio] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const mapInstanceRef = useRef<google.maps.Map | null>(null);
-  const markersRef = useRef<google.maps.marker.AdvancedMarkerElement[]>([]);
-  const infoWindowRef = useRef<google.maps.InfoWindow | null>(null);
+  const mapInstanceRef = useRef<L.Map | null>(null);
+  const markersRef = useRef<L.Marker[]>([]);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Get unique municipalities with counts
@@ -44,30 +44,18 @@ export default function PharmacyMap() {
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
-  const handleMapReady = (map: google.maps.Map) => {
+  const handleMapReady = (map: L.Map) => {
     mapInstanceRef.current = map;
-    infoWindowRef.current = new google.maps.InfoWindow();
 
     // Center on Puerto Rico
-    map.setCenter({ lat: 18.2208, lng: -66.5901 });
-    map.setZoom(9);
-    map.setOptions({
-      styles: [
-        { featureType: "water", stylers: [{ color: "#d4e8d0" }] },
-        { featureType: "landscape", stylers: [{ color: "#f5f9f3" }] },
-        { featureType: "road", stylers: [{ color: "#e8ede6" }] },
-        { featureType: "poi", stylers: [{ visibility: "off" }] },
-        { featureType: "transit", stylers: [{ visibility: "off" }] },
-        { elementType: "labels.text.fill", stylers: [{ color: "#2D3B2D" }] },
-      ],
-    });
+    map.setView([18.2208, -66.5901], 9);
 
     addMarkers(map);
   };
 
-  const addMarkers = (map: google.maps.Map) => {
+  const addMarkers = (map: L.Map) => {
     // Clear existing markers
-    markersRef.current.forEach((m) => (m.map = null));
+    markersRef.current.forEach((m) => m.remove());
     markersRef.current = [];
 
     // Puerto Rico municipality approximate coordinates
@@ -163,8 +151,7 @@ export default function PharmacyMap() {
         };
       }
 
-      const markerEl = document.createElement("div");
-      markerEl.innerHTML = `
+      const markerHtml = `
         <div style="
           width: 28px; height: 28px;
           background: linear-gradient(135deg, #A8C5A0, #7EB89A);
@@ -178,17 +165,19 @@ export default function PharmacyMap() {
         </div>
       `;
 
-      const marker = new google.maps.marker.AdvancedMarkerElement({
-        map,
-        position,
-        content: markerEl,
+      const marker = L.marker([position.lat, position.lng], {
         title: pharmacy.name,
-      });
+        icon: L.divIcon({
+          html: markerHtml,
+          className: "pharmacy-marker",
+          iconSize: [28, 28],
+          iconAnchor: [14, 28],
+          popupAnchor: [0, -26],
+        }),
+      }).addTo(map);
 
-      marker.addListener("click", () => {
-        if (infoWindowRef.current) {
-          infoWindowRef.current.setContent(`
-            <div style="padding: 12px; font-family: 'DM Sans', sans-serif; max-width: 250px;">
+      marker.bindPopup(`
+            <div style="padding: 4px; font-family: 'DM Sans', sans-serif; max-width: 250px;">
               <h3 style="margin: 0 0 6px; color: #2D3B2D; font-size: 14px; font-weight: 600;">${pharmacy.name}</h3>
               <p style="margin: 0 0 4px; color: #6BAF8D; font-size: 12px; font-weight: 500;">${pharmacy.municipality}</p>
               <p style="margin: 0 0 4px; color: #666; font-size: 11px;">${pharmacy.address}</p>
@@ -196,9 +185,6 @@ export default function PharmacyMap() {
               ${pharmacy.website ? `<br/><a href="${pharmacy.website}" target="_blank" rel="noopener noreferrer" style="color: #2E7D32; font-size: 11px; text-decoration: underline; font-weight: 500; margin-top: 4px; display: inline-block;">Visitar sitio web</a>` : ''}
             </div>
           `);
-          infoWindowRef.current.open(map, marker);
-        }
-      });
 
       markersRef.current.push(marker);
     });
