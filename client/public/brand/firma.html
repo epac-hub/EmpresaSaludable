@@ -22,7 +22,8 @@
   .panel{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:28px;align-items:start}
   @media (max-width:820px){.panel{grid-template-columns:1fr}}
   .preview{background:#fff;border:1px solid var(--line);border-radius:12px;padding:28px;overflow-x:auto}
-  .preview .mail{font:14px/1.4 Arial,Helvetica,sans-serif;color:#333}
+  .preview .mail{font:14px/1.4 Arial,Helvetica,sans-serif;color:#333;text-align:center}
+  .preview .mail p{text-align:left}
   .preview .mail p{margin:0 0 14px}
   form{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:20px;display:grid;gap:12px}
   label{display:grid;gap:4px;font-size:13px;font-weight:600;color:var(--ink2)}
@@ -102,7 +103,7 @@
     if (email) contact.push(`<a href="mailto:${esc(email)}" style="color:#2E7D32;text-decoration:none;">${esc(email)}</a>`);
     contact.push(`<a href="${BASE}/" style="color:#2E7D32;text-decoration:none;font-weight:bold;">www.empresasaludable.net</a>`);
     rows.push(`<div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.7;margin:0;">${contact.join('<br>')}</div>`);
-    return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;font-family:Arial,Helvetica,sans-serif;">
+    return `<table role="presentation" align="center" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;margin:0 auto;font-family:Arial,Helvetica,sans-serif;">
   <tr>
     <td style="padding:0 18px 0 0;vertical-align:middle;border-right:2px solid #A8D5A2;">
       <a href="${BASE}/" style="text-decoration:none;"><img src="${LOGO}" width="220" height="66" alt="Empresa Saludable" style="display:block;width:220px;height:66px;border:0;"></a>
