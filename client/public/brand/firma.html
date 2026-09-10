@@ -105,10 +105,10 @@
     rows.push(`<div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.7;margin:0;">${contact.join('<br>')}</div>`);
     return `<table role="presentation" align="center" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;margin:0 auto;font-family:Arial,Helvetica,sans-serif;">
   <tr>
-    <td style="padding:0 18px 0 0;vertical-align:middle;border-right:2px solid #A8D5A2;">
-      <a href="${BASE}/" style="text-decoration:none;"><img src="${LOGO}" width="220" height="66" alt="Empresa Saludable" style="display:block;width:220px;height:66px;border:0;"></a>
+    <td align="center" style="padding:6px 22px 6px 0;vertical-align:middle;text-align:center;border-right:2px solid #A8D5A2;">
+      <a href="${BASE}/" style="text-decoration:none;"><img src="${LOGO}" width="300" height="90" alt="Empresa Saludable" style="display:block;width:300px;height:90px;border:0;margin:0 auto;"></a>
     </td>
-    <td style="padding:0 0 0 18px;vertical-align:middle;">${rows.join('')}</td>
+    <td style="padding:6px 0 6px 22px;vertical-align:middle;">${rows.join('')}</td>
   </tr>
 </table>`;
   }
