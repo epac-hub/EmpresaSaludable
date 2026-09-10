@@ -1,31 +1,17 @@
-import { useAuth } from "@/_core/hooks/useAuth";
-import { trpc } from "@/lib/trpc";
-import { getLoginUrl } from "@/const";
-import { useState } from "react";
+import { rpc } from "@/lib/leads";
+import { useCallback, useEffect, useState } from "react";
 import { Loader2, Trash2, Mail, Building, Calendar, ArrowLeft, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
 export default function Admin() {
-  const { user, loading, isAuthenticated } = useAuth();
   const [adminPassword, setAdminPassword] = useState("");
   const [authenticated, setAuthenticated] = useState(false);
+  const [checking, setChecking] = useState(false);
 
-  // Simple password gate for non-admin users or as extra security
-  const ADMIN_PASSWORD = "EmpresaSaludable2026";
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-[#66BB6A]" />
-      </div>
-    );
-  }
-
-  // If user is logged in and is admin, skip password gate
-  const isAdmin = user?.role === "admin";
-
-  if (!authenticated && !isAdmin) {
+  // Password gate: the password is verified server-side by the
+  // es_admin_* SQL functions in Supabase (never compared in the browser).
+  if (!authenticated) {
     return (
       <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center px-4">
         <div className="w-full max-w-md bg-white/5 border border-white/10 rounded-2xl p-8 backdrop-blur-xl">
@@ -41,12 +27,16 @@ export default function Admin() {
             Ingrese la contraseña de administrador para acceder.
           </p>
           <form
-            onSubmit={(e) => {
+            onSubmit={async (e) => {
               e.preventDefault();
-              if (adminPassword === ADMIN_PASSWORD) {
+              setChecking(true);
+              try {
+                await rpc("es_admin_list_leads", { p_password: adminPassword });
                 setAuthenticated(true);
-              } else {
+              } catch {
                 toast.error("Contraseña incorrecta");
+              } finally {
+                setChecking(false);
               }
             }}
           >
@@ -59,9 +49,10 @@ export default function Admin() {
             />
             <Button
               type="submit"
+              disabled={checking}
               className="w-full py-3 rounded-xl bg-gradient-to-r from-[#66BB6A] to-[#43A047] text-white font-semibold hover:shadow-lg hover:shadow-[#43A047]/30 transition-all"
             >
-              Acceder
+              {checking ? <Loader2 className="w-4 h-4 animate-spin" /> : "Acceder"}
             </Button>
           </form>
           <a
@@ -75,20 +66,53 @@ export default function Admin() {
     );
   }
 
-  return <AdminDashboard />;
+  return <AdminDashboard password={adminPassword} />;
 }
 
-function AdminDashboard() {
-  const { data: submissions, isLoading, refetch } = trpc.admin.listSubmissions.useQuery();
-  const deleteMutation = trpc.admin.deleteSubmission.useMutation({
-    onSuccess: () => {
-      toast.success("Mensaje eliminado");
-      refetch();
+interface Submission {
+  id: number;
+  name: string;
+  email: string;
+  company: string | null;
+  message: string;
+  createdAt: string;
+}
+
+function AdminDashboard({ password }: { password: string }) {
+  const [submissions, setSubmissions] = useState<Submission[] | null>(null);
+  const [isLoading, setLoading] = useState(true);
+
+  const refetch = useCallback(async () => {
+    setLoading(true);
+    try {
+      const rows = await rpc<Array<{ id: number; name: string; email: string; company: string | null; message: string; created_at: string }>>(
+        "es_admin_list_leads",
+        { p_password: password },
+      );
+      setSubmissions((rows ?? []).map((r) => ({ ...r, createdAt: r.created_at })));
+    } catch (err) {
+      console.error(err);
+      toast.error("No se pudieron cargar los mensajes");
+    } finally {
+      setLoading(false);
+    }
+  }, [password]);
+
+  useEffect(() => {
+    void refetch();
+  }, [refetch]);
+
+  const deleteMutation = {
+    mutate: async ({ id }: { id: number }) => {
+      try {
+        await rpc("es_admin_delete_lead", { p_password: password, p_id: id });
+        toast.success("Mensaje eliminado");
+        void refetch();
+      } catch {
+        toast.error("Error al eliminar");
+      }
     },
-    onError: () => {
-      toast.error("Error al eliminar");
-    },
-  });
+  };
 
   const [expandedId, setExpandedId] = useState<number | null>(null);
 
