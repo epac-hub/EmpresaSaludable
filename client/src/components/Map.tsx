@@ -2,16 +2,16 @@
  * MapView — Leaflet map (no API key required).
  *
  * Replaces the Google Maps loader that depended on the Manus Forge proxy.
- * Tiles: CARTO "Voyager" basemap over OpenStreetMap data.
+ * Tiles: OpenStreetMap standard basemap (CARTO's free tiles now require an API key).
  */
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 
-const TILE_URL = "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png";
+const TILE_URL = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
 const TILE_ATTRIBUTION =
-  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
+  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
 export interface LatLngLiteral {
   lat: number;
@@ -47,7 +47,6 @@ export function MapView({
     });
     L.tileLayer(TILE_URL, {
       attribution: TILE_ATTRIBUTION,
-      subdomains: "abcd",
       maxZoom: 19,
     }).addTo(instance);
     map.current = instance;
