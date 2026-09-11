@@ -54,7 +54,7 @@
         <label>Nombre y apellidos<input id="f-nombre" value="Nombre Apellido" autocomplete="name"></label>
         <label>Cargo<input id="f-cargo" value="Director(a) de Bienestar Corporativo" autocomplete="organization-title"></label>
         <label>Teléfono (opcional)<input id="f-tel" value="+1 (787) 000-0000" autocomplete="tel"></label>
-        <label>Correo<input id="f-email" value="hello@empresasaludable.net" autocomplete="email"></label>
+        <label>Correo<input id="f-email" value="hola@empresasaludable.net" autocomplete="email"></label>
         <button id="copy-personal" type="button">Copiar firma personal</button>
         <p class="status" id="st-personal"></p>
         <p class="hint">Se copia con formato. En Gmail: Configuración → Ver todos los ajustes → Firma → Crear nueva → pegar.</p>
@@ -64,7 +64,7 @@
 
   <section>
     <p class="eyebrow">2</p>
-    <h2>Firma corporativa (buzón hello@)</h2>
+    <h2>Firma corporativa (buzón hola@)</h2>
     <div class="panel">
       <div class="preview"><div class="mail"><div id="sig-corp"></div></div></div>
       <form onsubmit="return false">
@@ -120,7 +120,7 @@
   function render(){ personalEl.innerHTML = signature(personalData()); }
   fields.forEach(i => i.addEventListener('input', render));
   render();
-  corpEl.innerHTML = signature({nombre:'Empresa Saludable', cargo:'', tel:'', email:'hello@empresasaludable.net'});
+  corpEl.innerHTML = signature({nombre:'Empresa Saludable', cargo:'', tel:'', email:'hola@empresasaludable.net'});
 
   async function copyHtml(html, plain, statusEl){
     try {
@@ -136,7 +136,7 @@
   }
   const plain = d => [d.nombre, d.cargo, d.tel, d.email, 'www.empresasaludable.net'].filter(Boolean).join('\n');
   document.getElementById('copy-personal').addEventListener('click', () => copyHtml(personalEl.innerHTML, plain(personalData()), document.getElementById('st-personal')));
-  document.getElementById('copy-corp').addEventListener('click', () => copyHtml(corpEl.innerHTML, 'Empresa Saludable\nhello@empresasaludable.net\nwww.empresasaludable.net', document.getElementById('st-corp')));
+  document.getElementById('copy-corp').addEventListener('click', () => copyHtml(corpEl.innerHTML, 'Empresa Saludable\nhola@empresasaludable.net\nwww.empresasaludable.net', document.getElementById('st-corp')));
   document.getElementById('copy-corp-html').addEventListener('click', async () => { try { await navigator.clipboard.writeText(corpEl.innerHTML); document.getElementById('st-corp').textContent = 'Código HTML copiado.'; } catch(e) { document.getElementById('st-corp').textContent = 'No se pudo copiar.'; } });
 })();
 </script>
