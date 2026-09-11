@@ -542,7 +542,7 @@ export default function Saludable() {
     },
     onError: (err: unknown) => {
       console.error("Contact form error:", err);
-      setFormError("Error al enviar. Intente de nuevo o escriba a hello@empresasaludable.net");
+      setFormError("Error al enviar. Intente de nuevo o escriba a hola@empresasaludable.net");
     },
   });
 
@@ -617,7 +617,7 @@ ${cs.results.map(r => `  • ${r.label.padEnd(35)} Antes: ${r.before.padEnd(12)}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   Empresa Saludable | Bienestar Corporativo PR
-  www.empresasaludable.net | hello@empresasaludable.net
+  www.empresasaludable.net | hola@empresasaludable.net
   Documento generado: ${new Date().toLocaleDateString('es-PR', { year: 'numeric', month: 'long', day: 'numeric' })}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 `;
@@ -2801,8 +2801,8 @@ ${cs.results.map(r => `  • ${r.label.padEnd(35)} Antes: ${r.before.padEnd(12)}
             </h2>
             <p className="text-[#2D3B2D]/60">
               Escríbenos a{" "}
-              <a href="mailto:hello@empresasaludable.net" className="text-[#6BAF8D] hover:underline">
-                hello@empresasaludable.net
+              <a href="mailto:hola@empresasaludable.net" className="text-[#6BAF8D] hover:underline">
+                hola@empresasaludable.net
               </a>{" "}
               o completa el formulario.
             </p>
@@ -3517,11 +3517,11 @@ ${cs.results.map(r => `  • ${r.label.padEnd(35)} Antes: ${r.before.padEnd(12)}
           </div>
 
           {/* Contact */}
-          <a href="mailto:hello@empresasaludable.net" className="inline-flex items-center gap-2 text-[#2E7D32] hover:text-[#1B5E20] transition-colors duration-300 text-sm mb-8">
+          <a href="mailto:hola@empresasaludable.net" className="inline-flex items-center gap-2 text-[#2E7D32] hover:text-[#1B5E20] transition-colors duration-300 text-sm mb-8">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
-            hello@empresasaludable.net
+            hola@empresasaludable.net
           </a>
 
           {/* Divider */}
