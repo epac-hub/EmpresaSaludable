@@ -501,12 +501,21 @@ export default function Saludable() {
   }, []);
 
   const validateField = (field: string, value: string) => {
-    if (field === "name" && !value.trim()) return "Nombre es requerido";
+    // Límites alineados con las restricciones de la tabla es_contact_submissions.
+    if (field === "name") {
+      if (!value.trim()) return "Nombre es requerido";
+      if (value.trim().length < 2) return "Nombre demasiado corto";
+      if (value.length > 255) return "Nombre demasiado largo";
+    }
     if (field === "email") {
       if (!value.trim()) return "Email es requerido";
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return "Email inválido";
     }
-    if (field === "message" && !value.trim()) return "Mensaje es requerido";
+    if (field === "message") {
+      if (!value.trim()) return "Mensaje es requerido";
+      if (value.trim().length < 2) return "Mensaje demasiado corto";
+      if (value.length > 5000) return "Mensaje demasiado largo (máx. 5000 caracteres)";
+    }
     return "";
   };
 
