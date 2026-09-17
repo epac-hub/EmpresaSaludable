@@ -30,7 +30,7 @@ jobs:
         env:
           NODE_ENV: production
       - name: Custom domain for GitHub Pages
-        run: echo "www.empresasaludable.net" > dist/public/CNAME
+        run: echo "empresasaludable.com" > dist/public/CNAME
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist/public
@@ -53,6 +53,6 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh api -X PUT "repos/${GITHUB_REPOSITORY}/pages" -f cname=www.empresasaludable.net || true
+          gh api -X PUT "repos/${GITHUB_REPOSITORY}/pages" -f cname=empresasaludable.com || true
           # HTTPS enforcement only succeeds once the certificate has been issued (after DNS propagates).
           gh api -X PUT "repos/${GITHUB_REPOSITORY}/pages" -F https_enforced=true || true

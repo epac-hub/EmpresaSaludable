@@ -43,7 +43,7 @@
 <div class="wrap">
   <p class="eyebrow">Marca · Uso interno</p>
   <h1>Firma de correo <em>Empresa Saludable</em></h1>
-  <p class="intro">Dos firmas listas para Gmail, Outlook y Apple Mail. El logo se carga desde www.empresasaludable.net, por lo que se ve igual en todos los dispositivos sin adjuntar archivos. Complete sus datos, pulse «Copiar firma» y péguela en la configuración de firmas de su correo.</p>
+  <p class="intro">Dos firmas listas para Gmail, Outlook y Apple Mail. El logo se carga desde empresasaludable.com, por lo que se ve igual en todos los dispositivos sin adjuntar archivos. Complete sus datos, pulse «Copiar firma» y péguela en la configuración de firmas de su correo.</p>
 
   <section>
     <p class="eyebrow">1</p>
@@ -83,14 +83,14 @@
       <li><strong>Gmail (web):</strong> rueda dentada → «Ver todos los ajustes» → pestaña «General» → «Firma» → «Crear nueva» → pegue con Ctrl+V / ⌘V → «Guardar cambios».</li>
       <li><strong>Outlook (web y nuevo Outlook):</strong> Configuración → Cuentas → Firmas → «Nueva firma» → pegue → Guardar.</li>
       <li><strong>Apple Mail:</strong> Mail → Ajustes → Firmas → «+» → pegue. Desmarque «Usar siempre mi tipo de letra predeterminado».</li>
-      <li><strong>Móvil:</strong> la app de Gmail solo admite texto; use la firma desde la web para que aplique en escritorio y deje en el móvil «Empresa Saludable · www.empresasaludable.net».</li>
+      <li><strong>Móvil:</strong> la app de Gmail solo admite texto; use la firma desde la web para que aplique en escritorio y deje en el móvil «Empresa Saludable · empresasaludable.com».</li>
     </ol>
   </section>
 </div>
 
 <script>
 (function(){
-  const BASE = "https://www.empresasaludable.net";
+  const BASE = "https://empresasaludable.com";
   const LOGO = BASE + "/brand/email-logo.png";
   const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
@@ -101,7 +101,7 @@
     const contact = [];
     if (tel) contact.push(`<span style="color:#3F5843;">${esc(tel)}</span>`);
     if (email) contact.push(`<a href="mailto:${esc(email)}" style="color:#2E7D32;text-decoration:none;">${esc(email)}</a>`);
-    contact.push(`<a href="${BASE}/" style="color:#2E7D32;text-decoration:none;font-weight:bold;">www.empresasaludable.net</a>`);
+    contact.push(`<a href="${BASE}/" style="color:#2E7D32;text-decoration:none;font-weight:bold;">empresasaludable.com</a>`);
     rows.push(`<div style="font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.7;margin:0;">${contact.join('<br>')}</div>`);
     return `<table role="presentation" align="center" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;margin:0 auto;font-family:Arial,Helvetica,sans-serif;">
   <tr>
@@ -134,9 +134,9 @@
       statusEl.textContent = 'Firma copiada. Ahora péguela en su cliente de correo.';
     } catch (e) { statusEl.textContent = 'No se pudo copiar automáticamente. Seleccione la firma con el ratón y cópiela.'; }
   }
-  const plain = d => [d.nombre, d.cargo, d.tel, d.email, 'www.empresasaludable.net'].filter(Boolean).join('\n');
+  const plain = d => [d.nombre, d.cargo, d.tel, d.email, 'empresasaludable.com'].filter(Boolean).join('\n');
   document.getElementById('copy-personal').addEventListener('click', () => copyHtml(personalEl.innerHTML, plain(personalData()), document.getElementById('st-personal')));
-  document.getElementById('copy-corp').addEventListener('click', () => copyHtml(corpEl.innerHTML, 'Empresa Saludable\nhola@empresasaludable.net\nwww.empresasaludable.net', document.getElementById('st-corp')));
+  document.getElementById('copy-corp').addEventListener('click', () => copyHtml(corpEl.innerHTML, 'Empresa Saludable\nhola@empresasaludable.net\nempresasaludable.com', document.getElementById('st-corp')));
   document.getElementById('copy-corp-html').addEventListener('click', async () => { try { await navigator.clipboard.writeText(corpEl.innerHTML); document.getElementById('st-corp').textContent = 'Código HTML copiado.'; } catch(e) { document.getElementById('st-corp').textContent = 'No se pudo copiar.'; } });
 })();
 </script>
