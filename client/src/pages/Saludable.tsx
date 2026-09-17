@@ -617,7 +617,7 @@ ${cs.results.map(r => `  • ${r.label.padEnd(35)} Antes: ${r.before.padEnd(12)}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   Empresa Saludable | Bienestar Corporativo PR
-  www.empresasaludable.net | hola@empresasaludable.net
+  empresasaludable.com | hola@empresasaludable.net
   Documento generado: ${new Date().toLocaleDateString('es-PR', { year: 'numeric', month: 'long', day: 'numeric' })}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 `;
