@@ -200,7 +200,7 @@ export default function PharmacyMap() {
   return (
     <div className="w-full">
       {/* ═══ FILTER CONTROLS ═══ */}
-      <div className="flex flex-col md:flex-row gap-4 mb-6">
+      <div className="relative z-[1100] flex flex-col md:flex-row gap-4 mb-6">
         {/* Search input */}
         <div className="relative flex-1">
           <input
@@ -265,7 +265,7 @@ export default function PharmacyMap() {
       </div>
 
       {/* ═══ MAP ═══ */}
-      <div className="rounded-2xl overflow-hidden border border-[#A8C5A0]/20 shadow-lg" style={{ height: "500px" }}>
+      <div className="relative z-0 isolate rounded-2xl overflow-hidden border border-[#A8C5A0]/20 shadow-lg" style={{ height: "500px" }}>
         <MapView onMapReady={handleMapReady} />
       </div>
 
