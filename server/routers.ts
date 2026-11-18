@@ -1,10 +1,16 @@
 import { COOKIE_NAME } from "@shared/const";
+import { TRPCError } from "@trpc/server";
+import { z } from "zod";
+import {
+  createContactSubmission,
+  createDemoRequest,
+  deleteContactSubmission,
+  listContactSubmissions,
+} from "./db";
 import { getSessionCookieOptions } from "./_core/cookies";
+import { notifyOwner } from "./_core/notification";
 import { systemRouter } from "./_core/systemRouter";
 import { adminProcedure, publicProcedure, router } from "./_core/trpc";
-import { z } from "zod";
-import { createContactSubmission, deleteContactSubmission, listContactSubmissions, createDemoRequest } from "./db";
-import { notifyOwner } from "./_core/notification";
 
 export const appRouter = router({
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -64,15 +70,25 @@ export const appRouter = router({
       }),
   }),
 
-  // ─── Admin Panel (protected by client-side password gate) ───
+  // ─── Admin API ───
   admin: router({
-    listSubmissions: publicProcedure.query(async () => {
+    listSubmissions: adminProcedure.query(async () => {
       return listContactSubmissions();
     }),
-    deleteSubmission: publicProcedure
-      .input(z.object({ id: z.number() }))
+    deleteSubmission: adminProcedure
+      .input(z.object({
+        id: z.number().int().positive().max(2_147_483_647),
+        confirmation: z.literal("DELETE"),
+      }))
       .mutation(async ({ input }) => {
-        return deleteContactSubmission(input.id);
+        const deleted = await deleteContactSubmission(input.id);
+        if (!deleted) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Submission not found",
+          });
+        }
+        return { success: true } as const;
       }),
   }),
 });
