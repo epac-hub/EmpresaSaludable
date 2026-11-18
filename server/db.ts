@@ -1,6 +1,11 @@
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users } from "../drizzle/schema";
+import {
+  contactSubmissions,
+  demoRequests,
+  InsertUser,
+  users,
+} from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -100,7 +105,6 @@ export async function createContactSubmission(data: {
   if (!db) {
     throw new Error("Database not available");
   }
-  const { contactSubmissions } = await import("../drizzle/schema");
   await db.insert(contactSubmissions).values({
     name: data.name,
     email: data.email,
@@ -113,17 +117,14 @@ export async function createContactSubmission(data: {
 export async function listContactSubmissions() {
   const db = await getDb();
   if (!db) return [];
-  const { contactSubmissions } = await import("../drizzle/schema");
-  const { desc } = await import("drizzle-orm");
   return db.select().from(contactSubmissions).orderBy(desc(contactSubmissions.createdAt)).limit(100);
 }
 
 export async function deleteContactSubmission(id: number) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  const { contactSubmissions } = await import("../drizzle/schema");
-  await db.delete(contactSubmissions).where(eq(contactSubmissions.id, id));
-  return { success: true };
+  const [result] = await db.delete(contactSubmissions).where(eq(contactSubmissions.id, id));
+  return result.affectedRows === 1;
 }
 
 // ─── Demo Requests ───────────────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -137,7 +138,6 @@ export async function createDemoRequest(data: {
   if (!db) {
     throw new Error("Database not available");
   }
-  const { demoRequests } = await import("../drizzle/schema");
   await db.insert(demoRequests).values({
     companyName: data.companyName,
     email: data.email,
