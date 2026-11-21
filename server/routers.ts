@@ -1,4 +1,4 @@
-import { COOKIE_NAME } from "@shared/const";
+import { COOKIE_NAME } from "../shared/const.js";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import {
@@ -6,14 +6,14 @@ import {
   createDemoRequest,
   deleteContactSubmission,
   listContactSubmissions,
-} from "./db";
-import { getSessionCookieOptions } from "./_core/cookies";
-import { notifyOwner } from "./_core/notification";
-import { systemRouter } from "./_core/systemRouter";
-import { adminProcedure, publicProcedure, router } from "./_core/trpc";
+} from "./db.js";
+import { getSessionCookieOptions } from "./_core/cookies.js";
+import { notifyOwner } from "./_core/notification.js";
+import { systemRouter } from "./_core/systemRouter.js";
+import { adminProcedure, publicProcedure, router } from "./_core/trpc.js";
 
 export const appRouter = router({
-    // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
+  // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
   system: systemRouter,
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
@@ -29,12 +29,14 @@ export const appRouter = router({
   // ─── Contact Form ───
   contact: router({
     submit: publicProcedure
-      .input(z.object({
-        name: z.string().min(2, "Nombre requerido"),
-        email: z.string().email("Email inválido"),
-        company: z.string().optional(),
-        message: z.string().min(10, "Mensaje muy corto"),
-      }))
+      .input(
+        z.object({
+          name: z.string().min(2, "Nombre requerido"),
+          email: z.string().email("Email inválido"),
+          company: z.string().optional(),
+          message: z.string().min(10, "Mensaje muy corto"),
+        })
+      )
       .mutation(async ({ input }) => {
         // Save to database
         await createContactSubmission(input);
@@ -52,12 +54,14 @@ export const appRouter = router({
   // ─── Solicitar Demo ───
   demo: router({
     request: publicProcedure
-      .input(z.object({
-        companyName: z.string().min(2, "Nombre de empresa requerido"),
-        email: z.string().email("Email corporativo inv\u00e1lido"),
-        phone: z.string().min(7, "Tel\u00e9fono inv\u00e1lido"),
-        employeeCount: z.string().min(1, "Seleccione cantidad de empleados"),
-      }))
+      .input(
+        z.object({
+          companyName: z.string().min(2, "Nombre de empresa requerido"),
+          email: z.string().email("Email corporativo inv\u00e1lido"),
+          phone: z.string().min(7, "Tel\u00e9fono inv\u00e1lido"),
+          employeeCount: z.string().min(1, "Seleccione cantidad de empleados"),
+        })
+      )
       .mutation(async ({ input }) => {
         await createDemoRequest(input);
 
@@ -76,10 +80,12 @@ export const appRouter = router({
       return listContactSubmissions();
     }),
     deleteSubmission: adminProcedure
-      .input(z.object({
-        id: z.number().int().positive().max(2_147_483_647),
-        confirmation: z.literal("DELETE"),
-      }))
+      .input(
+        z.object({
+          id: z.number().int().positive().max(2_147_483_647),
+          confirmation: z.literal("DELETE"),
+        })
+      )
       .mutation(async ({ input }) => {
         const deleted = await deleteContactSubmission(input.id);
         if (!deleted) {

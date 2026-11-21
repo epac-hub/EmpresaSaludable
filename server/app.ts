@@ -1,9 +1,9 @@
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import express, { type Express, type RequestHandler } from "express";
-import { appRouter } from "./routers";
-import { createContext } from "./_core/context";
-import { registerOAuthRoutes } from "./_core/oauth";
-import { registerStorageProxy } from "./_core/storageProxy";
+import { appRouter } from "./routers.js";
+import { createContext } from "./_core/context.js";
+import { registerOAuthRoutes } from "./_core/oauth.js";
+import { registerStorageProxy } from "./_core/storageProxy.js";
 
 const DEFAULT_PRODUCTION_ORIGIN = "https://empresasaludable.com";
 
