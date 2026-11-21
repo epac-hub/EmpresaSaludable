@@ -1,5 +1,7 @@
+import { attachDatabasePool } from "@vercel/functions";
 import { desc, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
+import { createPool } from "mysql2";
 import {
   contactSubmissions,
   demoRequests,
@@ -7,14 +9,21 @@ import {
   users,
 } from "../drizzle/schema.js";
 import { ENV } from "./_core/env.js";
+import { createDatabasePoolOptions } from "./databaseConfig.js";
 
-let _db: ReturnType<typeof drizzle> | null = null;
+export function createDatabaseClient(connectionString: string) {
+  const pool = createPool(createDatabasePoolOptions(connectionString));
+  attachDatabasePool(pool);
+  return drizzle({ client: pool.promise() });
+}
+
+let _db: ReturnType<typeof createDatabaseClient> | null = null;
 
 // Lazily create the drizzle instance so local tooling can run without a DB.
 export async function getDb() {
   if (!_db && process.env.DATABASE_URL) {
     try {
-      _db = drizzle(process.env.DATABASE_URL);
+      _db = createDatabaseClient(process.env.DATABASE_URL);
     } catch (error) {
       console.warn("[Database] Failed to connect:", error);
       _db = null;

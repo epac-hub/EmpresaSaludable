@@ -1,4 +1,5 @@
 import { defineConfig } from "drizzle-kit";
+import { createDatabaseMigrationCredentials } from "./server/databaseConfig";
 
 const connectionString = process.env.DATABASE_URL;
 if (!connectionString) {
@@ -9,7 +10,5 @@ export default defineConfig({
   schema: "./drizzle/schema.ts",
   out: "./drizzle",
   dialect: "mysql",
-  dbCredentials: {
-    url: connectionString,
-  },
+  dbCredentials: createDatabaseMigrationCredentials(connectionString),
 });
