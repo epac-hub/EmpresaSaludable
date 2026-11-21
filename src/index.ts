@@ -1,3 +1,4 @@
-import { createApp } from "../server/app";
+import express from "express";
+import { configureApp } from "../server/app";
 
-export default createApp();
+export default configureApp(express());

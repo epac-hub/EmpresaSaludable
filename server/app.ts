@@ -1,5 +1,5 @@
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
-import express, { type RequestHandler } from "express";
+import express, { type Express, type RequestHandler } from "express";
 import { appRouter } from "./routers";
 import { createContext } from "./_core/context";
 import { registerOAuthRoutes } from "./_core/oauth";
@@ -54,8 +54,10 @@ function apiSecurity(allowedOrigins: Set<string>): RequestHandler {
   };
 }
 
-export function createApp(options: CreateAppOptions = {}) {
-  const app = express();
+export function configureApp(
+  app: Express,
+  options: CreateAppOptions = {}
+): Express {
   const allowedOrigins = new Set(options.allowedOrigins ?? configuredOrigins());
 
   app.set("trust proxy", 1);
@@ -78,4 +80,8 @@ export function createApp(options: CreateAppOptions = {}) {
   );
 
   return app;
+}
+
+export function createApp(options: CreateAppOptions = {}) {
+  return configureApp(express(), options);
 }
