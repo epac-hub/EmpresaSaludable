@@ -2,7 +2,7 @@
 
 The public frontend remains a static GitHub Pages deployment at
 `https://empresasaludable.com`. Vercel hosts only the Express API exported by
-`api/index.ts`; it must not be configured to replace the Pages custom domain.
+`src/index.ts`; it must not be configured to replace the Pages custom domain.
 
 ## Project settings
 
@@ -12,8 +12,8 @@ The public frontend remains a static GitHub Pages deployment at
 - Node.js: 22.x
 - API health check: `https://<vercel-project-host>/api/health`
 
-`vercel.json` sends `/api/*` requests to the serverless Express entry point.
-The regular `server/_core/index.ts` process remains available for local
+Vercel's Express framework serves the exported app as one serverless entry
+point. The regular `server/_core/index.ts` process remains available for local
 development and traditional Node hosting.
 
 ## Environment variables

@@ -1,15 +1,9 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "framework": null,
+  "framework": "express",
   "functions": {
-    "api/index.ts": {
+    "src/index.ts": {
       "maxDuration": 10
     }
-  },
-  "rewrites": [
-    {
-      "source": "/api/:path*",
-      "destination": "/api/index?path=:path*"
-    }
-  ]
+  }
 }
