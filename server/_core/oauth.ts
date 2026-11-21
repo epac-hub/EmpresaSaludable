@@ -1,8 +1,23 @@
-import { COOKIE_NAME, ONE_YEAR_MS } from "@shared/const";
+import { COOKIE_NAME, ONE_YEAR_MS } from "../../shared/const.js";
 import type { Express, Request, Response } from "express";
-import * as db from "../db";
-import { getSessionCookieOptions } from "./cookies";
-import { sdk } from "./sdk";
+import * as db from "../db.js";
+import { getSessionCookieOptions } from "./cookies.js";
+import { sdk } from "./sdk.js";
+
+function getPostLoginRedirect() {
+  const appOrigin = process.env.APP_ORIGIN?.split(",")[0]?.trim();
+  if (!appOrigin) return "/";
+
+  try {
+    const url = new URL(appOrigin);
+    if (url.protocol !== "https:" && url.hostname !== "localhost") {
+      return "/";
+    }
+    return url.origin;
+  } catch {
+    return "/";
+  }
+}
 
 function getQueryParam(req: Request, key: string): string | undefined {
   const value = req.query[key];
@@ -42,9 +57,12 @@ export function registerOAuthRoutes(app: Express) {
       });
 
       const cookieOptions = getSessionCookieOptions(req);
-      res.cookie(COOKIE_NAME, sessionToken, { ...cookieOptions, maxAge: ONE_YEAR_MS });
+      res.cookie(COOKIE_NAME, sessionToken, {
+        ...cookieOptions,
+        maxAge: ONE_YEAR_MS,
+      });
 
-      res.redirect(302, "/");
+      res.redirect(302, getPostLoginRedirect());
     } catch (error) {
       console.error("[OAuth] Callback failed", error);
       res.status(500).json({ error: "OAuth callback failed" });

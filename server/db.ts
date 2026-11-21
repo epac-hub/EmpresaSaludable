@@ -5,8 +5,8 @@ import {
   demoRequests,
   InsertUser,
   users,
-} from "../drizzle/schema";
-import { ENV } from './_core/env';
+} from "../drizzle/schema.js";
+import { ENV } from "./_core/env.js";
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
@@ -61,8 +61,8 @@ export async function upsertUser(user: InsertUser): Promise<void> {
       values.role = user.role;
       updateSet.role = user.role;
     } else if (user.openId === ENV.ownerOpenId) {
-      values.role = 'admin';
-      updateSet.role = 'admin';
+      values.role = "admin";
+      updateSet.role = "admin";
     }
 
     if (!values.lastSignedIn) {
@@ -89,7 +89,11 @@ export async function getUserByOpenId(openId: string) {
     return undefined;
   }
 
-  const result = await db.select().from(users).where(eq(users.openId, openId)).limit(1);
+  const result = await db
+    .select()
+    .from(users)
+    .where(eq(users.openId, openId))
+    .limit(1);
 
   return result.length > 0 ? result[0] : undefined;
 }
@@ -117,13 +121,19 @@ export async function createContactSubmission(data: {
 export async function listContactSubmissions() {
   const db = await getDb();
   if (!db) return [];
-  return db.select().from(contactSubmissions).orderBy(desc(contactSubmissions.createdAt)).limit(100);
+  return db
+    .select()
+    .from(contactSubmissions)
+    .orderBy(desc(contactSubmissions.createdAt))
+    .limit(100);
 }
 
 export async function deleteContactSubmission(id: number) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  const [result] = await db.delete(contactSubmissions).where(eq(contactSubmissions.id, id));
+  const [result] = await db
+    .delete(contactSubmissions)
+    .where(eq(contactSubmissions.id, id));
   return result.affectedRows === 1;
 }
 
